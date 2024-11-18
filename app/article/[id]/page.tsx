@@ -4,14 +4,32 @@ import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { MapPin, User, Building, ArrowLeft } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 
-interface Entity {
- id: string;
- kind: 'person' | 'location' | 'organization';
- label: string;
- summary?: string;
- coordinates?: string;
+interface LinkingInfo {
+  source: string;
+  url: string;
+  title: string;
+  summary: string;
+  timestamp: string;
+  geoid?: number;
+  lat?: number;
+  lng?: number;
+  country_name?: string;
+  bbox?: {
+    north: number;
+    south: number;
+    east: number;
+    west: number;
+  };
 }
 
+interface Entity {
+  id: string;
+  kind: 'person' | 'location' | 'organization';
+  label: string;
+  summary?: string;
+  coordinates?: string;
+  linking_info?: LinkingInfo[];
+}
 interface Article {
  id: string;
  headline: string;
@@ -132,12 +150,26 @@ export default function ArticlePage({ params }: PageProps) {
                   <CardTitle className="text-lg text-gray-900">{entity.label}</CardTitle>
                 </CardHeader>
                 <CardContent>
-                  {entity.summary && <p className="text-gray-700">{entity.summary}</p>}
-                  {entity.coordinates && (
-                    <p className="text-gray-600 mt-2">
-                      <MapPin className="w-4 h-4 inline mr-1" />
-                      {entity.coordinates}
-                    </p>
+                  {entity.kind !== 'location' && entity.summary && (
+                    <p className="text-gray-700 mb-2">{entity.summary}</p>
+                  )}
+                  
+                  {entity.kind === 'location' ? (
+                    <>
+                      <p className="text-gray-600 mt-2 text-sm">
+                        <MapPin className="w-4 h-4 inline mr-1" />
+                        {entity.linking_info?.[1]?.lat}, {entity.linking_info?.[1]?.lng}
+                      </p>
+                      <p className="text-gray-600 text-sm mt-1">
+                        {entity.linking_info?.[0]?.summary.split('.')[0]}.
+                      </p>
+                    </>
+                  ) : (
+                    entity.linking_info?.[0]?.summary && (
+                      <p className="text-gray-600 text-sm mt-2">
+                        {entity.linking_info[0].summary.split('.')[0]}.
+                      </p>
+                    )
                   )}
                 </CardContent>
               </Card>
