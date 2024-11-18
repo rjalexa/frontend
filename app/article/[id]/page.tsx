@@ -150,26 +150,40 @@ export default function ArticlePage({ params }: PageProps) {
                   <CardTitle className="text-lg text-gray-900">{entity.label}</CardTitle>
                 </CardHeader>
                 <CardContent>
+                  {/* Show main summary for non-location entities */}
                   {entity.kind !== 'location' && entity.summary && (
                     <p className="text-gray-700 mb-2">{entity.summary}</p>
                   )}
                   
-                  {entity.kind === 'location' ? (
+                  {/* Location specific content */}
+                  {entity.kind === 'location' && entity.linking_info?.[1] && (
                     <>
-                      <p className="text-gray-600 mt-2 text-sm">
-                        <MapPin className="w-4 h-4 inline mr-1" />
-                        {entity.linking_info?.[1]?.lat}, {entity.linking_info?.[1]?.lng}
-                      </p>
+                      <a 
+                        href={`/map/${entity.id}?lat=${entity.linking_info[1].lat}&lng=${entity.linking_info[1].lng}&north=${
+                          entity.linking_info[1].bbox?.north
+                        }&south=${
+                          entity.linking_info[1].bbox?.south
+                        }&east=${
+                          entity.linking_info[1].bbox?.east
+                        }&west=${
+                          entity.linking_info[1].bbox?.west
+                        }`}
+                        className="text-blue-600 hover:text-blue-800 mt-2 text-sm flex items-center gap-1"
+                      >
+                        <MapPin className="w-4 h-4" />
+                        {entity.linking_info[1].lat}, {entity.linking_info[1].lng}
+                      </a>
                       <p className="text-gray-600 text-sm mt-1">
-                        {entity.linking_info?.[0]?.summary.split('.')[0]}.
-                      </p>
-                    </>
-                  ) : (
-                    entity.linking_info?.[0]?.summary && (
-                      <p className="text-gray-600 text-sm mt-2">
                         {entity.linking_info[0].summary.split('.')[0]}.
                       </p>
-                    )
+                    </>
+                  )}
+
+                  {/* Show Wikipedia summary for people and organizations */}
+                  {(entity.kind === 'person' || entity.kind === 'organization') && entity.linking_info?.[0]?.summary && (
+                    <p className="text-gray-600 text-sm mt-1">
+                      {entity.linking_info[0].summary.split('.')[0]}.
+                    </p>
                   )}
                 </CardContent>
               </Card>
