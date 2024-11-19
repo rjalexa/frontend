@@ -18,10 +18,12 @@ interface Article {
   meta_data?: Entity[];
 }
 
+interface PageParams {
+  id: string;
+}
+
 interface MapProps {
-  params: {
-    id: string;
-  };
+  params: Promise<PageParams>;
 }
 
 const MapComponent = ({ params }: MapProps) => {
@@ -32,11 +34,15 @@ const MapComponent = ({ params }: MapProps) => {
   const [article, setArticle] = React.useState<Article | null>(null);
   const [loading, setLoading] = React.useState(true);
 
+  // Unwrap params
+  const resolvedParams = React.use(params) as PageParams;
+  const articleId = resolvedParams.id;
+
   // Fetch article data
   React.useEffect(() => {
     const fetchArticle = async () => {
       try {
-        const response = await fetch(`/api/articles/${params.id}`);
+        const response = await fetch(`/api/articles/${articleId}`);
         if (!response.ok) throw new Error('Failed to fetch article');
         const data = await response.json();
         setArticle(data);
@@ -48,7 +54,7 @@ const MapComponent = ({ params }: MapProps) => {
     };
 
     fetchArticle();
-  }, [params.id]);
+  }, [articleId]);
 
   React.useEffect(() => {
     setIsClient(true);
