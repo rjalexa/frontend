@@ -1,3 +1,4 @@
+// File: /app/map/[id]/page.tsx
 'use client'
 import { type ReactNode } from 'react';
 import dynamic from 'next/dynamic';
@@ -13,7 +14,6 @@ interface MapProps {
 }
 
 // Create the client-side only Map component with proper typing
-// Use the full path relative to the current directory
 const MapComponent = dynamic<MapProps>(() => import('@/app/map/[id]/MapComponent').then(mod => mod.default), {
   ssr: false,
   loading: () => <div className="flex-1 bg-gray-100" />

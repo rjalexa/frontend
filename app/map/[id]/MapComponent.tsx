@@ -1,3 +1,4 @@
+// File: /app/map/[id]/MapComponent.tsx
 'use client'
 import React from 'react';
 import { ArrowLeft } from 'lucide-react';
@@ -41,14 +42,20 @@ const MapComponent = ({ params }: MapProps) => {
     const lat = hasMarker ? parseFloat(latParam) : 0;
     const lng = hasMarker ? parseFloat(lngParam) : 0;
 
-    // Get geographic coordinates from bbox
-    const bboxNorth = parseFloat(searchParams.get('north') || '0');
-    const bboxSouth = parseFloat(searchParams.get('south') || '0');
-    let bboxEast = parseFloat(searchParams.get('east') || '0');
-    let bboxWest = parseFloat(searchParams.get('west') || '0');
+    // Check if we have all bbox coordinates
+    const hasBbox = searchParams.has('north') && searchParams.has('south') && 
+                   searchParams.has('east') && searchParams.has('west');
+    
+    let bboxNorth, bboxSouth, bboxEast, bboxWest;
+    if (hasBbox) {
+      bboxNorth = parseFloat(searchParams.get('north') || '0');
+      bboxSouth = parseFloat(searchParams.get('south') || '0');
+      bboxEast = parseFloat(searchParams.get('east') || '0');
+      bboxWest = parseFloat(searchParams.get('west') || '0');
+    }
 
     // Create map centered on the location
-    const map = L.map('map').setView([lat, lng], 6);
+    const map = L.map('map').setView([lat, lng], hasBbox ? 6 : 10);
 
     // Define different map styles
     const mapLayers = {
@@ -75,53 +82,56 @@ const MapComponent = ({ params }: MapProps) => {
     // Add layer control
     L.control.layers(mapLayers).addTo(map);
 
-    // Add marker only if valid coordinates are provided in URL
+    // Add marker if valid coordinates are provided in URL
     if (hasMarker) {
-      L.marker([lat, lng]).addTo(map);
+      const marker = L.marker([lat, lng]).addTo(map);
     }
 
-    // Adjust longitudes if bounding box crosses the antimeridian
-    if (bboxWest > bboxEast) {
-      // Crosses the antimeridian
-      bboxEast += 360;
+    // Only draw bounding box if bbox coordinates are provided
+    if (hasBbox) {
+      // Adjust longitudes if bounding box crosses the antimeridian
+      if (bboxWest > bboxEast) {
+        // Crosses the antimeridian
+        bboxEast += 360;
+      }
+
+      // Function to adjust longitudes for polygon coordinates
+      const adjustLng = (lng) => {
+        if (lng < bboxWest) {
+          return lng + 360;
+        }
+        return lng;
+      };
+
+      // Create polygon coordinates
+      const coordinates = [
+        [
+          [adjustLng(bboxWest), bboxNorth],
+          [adjustLng(bboxWest), bboxSouth],
+          [adjustLng(bboxEast), bboxSouth],
+          [adjustLng(bboxEast), bboxNorth],
+          [adjustLng(bboxWest), bboxNorth]
+        ]
+      ];
+
+      // Create GeoJSON polygon
+      const polygonGeoJSON = {
+        "type": "Polygon",
+        "coordinates": coordinates
+      };
+
+      // Add polygon to the map
+      const polygon = L.geoJSON(polygonGeoJSON, {
+        style: {
+          color: "#ff7800",
+          weight: 1,
+          fillOpacity: 0.2
+        }
+      }).addTo(map);
+
+      // Adjust map view to fit the polygon
+      map.fitBounds(polygon.getBounds());
     }
-
-    // Function to adjust longitudes for polygon coordinates
-    const adjustLng = (lng) => {
-      if (lng < bboxWest) {
-        return lng + 360;
-      }
-      return lng;
-    };
-
-    // Create polygon coordinates
-    const coordinates = [
-      [
-        [adjustLng(bboxWest), bboxNorth],
-        [adjustLng(bboxWest), bboxSouth],
-        [adjustLng(bboxEast), bboxSouth],
-        [adjustLng(bboxEast), bboxNorth],
-        [adjustLng(bboxWest), bboxNorth]
-      ]
-    ];
-
-    // Create GeoJSON polygon
-    const polygonGeoJSON = {
-      "type": "Polygon",
-      "coordinates": coordinates
-    };
-
-    // Add polygon to the map
-    const polygon = L.geoJSON(polygonGeoJSON, {
-      style: {
-        color: "#ff7800",
-        weight: 1,
-        fillOpacity: 0.2
-      }
-    }).addTo(map);
-
-    // Adjust map view to fit the polygon
-    map.fitBounds(polygon.getBounds());
 
     mapRef.current = map;
 
