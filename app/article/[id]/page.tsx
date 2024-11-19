@@ -87,8 +87,29 @@ export default function ArticlePage({ params }: PageProps) {
 
   const filterEntities = (): Entity[] => {
     if (!article?.meta_data) return [];
-    if (selectedType === 'all') return article.meta_data;
-    return article.meta_data.filter(entity => entity.kind === selectedType);
+    
+    const entities = selectedType === 'all' 
+      ? article.meta_data
+      : article.meta_data.filter(entity => entity.kind === selectedType);
+
+    // Sort function that puts locations first, then persons, then organizations
+    return entities.sort((a, b) => {
+      // First, sort by type priority
+      const typePriority = {
+        'location': 1,
+        'person': 2,
+        'organization': 3
+      };
+      
+      const priorityDiff = typePriority[a.kind] - typePriority[b.kind];
+      
+      // If same type, sort alphabetically
+      if (priorityDiff === 0) {
+        return a.label.localeCompare(b.label, 'en', { sensitivity: 'base' });
+      }
+      
+      return priorityDiff;
+    });
   };
 
   if (loading) return <div className="p-4 text-gray-900">Loading...</div>;
