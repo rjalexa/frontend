@@ -12,8 +12,20 @@ export default function MapView({ params }: { params: { id: string } }) {
     const L = require('leaflet');
     require('leaflet/dist/leaflet.css');
 
-    const lat = parseFloat(searchParams.get('lat') || '0');
-    const lng = parseFloat(searchParams.get('lng') || '0');
+    // Fix Leaflet's default icon path issues
+    delete L.Icon.Default.prototype._getIconUrl;
+    L.Icon.Default.mergeOptions({
+      iconRetinaUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon-2x.png',
+      iconUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon.png',
+      shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-shadow.png',
+    });
+
+    // Only parse lat/lng if both are provided in URL
+    const latParam = searchParams.get('lat');
+    const lngParam = searchParams.get('lng');
+    const hasMarker = latParam !== null && lngParam !== null;
+    const lat = hasMarker ? parseFloat(latParam) : 0;
+    const lng = hasMarker ? parseFloat(lngParam) : 0;
 
     // Get geographic coordinates from bbox
     const bboxNorth = parseFloat(searchParams.get('north') || '0');
@@ -28,8 +40,10 @@ export default function MapView({ params }: { params: { id: string } }) {
       attribution: '© OpenStreetMap contributors'
     }).addTo(map);
 
-    // Add marker for the specific location
-    L.marker([lat, lng]).addTo(map);
+    // Add marker only if valid coordinates are provided in URL
+    if (hasMarker) {
+      L.marker([lat, lng]).addTo(map);
+    }
 
     // Adjust longitudes if bounding box crosses the antimeridian
     if (bboxWest > bboxEast) {
