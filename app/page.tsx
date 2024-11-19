@@ -2,7 +2,13 @@
 'use client'
 import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { ArrowUpDown } from 'lucide-react';
+import { ArrowUpDown, MoreVertical, FileText, Map } from 'lucide-react';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 
 interface Article {
   id: string;
@@ -79,8 +85,8 @@ export default function Home() {
         <div className="overflow-x-auto">
           <table className="w-full border-collapse">
             <thead>
-              <tr className="border-b">
-                <th className="py-2 px-4 text-left">
+              <tr className="border-b bg-gray-50">
+                <th className="py-2 px-4 text-left font-medium">
                   <button 
                     onClick={() => handleSort('headline')}
                     className="flex items-center gap-1 hover:text-gray-600"
@@ -114,12 +120,43 @@ export default function Home() {
                 sortedArticles.map((article: Article) => (
                   <tr
                     key={article.id}
-                    onClick={() => router.push(`/article/${article.id}`)}
-                    className="border-b hover:bg-gray-100 cursor-pointer"
+                    className="border-b hover:bg-gray-100"
                   >
-                    <td className="py-2 px-4">{article.headline}</td>
-                    <td className="py-2 px-4">{article.date_created.slice(0, 10)}</td>
-                    <td className="py-2 px-4">{article.author}</td>
+                    <td 
+                      className="py-2 px-4 cursor-pointer"
+                      onClick={() => router.push(`/article/${article.id}`)}
+                    >
+                      {article.headline}
+                    </td>
+                    <td 
+                      className="py-2 px-4 cursor-pointer"
+                      onClick={() => router.push(`/article/${article.id}`)}
+                    >
+                      {article.date_created.slice(0, 10)}
+                    </td>
+                    <td 
+                      className="py-2 px-4 cursor-pointer"
+                      onClick={() => router.push(`/article/${article.id}`)}
+                    >
+                      {article.author}
+                    </td>
+                    <td className="py-2 px-4 text-right">
+                      <DropdownMenu>
+                        <DropdownMenuTrigger className="p-2 hover:bg-gray-200 rounded-full">
+                          <MoreVertical className="h-4 w-4" />
+                        </DropdownMenuTrigger>
+                        <DropdownMenuContent align="end">
+                          <DropdownMenuItem onClick={() => router.push(`/article/${article.id}`)}>
+                            <FileText className="h-4 w-4 mr-2" />
+                            View Article
+                          </DropdownMenuItem>
+                          <DropdownMenuItem onClick={() => router.push(`/map/${article.id}`)}>
+                            <Map className="h-4 w-4 mr-2" />
+                            View Map
+                          </DropdownMenuItem>
+                        </DropdownMenuContent>
+                      </DropdownMenu>
+                    </td>
                   </tr>
                 ))
               ) : (
