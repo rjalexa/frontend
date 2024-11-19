@@ -4,6 +4,20 @@ import React from 'react';
 import { ArrowLeft } from 'lucide-react';
 import { useRouter, useSearchParams } from 'next/navigation';
 
+interface Entity {
+  id: string;
+  kind: string;
+  label: string;
+  lat?: number;
+  lng?: number;
+}
+
+interface Article {
+  id: string;
+  headline: string;
+  meta_data?: Entity[];
+}
+
 interface MapProps {
   params: {
     id: string;
@@ -15,6 +29,26 @@ const MapComponent = ({ params }: MapProps) => {
   const searchParams = useSearchParams();
   const mapRef = React.useRef<any>(null);
   const [isClient, setIsClient] = React.useState(false);
+  const [article, setArticle] = React.useState<Article | null>(null);
+  const [loading, setLoading] = React.useState(true);
+
+  // Fetch article data
+  React.useEffect(() => {
+    const fetchArticle = async () => {
+      try {
+        const response = await fetch(`/api/articles/${params.id}`);
+        if (!response.ok) throw new Error('Failed to fetch article');
+        const data = await response.json();
+        setArticle(data);
+      } catch (error) {
+        console.error('Error fetching article:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchArticle();
+  }, [params.id]);
 
   React.useEffect(() => {
     setIsClient(true);
@@ -54,8 +88,8 @@ const MapComponent = ({ params }: MapProps) => {
       bboxWest = parseFloat(searchParams.get('west') || '0');
     }
 
-    // Create map centered on the location
-    const map = L.map('map').setView([lat, lng], hasBbox ? 6 : 10);
+    // Create map with a default view
+    const map = L.map('map').setView([0, 0], 2);
 
     // Define different map styles
     const mapLayers = {
@@ -82,9 +116,29 @@ const MapComponent = ({ params }: MapProps) => {
     // Add layer control
     L.control.layers(mapLayers).addTo(map);
 
-    // Add marker if valid coordinates are provided in URL
-    if (hasMarker) {
-      const marker = L.marker([lat, lng]).addTo(map);
+    // Add markers for all location entities
+    if (article?.meta_data) {
+      const locationEntities = article.meta_data.filter(
+        entity => entity.kind === 'location' && entity.lat && entity.lng
+      );
+
+      if (locationEntities.length > 0) {
+        const bounds = L.latLngBounds([]);
+        
+        locationEntities.forEach(location => {
+          if (location.lat && location.lng) {
+            const marker = L.marker([location.lat, location.lng])
+              .bindPopup(location.label)
+              .addTo(map);
+            bounds.extend([location.lat, location.lng]);
+          }
+        });
+
+        // Fit map to show all markers
+        if (!bounds.isEmpty()) {
+          map.fitBounds(bounds, { padding: [50, 50] });
+        }
+      }
     }
 
     // Only draw bounding box if bbox coordinates are provided
