@@ -25,7 +25,9 @@ const MapComponent = () => {
   const mapContainerRef = React.useRef<HTMLDivElement>(null);
   const [article, setArticle] = React.useState<Article | null>(null);
   const [loading, setLoading] = React.useState(true);
+  const [mapLoading, setMapLoading] = React.useState(false);
   const [error, setError] = React.useState<string | null>(null);
+  const [mapError, setMapError] = React.useState<string | null>(null);
 
   // Fetch article data
   React.useEffect(() => {
@@ -77,10 +79,12 @@ const MapComponent = () => {
 
   // Handle map initialization
   React.useEffect(() => {
-    let map: any = null;
+    let map: L.Map | null = null;
     let cleanupFunction: (() => void) | null = null;
 
     const initializeMap = async () => {
+      setMapLoading(true);
+      setMapError(null);
       if (!mapContainerRef.current || !article) return;
 
       try {
@@ -140,7 +144,9 @@ const MapComponent = () => {
 
       } catch (error) {
         console.error('Error initializing map:', error);
-        setError('Failed to initialize map');
+        setMapError('Failed to initialize map');
+      } finally {
+        setMapLoading(false);
       }
     };
 
@@ -155,18 +161,20 @@ const MapComponent = () => {
     };
   }, [article]); // Only reinitialize when article changes
 
-  if (loading) {
+  if (loading || mapLoading) {
     return (
       <div className="h-screen flex items-center justify-center">
-        <div className="text-lg">Loading map...</div>
+        <div className="text-lg">
+          {loading ? 'Loading article data...' : 'Initializing map...'}
+        </div>
       </div>
     );
   }
 
-  if (error) {
+  if (error || mapError) {
     return (
       <div className="h-screen flex items-center justify-center">
-        <div className="text-red-600">{error}</div>
+        <div className="text-red-600">{error || mapError}</div>
       </div>
     );
   }
