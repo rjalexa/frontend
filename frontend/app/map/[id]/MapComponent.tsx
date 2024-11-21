@@ -49,7 +49,7 @@ export default function MapComponent({ params }: MapProps) {
 
   return (
     <div className="p-4">
-      <button 
+      <button
         onClick={() => router.push(`/article/${params.id}`)}
         className="mb-4 flex items-center gap-2 text-blue-600 hover:text-blue-800"
       >
