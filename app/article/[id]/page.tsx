@@ -1,4 +1,3 @@
-// File: /app/article/[id]/page.tsx
 'use client'
 import React, { useState, useEffect, Suspense } from 'react';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
@@ -85,6 +84,17 @@ export default function ArticlePage({ params }: PageProps) {
     }
   };
 
+  const hasLocationsWithCoordinates = (): boolean => {
+    if (!article?.meta_data) return false;
+    
+    return article.meta_data.some(
+      entity => 
+        entity.kind === 'location' && 
+        entity.linking_info?.[1]?.lat && 
+        entity.linking_info?.[1]?.lng
+    );
+  };
+
   const filterEntities = (): Entity[] => {
     if (!article?.meta_data) return [];
     
@@ -127,47 +137,60 @@ export default function ArticlePage({ params }: PageProps) {
 
         <h1 className="text-2xl font-bold mb-4 text-gray-900">{article.headline}</h1>
         
-        <div className="flex gap-2 mb-4">
-          <button
-            onClick={() => setSelectedType('all')}
-            className={`px-4 py-2 rounded transition-colors ${
-              selectedType === 'all' 
-                ? 'bg-blue-600 text-white' 
-                : 'bg-gray-100 text-gray-800 hover:bg-gray-200'
-            }`}
-          >
-            All
-          </button>
-          <button
-            onClick={() => setSelectedType('person')}
-            className={`px-4 py-2 rounded flex items-center gap-2 transition-colors ${
-              selectedType === 'person' 
-                ? 'bg-green-600 text-white' 
-                : 'bg-gray-100 text-gray-800 hover:bg-gray-200'
-            }`}
-          >
-            <User className="w-4 h-4" /> People
-          </button>
-          <button
-            onClick={() => setSelectedType('location')}
-            className={`px-4 py-2 rounded flex items-center gap-2 transition-colors ${
-              selectedType === 'location' 
-                ? 'bg-blue-600 text-white' 
-                : 'bg-gray-100 text-gray-800 hover:bg-gray-200'
-            }`}
-          >
-            <MapPin className="w-4 h-4" /> Locations
-          </button>
-          <button
-            onClick={() => setSelectedType('organization')}
-            className={`px-4 py-2 rounded flex items-center gap-2 transition-colors ${
-              selectedType === 'organization' 
-                ? 'bg-purple-600 text-white' 
-                : 'bg-gray-100 text-gray-800 hover:bg-gray-200'
-            }`}
-          >
-            <Building className="w-4 h-4" /> Organizations
-          </button>
+        <div className="flex flex-wrap gap-2 mb-4 items-center">
+          <div className="flex gap-2">
+            <button
+              onClick={() => setSelectedType('all')}
+              className={`px-4 py-2 rounded transition-colors ${
+                selectedType === 'all' 
+                  ? 'bg-blue-600 text-white' 
+                  : 'bg-gray-100 text-gray-800 hover:bg-gray-200'
+              }`}
+            >
+              All
+            </button>
+            <button
+              onClick={() => setSelectedType('person')}
+              className={`px-4 py-2 rounded flex items-center gap-2 transition-colors ${
+                selectedType === 'person' 
+                  ? 'bg-green-600 text-white' 
+                  : 'bg-gray-100 text-gray-800 hover:bg-gray-200'
+              }`}
+            >
+              <User className="w-4 h-4" /> People
+            </button>
+            <button
+              onClick={() => setSelectedType('location')}
+              className={`px-4 py-2 rounded flex items-center gap-2 transition-colors ${
+                selectedType === 'location' 
+                  ? 'bg-blue-600 text-white' 
+                  : 'bg-gray-100 text-gray-800 hover:bg-gray-200'
+              }`}
+            >
+              <MapPin className="w-4 h-4" /> Locations
+            </button>
+            <button
+              onClick={() => setSelectedType('organization')}
+              className={`px-4 py-2 rounded flex items-center gap-2 transition-colors ${
+                selectedType === 'organization' 
+                  ? 'bg-purple-600 text-white' 
+                  : 'bg-gray-100 text-gray-800 hover:bg-gray-200'
+              }`}
+            >
+              <Building className="w-4 h-4" /> Organizations
+            </button>
+          </div>
+
+          {/* View all locations button - only show if there are locations with coordinates */}
+          {hasLocationsWithCoordinates() && (
+            <a
+              href={`/map/${article.id}?mode=all`}
+              className="ml-auto px-4 py-2 rounded bg-blue-100 text-blue-700 hover:bg-blue-200 flex items-center gap-2 transition-colors"
+            >
+              <MapPin className="w-4 h-4" />
+              View all locations on map
+            </a>
+          )}
         </div>
 
         {article.meta_data ? (
@@ -181,11 +204,11 @@ export default function ArticlePage({ params }: PageProps) {
                       <CardTitle className="text-lg">
                         {entity.linking_info[1].lat && entity.linking_info[1].lng ? (
                           <a 
-                            href={`/map/${entity.id}?lat=${entity.linking_info[1].lat}&lng=${entity.linking_info[1].lng}${
+                            href={`/map/${article.id}?lat=${entity.linking_info[1].lat}&lng=${entity.linking_info[1].lng}${
                               entity.linking_info[1].bbox ? 
                                 `&north=${entity.linking_info[1].bbox.north}&south=${entity.linking_info[1].bbox.south}&east=${entity.linking_info[1].bbox.east}&west=${entity.linking_info[1].bbox.west}` 
                                 : ''
-                            }`}
+                            }&name=${encodeURIComponent(entity.label)}`}
                             className="text-blue-600 hover:text-blue-800"
                           >
                             {entity.label}

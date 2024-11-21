@@ -3,12 +3,24 @@ import React from 'react';
 import { ArrowLeft } from 'lucide-react';
 import { useRouter, useParams } from 'next/navigation';
 
+interface LinkingInfo {
+  lat?: number;
+  lng?: number;
+  title?: string;
+  summary?: string;
+  bbox?: {
+    north: number;
+    south: number;
+    east: number;
+    west: number;
+  };
+}
+
 interface Entity {
   id: string;
   kind: string;
   label: string;
-  lat?: number;
-  lng?: number;
+  linking_info?: LinkingInfo[];
 }
 
 interface Article {
@@ -23,87 +35,66 @@ const MapComponent = () => {
   const articleId = params?.id;
 
   const mapContainerRef = React.useRef<HTMLDivElement>(null);
-  const mapInstanceRef = React.useRef<any>(null);
   const [article, setArticle] = React.useState<Article | null>(null);
   const [loading, setLoading] = React.useState(true);
-  const [mapLoading, setMapLoading] = React.useState(false);
   const [error, setError] = React.useState<string | null>(null);
-  const [mapError, setMapError] = React.useState<string | null>(null);
+  const [viewMode, setViewMode] = React.useState<'single' | 'all'>('single');
+  const [map, setMap] = React.useState<any>(null);
 
   // Fetch article data
   React.useEffect(() => {
-    if (!articleId) return;
+    let mounted = true;
 
     const fetchArticle = async () => {
       try {
         setLoading(true);
         setError(null);
-        
-        // Get location from URL parameters
-        const searchParams = new URLSearchParams(window.location.search);
-        const lat = parseFloat(searchParams.get('lat') || '0');
-        const lng = parseFloat(searchParams.get('lng') || '0');
-        const locationName = searchParams.get('name') || `Location (${lat.toFixed(4)}, ${lng.toFixed(4)})`;
 
-        // Create article data using the URL parameters
-        setArticle({
-          id: articleId as string,
-          headline: "Location View",
-          meta_data: [
-            {
-              id: "1",
-              kind: "location",
-              label: locationName,
-              lat: lat,
-              lng: lng
-            }
-          ]
-        });
+        // Check URL parameters to determine mode
+        const searchParams = new URLSearchParams(window.location.search);
+        const mode = searchParams.get('mode');
+        setViewMode(mode === 'all' ? 'all' : 'single');
+        
+        const response = await fetch('/api/files');
+        const articles: Article[] = await response.json();
+        const foundArticle = articles.find(a => a.id === articleId);
+        
+        if (!foundArticle) {
+          throw new Error('Article not found');
+        }
+
+        if (mounted) {
+          setArticle(foundArticle);
+        }
       } catch (error) {
-        setError('Failed to fetch article data');
-        console.error('Error fetching article:', error);
+        if (mounted) {
+          setError('Failed to fetch article data');
+          console.error('Error fetching article:', error);
+        }
       } finally {
-        setLoading(false);
+        if (mounted) {
+          setLoading(false);
+        }
       }
     };
 
     fetchArticle();
+
+    return () => {
+      mounted = false;
+    };
   }, [articleId]);
 
-  // Handle map initialization
+  // Initialize map
   React.useEffect(() => {
-    // Don't initialize if any required conditions are not met
-    if (!article) {
-      console.log('No article data available yet');
-      return;
-    }
-    
-    if (!mapContainerRef.current) {
-      console.log('Map container not available yet');
-      return;
-    }
-    
-    if (mapInstanceRef.current) {
-      console.log('Map already initialized');
-      return;
-    }
+    if (!mapContainerRef.current || !article || map) return;
 
-    let cleanupFunction: (() => void) | null = null;
-
+    let mounted = true;
+    
     const initializeMap = async () => {
-      setMapLoading(true);
-      setMapError(null);
-
       try {
-        console.log('Initializing map...');
-        
-        // Dynamic import of Leaflet
         const L = (await import('leaflet')).default;
-        
-        // Import Leaflet CSS
         await import('leaflet/dist/leaflet.css');
-
-        console.log('Leaflet loaded successfully');
 
         // Fix Leaflet's default icon path issues
         delete (L.Icon.Default.prototype as any)._getIconUrl;
@@ -113,103 +104,106 @@ const MapComponent = () => {
           shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-shadow.png',
         });
 
-        // Create map instance
-        console.log('Creating map instance...');
-        const container = mapContainerRef.current;
-        if (!container) {
-          throw new Error('Map container not found');
-        }
-        
-        mapInstanceRef.current = L.map(container, {
+        if (!mounted || !mapContainerRef.current) return;
+
+        const newMap = L.map(mapContainerRef.current, {
           zoomControl: true,
           scrollWheelZoom: true
-        }).setView([46.2276, 2.2137], 6);
-        
-        // Add scale control
-        L.control.scale().addTo(mapInstanceRef.current);
-        
-        // Add tile layer
+        });
+
         L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
           attribution: '© OpenStreetMap contributors'
-        }).addTo(mapInstanceRef.current);
+        }).addTo(newMap);
 
-        console.log('Tile layer added');
+        L.control.scale().addTo(newMap);
 
-        // Add markers if available
-        if (article.meta_data) {
-          const locations = article.meta_data.filter(
-            entity => entity.kind === 'location' && 
-            typeof entity.lat === 'number' && 
-            typeof entity.lng === 'number'
-          );
+        if (viewMode === 'single') {
+          const searchParams = new URLSearchParams(window.location.search);
+          const lat = parseFloat(searchParams.get('lat') || '0');
+          const lng = parseFloat(searchParams.get('lng') || '0');
+          const name = searchParams.get('name') || `Location (${lat.toFixed(4)}, ${lng.toFixed(4)})`;
+          const north = parseFloat(searchParams.get('north') || '0');
+          const south = parseFloat(searchParams.get('south') || '0');
+          const east = parseFloat(searchParams.get('east') || '0');
+          const west = parseFloat(searchParams.get('west') || '0');
 
-          console.log('Found locations:', locations);
+          if (lat && lng) {
+            L.marker([lat, lng])
+              .bindPopup(name)
+              .addTo(newMap);
 
-          if (locations.length > 0) {
-            const markers = locations.map(location => ({
-              pos: [location.lat!, location.lng!] as [number, number],
-              label: location.label
-            }));
-
-            // Get URL parameters for bounds
-            const searchParams = new URLSearchParams(window.location.search);
-            const north = parseFloat(searchParams.get('north') || '0');
-            const south = parseFloat(searchParams.get('south') || '0');
-            const east = parseFloat(searchParams.get('east') || '0');
-            const west = parseFloat(searchParams.get('west') || '0');
-
-            // Add markers
-            markers.forEach(marker => {
-              L.marker(marker.pos)
-                .bindPopup(marker.label)
-                .addTo(mapInstanceRef.current);
-            });
-
-            // If we have valid bounds parameters, use them
             if (north && south && east && west) {
-              const bounds = L.latLngBounds(
+              newMap.fitBounds([
                 [north, west],
                 [south, east]
-              );
-              mapInstanceRef.current.fitBounds(bounds, { padding: [50, 50] });
-              console.log('Set bounds from URL parameters:', { north, south, east, west });
+              ], { padding: [50, 50] });
             } else {
-              // Fallback to marker bounds
-              const bounds = L.latLngBounds(markers.map(m => m.pos));
-              mapInstanceRef.current.fitBounds(bounds, { padding: [50, 50] });
-              console.log('Set bounds from markers');
+              newMap.setView([lat, lng], 10);
             }
-            console.log('Markers added and bounds set');
+          }
+        } else {
+          const locations = article.meta_data
+            ?.filter(entity => 
+              entity.kind === 'location' && 
+              entity.linking_info?.[1]?.lat && 
+              entity.linking_info?.[1]?.lng
+            )
+            .map(entity => ({
+              label: entity.label,
+              lat: entity.linking_info![1].lat!,
+              lng: entity.linking_info![1].lng!,
+              summary: entity.linking_info![0]?.summary
+            })) || [];
+
+          if (locations.length > 0) {
+            const bounds = L.latLngBounds(locations.map(loc => [loc.lat, loc.lng]));
+            
+            locations.forEach(location => {
+              L.marker([location.lat, location.lng])
+                .bindPopup(`
+                  <strong>${location.label}</strong>
+                  ${location.summary ? `<br/><br/>${location.summary.split('.')[0]}.` : ''}
+                `)
+                .addTo(newMap);
+            });
+
+            newMap.fitBounds(bounds, { padding: [50, 50] });
+          } else {
+            newMap.setView([0, 0], 2);
           }
         }
 
-        // Setup cleanup function
-        cleanupFunction = () => {
-          if (mapInstanceRef.current) {
-            console.log('Cleaning up map...');
-            mapInstanceRef.current.remove();
-            mapInstanceRef.current = null;
-          }
-        };
-
+        if (mounted) {
+          setMap(newMap);
+        }
       } catch (error) {
         console.error('Error initializing map:', error);
-        setMapError('Failed to initialize map');
-      } finally {
-        setMapLoading(false);
+        if (mounted) {
+          setError('Failed to initialize map');
+        }
       }
     };
 
-    // Initialize map
     initializeMap();
 
-    // Cleanup
     return () => {
-      if (cleanupFunction) {
-        cleanupFunction();
+      mounted = false;
+      if (map) {
+        map.remove();
+        setMap(null);
       }
     };
-  }, [article]); // Only reinitialize when article changes
+  }, [article, viewMode, map]);
+
+  // Cleanup on unmount
+  React.useEffect(() => {
+    return () => {
+      if (map) {
+        map.remove();
+        setMap(null);
+      }
+    };
+  }, [map]);
 
   if (loading) {
     return (
@@ -236,21 +230,18 @@ const MapComponent = () => {
         >
           <ArrowLeft className="w-4 h-4" /> Back to Article
         </button>
+        {article && (
+          <div className="mt-2">
+            <h1 className="text-lg font-semibold text-gray-900">
+              {article.headline}
+            </h1>
+            <p className="text-sm text-gray-600">
+              {viewMode === 'all' ? 'Showing all locations' : 'Showing selected location'}
+            </p>
+          </div>
+        )}
       </div>
-      {mapError ? (
-        <div className="flex-1 flex items-center justify-center">
-          <div className="text-red-600">{mapError}</div>
-        </div>
-      ) : (
-        <>
-          {mapLoading && (
-            <div className="absolute inset-0 flex items-center justify-center bg-white bg-opacity-75 z-10">
-              <div className="text-lg">Initializing map...</div>
-            </div>
-          )}
-          <div ref={mapContainerRef} className="flex-1" />
-        </>
-      )}
+      <div ref={mapContainerRef} className="flex-1" />
     </div>
   );
 };
