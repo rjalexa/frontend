@@ -86,7 +86,7 @@ const MapComponent = () => {
       try {
         // Dynamic import of Leaflet
         const L = (await import('leaflet')).default;
-        await import('leaflet/dist/leaflet.css');
+        require('leaflet/dist/leaflet.css');
 
         // Fix Leaflet's default icon path issues
         delete L.Icon.Default.prototype._getIconUrl;
