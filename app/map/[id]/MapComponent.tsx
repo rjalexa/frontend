@@ -39,33 +39,29 @@ const MapComponent = () => {
         setError(null);
         const response = await fetch(`/api/articles/${articleId}`);
         
-        if (!response.ok) {
-          // For demo purposes, create mock data if API fails
-          setArticle({
-            id: articleId as string,
-            headline: "Sample Article",
-            meta_data: [
-              {
-                id: "1",
-                kind: "location",
-                label: "Paris",
-                lat: 48.8566,
-                lng: 2.3522
-              },
-              {
-                id: "2",
-                kind: "location",
-                label: "Lyon",
-                lat: 45.7578,
-                lng: 4.8320
-              }
-            ]
-          });
-          return;
-        }
-
-        const data = await response.json();
-        setArticle(data);
+        const response = await fetch(`/api/articles/${articleId}`);
+        
+        // Always use mock data for now
+        setArticle({
+          id: articleId as string,
+          headline: "Sample Article",
+          meta_data: [
+            {
+              id: "1",
+              kind: "location",
+              label: "Paris",
+              lat: 48.8566,
+              lng: 2.3522
+            },
+            {
+              id: "2",
+              kind: "location",
+              label: "Lyon",
+              lat: 45.7578,
+              lng: 4.8320
+            }
+          ]
+        });
       } catch (error) {
         setError('Failed to fetch article data');
         console.error('Error fetching article:', error);
