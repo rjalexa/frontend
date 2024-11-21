@@ -131,8 +131,10 @@ const MapComponent = () => {
 
         // Setup cleanup function
         cleanupFunction = () => {
-          map.remove();
-          map = null;
+          if (map) {
+            map.remove();
+            map = null;
+          }
         };
 
       } catch (error) {
