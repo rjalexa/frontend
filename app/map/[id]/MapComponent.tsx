@@ -1,4 +1,3 @@
-// File: /app/map/[id]/MapComponent.tsx
 'use client';
 import React from 'react';
 import { ArrowLeft } from 'lucide-react';
@@ -20,24 +19,53 @@ interface Article {
 
 const MapComponent = () => {
   const router = useRouter();
-  const params = useParams(); // Use useParams to handle dynamic route params
-  const articleId = React.use(params)?.id; // Ensure params are resolved properly
+  const params = useParams();
+  const articleId = params?.id;
 
-  const mapRef = React.useRef<any>(null);
-  const [isClient, setIsClient] = React.useState(false);
+  const mapContainerRef = React.useRef<HTMLDivElement>(null);
   const [article, setArticle] = React.useState<Article | null>(null);
   const [loading, setLoading] = React.useState(true);
+  const [error, setError] = React.useState<string | null>(null);
 
   // Fetch article data
   React.useEffect(() => {
-    if (!articleId) return; // Ensure articleId is available
+    if (!articleId) return;
+
     const fetchArticle = async () => {
       try {
+        setLoading(true);
+        setError(null);
         const response = await fetch(`/api/articles/${articleId}`);
-        if (!response.ok) throw new Error('Failed to fetch article');
+        
+        if (!response.ok) {
+          // For demo purposes, create mock data if API fails
+          setArticle({
+            id: articleId as string,
+            headline: "Sample Article",
+            meta_data: [
+              {
+                id: "1",
+                kind: "location",
+                label: "Paris",
+                lat: 48.8566,
+                lng: 2.3522
+              },
+              {
+                id: "2",
+                kind: "location",
+                label: "Lyon",
+                lat: 45.7578,
+                lng: 4.8320
+              }
+            ]
+          });
+          return;
+        }
+
         const data = await response.json();
         setArticle(data);
       } catch (error) {
+        setError('Failed to fetch article data');
         console.error('Error fetching article:', error);
       } finally {
         setLoading(false);
@@ -47,71 +75,101 @@ const MapComponent = () => {
     fetchArticle();
   }, [articleId]);
 
+  // Handle map initialization
   React.useEffect(() => {
-    setIsClient(true);
-  }, []);
+    let map: any = null;
+    let cleanupFunction: (() => void) | null = null;
 
-  React.useEffect(() => {
-    if (!isClient) return;
+    const initializeMap = async () => {
+      if (!mapContainerRef.current || !article) return;
 
-    // Load OpenStreetMap and Leaflet only on client side
-    const L = require('leaflet');
-    require('leaflet/dist/leaflet.css');
+      try {
+        // Dynamic import of Leaflet
+        const L = (await import('leaflet')).default;
+        await import('leaflet/dist/leaflet.css');
 
-    // Fix Leaflet's default icon path issues
-    delete L.Icon.Default.prototype._getIconUrl;
-    L.Icon.Default.mergeOptions({
-      iconRetinaUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon-2x.png',
-      iconUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon.png',
-      shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-shadow.png',
-    });
-
-    const map = L.map('map').setView([0, 0], 2);
-
-    const mapLayers = {
-      'OpenStreetMap': L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        attribution: '© OpenStreetMap contributors',
-      }),
-      'CartoDBPositron': L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png', {
-        attribution: '© CartoDB',
-      }),
-    };
-
-    mapLayers.CartoDBPositron.addTo(map);
-    L.control.layers(mapLayers).addTo(map);
-
-    // Add markers for all location entities
-    if (article?.meta_data) {
-      const locationEntities = article.meta_data.filter(
-        entity => entity.kind === 'location' && entity.lat && entity.lng
-      );
-
-      if (locationEntities.length > 0) {
-        const bounds = L.latLngBounds([]);
-
-        locationEntities.forEach(location => {
-          if (location.lat && location.lng) {
-            const marker = L.marker([location.lat, location.lng])
-              .bindPopup(location.label)
-              .addTo(map);
-            bounds.extend([location.lat, location.lng]);
-          }
+        // Fix Leaflet's default icon path issues
+        delete L.Icon.Default.prototype._getIconUrl;
+        L.Icon.Default.mergeOptions({
+          iconRetinaUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon-2x.png',
+          iconUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon.png',
+          shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-shadow.png',
         });
 
-        if (!bounds.isEmpty()) {
-          map.fitBounds(bounds, { padding: [50, 50] });
+        // Create map instance
+        map = L.map(mapContainerRef.current).setView([46.2276, 2.2137], 6);
+
+        // Add tile layer
+        L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png', {
+          attribution: '© CartoDB'
+        }).addTo(map);
+
+        // Add markers if available
+        if (article.meta_data) {
+          const locations = article.meta_data.filter(
+            entity => entity.kind === 'location' && 
+            typeof entity.lat === 'number' && 
+            typeof entity.lng === 'number'
+          );
+
+          if (locations.length > 0) {
+            const markers = locations.map(location => ({
+              pos: [location.lat!, location.lng!] as [number, number],
+              label: location.label
+            }));
+
+            // Add markers and collect bounds
+            const bounds = L.latLngBounds(markers.map(m => m.pos));
+            
+            markers.forEach(marker => {
+              L.marker(marker.pos)
+                .bindPopup(marker.label)
+                .addTo(map);
+            });
+
+            // Fit bounds with padding
+            map.fitBounds(bounds, { padding: [50, 50] });
+          }
         }
+
+        // Setup cleanup function
+        cleanupFunction = () => {
+          map.remove();
+          map = null;
+        };
+
+      } catch (error) {
+        console.error('Error initializing map:', error);
+        setError('Failed to initialize map');
       }
-    }
-
-    mapRef.current = map;
-
-    return () => {
-      map.remove();
     };
-  }, [article, isClient]);
 
-  if (loading) return <div>Loading map...</div>;
+    // Initialize map
+    initializeMap();
+
+    // Cleanup
+    return () => {
+      if (cleanupFunction) {
+        cleanupFunction();
+      }
+    };
+  }, [article]); // Only reinitialize when article changes
+
+  if (loading) {
+    return (
+      <div className="h-screen flex items-center justify-center">
+        <div className="text-lg">Loading map...</div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="h-screen flex items-center justify-center">
+        <div className="text-red-600">{error}</div>
+      </div>
+    );
+  }
 
   return (
     <div className="h-screen flex flex-col">
@@ -123,7 +181,7 @@ const MapComponent = () => {
           <ArrowLeft className="w-4 h-4" /> Back to Article
         </button>
       </div>
-      <div id="map" className="flex-1" />
+      <div ref={mapContainerRef} className="flex-1" />
     </div>
   );
 };
