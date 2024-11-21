@@ -81,9 +81,9 @@ const MapComponent = () => {
       if (!mapContainerRef.current || !article) return;
 
       try {
-        // Dynamic import of Leaflet
+        // Dynamic import of Leaflet and its CSS
         const L = (await import('leaflet')).default;
-        require('leaflet/dist/leaflet.css');
+        await import('leaflet/dist/leaflet.css');
 
         // Fix Leaflet's default icon path issues
         delete (L.Icon.Default.prototype as any)._getIconUrl;
@@ -93,8 +93,15 @@ const MapComponent = () => {
           shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-shadow.png',
         });
 
+        // Wait for next tick to ensure DOM is ready
+        await new Promise(resolve => setTimeout(resolve, 0));
+        
         // Create map instance
-        map = L.map(mapContainerRef.current).setView([46.2276, 2.2137], 6);
+        if (mapContainerRef.current) {
+          map = L.map(mapContainerRef.current).setView([46.2276, 2.2137], 6);
+        } else {
+          throw new Error('Map container not found');
+        }
 
         // Add tile layer
         if (map) {
