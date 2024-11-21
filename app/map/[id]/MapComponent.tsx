@@ -97,9 +97,11 @@ const MapComponent = () => {
         map = L.map(mapContainerRef.current).setView([46.2276, 2.2137], 6);
 
         // Add tile layer
-        L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png', {
-          attribution: '© CartoDB'
-        }).addTo(map);
+        if (map) {
+          L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png', {
+            attribution: '© CartoDB'
+          }).addTo(map);
+        }
 
         // Add markers if available
         if (article.meta_data) {
@@ -119,9 +121,11 @@ const MapComponent = () => {
             const bounds = L.latLngBounds(markers.map(m => m.pos));
             
             markers.forEach(marker => {
-              L.marker(marker.pos)
-                .bindPopup(marker.label)
-                .addTo(map);
+              if (map) {
+                L.marker(marker.pos)
+                  .bindPopup(marker.label)
+                  .addTo(map);
+              }
             });
 
             // Fit bounds with padding
