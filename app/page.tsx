@@ -95,7 +95,7 @@ export default function Home() {
                     <ArrowUpDown className="h-4 w-4" />
                   </button>
                 </th>
-                <th className="py-2 px-4 text-left">
+                <th className="py-2 px-4 text-left w-36">
                   <button 
                     onClick={() => handleSort('date_created')}
                     className="flex items-center gap-1 hover:text-gray-600"
