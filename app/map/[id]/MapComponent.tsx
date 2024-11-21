@@ -37,11 +37,8 @@ const MapComponent = () => {
       try {
         setLoading(true);
         setError(null);
-        const response = await fetch(`/api/articles/${articleId}`);
         
-        const response = await fetch(`/api/articles/${articleId}`);
-        
-        // Always use mock data for now
+        // Simulate API call but use mock data for now
         setArticle({
           id: articleId as string,
           headline: "Sample Article",
