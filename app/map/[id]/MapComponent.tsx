@@ -23,7 +23,7 @@ interface PageParams {
 }
 
 interface MapProps {
-  params: Promise<PageParams>;
+  params: PageParams;
 }
 
 const MapComponent = ({ params }: MapProps) => {
@@ -34,9 +34,7 @@ const MapComponent = ({ params }: MapProps) => {
   const [article, setArticle] = React.useState<Article | null>(null);
   const [loading, setLoading] = React.useState(true);
 
-  // Unwrap params
-  const resolvedParams = React.use(params) as PageParams;
-  const articleId = resolvedParams.id;
+  const articleId = params.id;
 
   // Fetch article data
   React.useEffect(() => {

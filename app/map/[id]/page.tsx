@@ -14,7 +14,7 @@ interface MapProps {
 }
 
 // Create the client-side only Map component with proper typing
-const MapComponent = dynamic<MapProps>(() => import('@/app/map/[id]/MapComponent').then(mod => mod.default), {
+const MapComponent = dynamic<MapProps>(() => import('./MapComponent'), {
   ssr: false,
   loading: () => <div className="flex-1 bg-gray-100" />
 });
