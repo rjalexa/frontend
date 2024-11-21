@@ -150,7 +150,7 @@ export default function Home() {
                             <FileText className="h-4 w-4 mr-2" />
                             View Article
                           </DropdownMenuItem>
-                          <DropdownMenuItem onClick={() => router.push(`/map/${article.id}`)}>
+                          <DropdownMenuItem onClick={() => router.push(`/map/${article.id}?mode=all`)}>
                             <Map className="h-4 w-4 mr-2" />
                             View Map
                           </DropdownMenuItem>
