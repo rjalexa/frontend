@@ -32,19 +32,10 @@ export function HighlightsDialog({ isOpen, onClose, articleTitle }: HighlightsDi
   return (
     <DialogPrimitive.Root open={isOpen} onOpenChange={onClose}>
       <DialogPrimitive.Portal>
-        <DialogContent>
+        <DialogContent className="sm:max-w-[500px]">
           <DialogHeader>
             <div className="flex items-center justify-between">
               <DialogTitle>Article Highlights</DialogTitle>
-              <DialogPrimitive.Close asChild>
-                <Button
-                  variant="ghost"
-                  size="icon"
-                  className="h-8 w-8 rounded-full"
-                >
-                  <X className="h-4 w-4" />
-                </Button>
-              </DialogPrimitive.Close>
             </div>
             <DialogDescription>
               Key highlights from &quot;{articleTitle}&quot;
