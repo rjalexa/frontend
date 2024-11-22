@@ -16,6 +16,8 @@ interface Article {
   headline: string;
   date_created: string;
   author: string;
+  datePublished: string;  // Added for highlights
+  slug: string;          // Added for highlights
   meta_data?: Array<{
     id: string;
     kind: 'person' | 'location' | 'organization';
