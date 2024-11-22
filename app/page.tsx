@@ -2,13 +2,15 @@
 'use client'
 import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { ArrowUpDown, MoreVertical, FileText, Map } from 'lucide-react';
+import { ArrowUpDown, MoreVertical, Highlighter, Map } from 'lucide-react';
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
+} from "../components/ui/dropdown-menu";
+import { HighlightsDialog } from '../components/highlights/HighlightsDialog';
+
 
 interface Article {
   id: string;
@@ -32,6 +34,8 @@ export default function Home() {
   const [error, setError] = useState<string | null>(null);
   const [sortField, setSortField] = useState<SortField>('date_created');
   const [sortDirection, setSortDirection] = useState<SortDirection>('desc');
+  const [highlightsOpen, setHighlightsOpen] = useState(false);
+  const [selectedArticle, setSelectedArticle] = useState<Article | null>(null);
 
   useEffect(() => {
     const fetchArticles = async () => {
@@ -60,6 +64,11 @@ export default function Home() {
       setSortField(field);
       setSortDirection('desc');
     }
+  };
+
+  const handleViewHighlights = (article: Article) => {
+    setSelectedArticle(article);
+    setHighlightsOpen(true);
   };
 
   const sortedArticles = [...articles].sort((a, b) => {
@@ -146,9 +155,9 @@ export default function Home() {
                           <MoreVertical className="h-4 w-4" />
                         </DropdownMenuTrigger>
                         <DropdownMenuContent align="end">
-                          <DropdownMenuItem onClick={() => router.push(`/article/${article.id}`)}>
-                            <FileText className="h-4 w-4 mr-2" />
-                            View Article
+                          <DropdownMenuItem onClick={() => handleViewHighlights(article)}>
+                            <Highlighter className="h-4 w-4 mr-2" />
+                            View Highlights
                           </DropdownMenuItem>
                           <DropdownMenuItem onClick={() => router.push(`/map/${article.id}?mode=all`)}>
                             <Map className="h-4 w-4 mr-2" />
@@ -170,6 +179,17 @@ export default function Home() {
           </table>
         </div>
       </div>
+
+      {selectedArticle && (
+        <HighlightsDialog
+          isOpen={highlightsOpen}
+          onClose={() => {
+            setHighlightsOpen(false);
+            setSelectedArticle(null);
+          }}
+          articleTitle={selectedArticle.headline}
+        />
+      )}
     </div>
   );
 }
