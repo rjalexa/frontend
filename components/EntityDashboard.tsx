@@ -1,14 +1,28 @@
-// components/EntityDashboard.tsx
+// frontend/components/EntityDashboard.tsx
 'use client'
 import React, { useState, useEffect } from 'react';
-import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
+import { Card, CardHeader, CardTitle, CardContent } from './ui/card';  
 import { MapPin, User, Building } from 'lucide-react';
 
+interface Entity {
+  id: string;
+  kind: 'location' | 'person' | 'organization';
+  label: string;
+  summary?: string;
+  coordinates?: string;
+}
+
+interface Article {
+  id: string;
+  headline: string;
+  meta_data?: Entity[];
+}
+
 const EntityDashboard = () => {
-  const [articles, setArticles] = useState([]);
-  const [selectedArticle, setSelectedArticle] = useState(null);
-  const [selectedType, setSelectedType] = useState('all');
-  const [error, setError] = useState(null);
+  const [articles, setArticles] = useState<Article[]>([]);
+  const [selectedArticle, setSelectedArticle] = useState<Article | null>(null);
+  const [selectedType, setSelectedType] = useState<'all' | 'person' | 'location' | 'organization'>('all');
+  const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -24,7 +38,7 @@ const EntityDashboard = () => {
         setArticles(data || []);
       } catch (error) {
         console.error('Error fetching articles:', error);
-        setError(error.message);
+        setError(error instanceof Error ? error.message : 'An error occurred');
       } finally {
         setLoading(false);
       }
@@ -32,7 +46,7 @@ const EntityDashboard = () => {
     fetchArticles();
   }, []);
 
-  const getIcon = (kind) => {
+  const getIcon = (kind: Entity['kind']) => {
     switch(kind) {
       case 'location':
         return <MapPin className="w-5 h-5" />;

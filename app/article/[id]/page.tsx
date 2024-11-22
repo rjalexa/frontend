@@ -1,8 +1,9 @@
 'use client'
 import React, { useState, useEffect, Suspense } from 'react';
-import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
+import { Card, CardHeader, CardTitle, CardContent } from '../../../components/ui/card';
 import { MapPin, User, Building, ArrowLeft } from 'lucide-react';
 import { useRouter } from 'next/navigation';
+
 
 interface LinkingInfo {
   source: string;
