@@ -1,8 +1,7 @@
-// app/api/files/route.ts
 import { readdir, readFile } from 'fs/promises'
 import path from 'path'
 import { NextResponse } from 'next/server'
-import { generateArticleId } from '@/lib/utils';
+import { generateArticleId } from '@/lib/utils'
 
 function generateSlug(headline: string): string {
   return headline
@@ -13,7 +12,8 @@ function generateSlug(headline: string): string {
 
 export async function GET() {
   try {
-    const dataDir = path.join(process.cwd(), '..', 'data')
+    // Using path.resolve to handle parent directory access correctly
+    const dataDir = path.resolve(process.cwd(), '../data')
     console.log('Looking for files in:', dataDir)
     
     const files = await readdir(dataDir)
@@ -32,8 +32,8 @@ export async function GET() {
           // Add required fields for highlights
           const articlesWithRequiredFields = parsed.map((article: any) => ({
             ...article,
-            datePublished: article.date_created,  // Using date_created as datePublished
-            slug: generateSlug(article.headline)  // Generate slug from headline
+            datePublished: article.date_created,
+            slug: generateSlug(article.headline)
           }));
           
           articles.push(...articlesWithRequiredFields)
