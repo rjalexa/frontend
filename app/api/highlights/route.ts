@@ -92,9 +92,19 @@ export async function GET(request: Request) {
         }
       `)
       .withWhere({
-        operator: 'Equal',
-        path: ['highlight_article_mema_id'],
-        valueString: articleId
+        operator: 'And',
+        operands: [
+          {
+            operator: 'Equal',
+            path: ['highlight_article_mema_id'],
+            valueString: articleId
+          },
+          {
+            operator: 'Equal',
+            path: ['highlight_type'],
+            valueString: 'LLM'
+          }
+        ]
       })
       .do();
 
