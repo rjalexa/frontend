@@ -22,9 +22,20 @@
     "baseUrl": ".",
     "paths": {
       "@/*": ["./*"],
-      "@data/*": ["../data/*"]  // Add this line to access data directory
+      "@data/*": ["../data/*"],
+      "weaviate-ts-client": ["./node_modules/weaviate-ts-client"]
     }
   },
+  "ts-node": {
+    "moduleResolution": "node"
+  },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "custom.d.ts"],
-  "exclude": ["node_modules"]
+  "exclude": ["node_modules"],
+  "overrides": {
+    "weaviate-ts-client": {
+      "compilerOptions": {
+        "moduleResolution": "node"
+      }
+    }
+  }
 }

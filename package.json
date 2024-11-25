@@ -21,7 +21,8 @@
     "react": "19.0.0-rc-66855b96-20241106",
     "react-dom": "19.0.0-rc-66855b96-20241106",
     "shadcn-ui": "^0.9.3",
-    "tailwind-merge": "^2.5.4"
+    "tailwind-merge": "^2.5.4",
+    "weaviate-ts-client": "^2.2.0"
   },
   "devDependencies": {
     "@types/leaflet": "^1.9.14",

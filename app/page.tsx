@@ -207,6 +207,8 @@ export default function Home() {
           isOpen={highlightsOpen}
           onClose={handleCloseHighlights}
           articleTitle={selectedArticle.headline}
+          datePublished={selectedArticle.datePublished}
+          slug={selectedArticle.slug}
         />
       )}
     </div>
