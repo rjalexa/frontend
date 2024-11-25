@@ -23,6 +23,10 @@ interface HighlightsDialogProps {
 interface Highlight {
   highlight_text: string;
   highlight_sequence_number: number;
+  highlight_type: string;
+  highlight_article_author: string;
+  highlight_article_date: string;
+  highlight_article_mema_id: string;
 }
 
 export function HighlightsDialog({ 

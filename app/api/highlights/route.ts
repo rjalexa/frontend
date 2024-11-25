@@ -81,7 +81,16 @@ export async function GET(request: Request) {
     const result = await client.graphql
       .get()
       .withClassName(COLLECTION_NAME)
-      .withFields('highlight_text highlight_sequence_number highlight_type highlight_article_author highlight_article_date')
+      .withFields(`
+        highlight_text 
+        highlight_sequence_number 
+        highlight_type 
+        highlight_article_author 
+        highlight_article_date
+        _additional {
+          id
+        }
+      `)
       .withWhere({
         operator: 'Equal',
         path: ['highlight_article_mema_id'],
@@ -102,6 +111,28 @@ export async function GET(request: Request) {
         }
       });
     }
+
+    // Deduplicate highlights based on sequence number
+    const uniqueHighlights = result.data.Get[COLLECTION_NAME].reduce((acc: any[], highlight: any) => {
+      const isDuplicate = acc.some(
+        (h) => h.highlight_sequence_number === highlight.highlight_sequence_number
+      );
+      if (!isDuplicate) {
+        acc.push(highlight);
+      }
+      return acc;
+    }, []);
+
+    // Sort highlights by sequence number
+    const sortedHighlights = uniqueHighlights.sort(
+      (a: any, b: any) => a.highlight_sequence_number - b.highlight_sequence_number
+    );
+
+    debugLog('Processed highlights:', { 
+      original: result.data.Get[COLLECTION_NAME].length,
+      deduplicated: uniqueHighlights.length,
+      sorted: sortedHighlights.length
+    });
 
     const highlights = result.data.Get[COLLECTION_NAME].map((highlight: any) => ({
       highlight_text: highlight.highlight_text,
