@@ -197,7 +197,19 @@ export default function ArticlePage({ params }: PageProps) {
             >
               <Building className="w-4 h-4" /> Organizations
             </button>
-          </div>
+            </div>
+            {hasLocationsWithCoordinates() && (
+              <div className="mt-6 flex justify-center">
+                <a
+                  href={`/map/${article.id}?mode=all`}
+                  className="px-6 py-3 rounded bg-blue-100 text-blue-700 hover:bg-blue-200 flex items-center gap-2 transition-colors"
+                >
+                  <MapPin className="w-5 h-5" />
+                  Mostra la mappa
+                </a>
+              </div>
+            )}
+          </>
 
           {/* Add highlights button container */}
           <div className="ml-auto">
@@ -214,27 +226,10 @@ export default function ArticlePage({ params }: PageProps) {
           </div>
         </div>
 
-        {/* Locations section with map button */}
-        {hasLocationsWithCoordinates() && (
-          <div className="mb-6 p-4 bg-blue-50 rounded-lg">
-            <div className="flex items-center justify-between">
-              <h3 className="text-lg font-semibold text-blue-700 flex items-center gap-2">
-                <MapPin className="w-5 h-5" />
-                Locations
-              </h3>
-              <a
-                href={`/map/${article.id}?mode=all`}
-                className="px-4 py-2 rounded bg-blue-100 text-blue-700 hover:bg-blue-200 flex items-center gap-2 transition-colors"
-              >
-                <MapPin className="w-4 h-4" />
-                Mostra la mappa
-              </a>
-            </div>
-          </div>
-        )}
 
         {article.meta_data ? (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+          <>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
             {filterEntities().map((entity) => (
               <Card
                 key={entity.id}
