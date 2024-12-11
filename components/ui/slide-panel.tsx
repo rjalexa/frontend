@@ -14,7 +14,8 @@ export function SlidePanel({
   isOpen, 
   onClose, 
   children, 
-  title 
+  title,
+  titleClassName 
 }: SlidePanelProps) {
   return (
     <div
