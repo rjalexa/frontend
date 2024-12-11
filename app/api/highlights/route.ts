@@ -144,7 +144,7 @@ export async function GET(request: Request) {
       sorted: sortedHighlights.length
     });
 
-    const highlights = result.data.Get[COLLECTION_NAME].map((highlight: any) => ({
+    const highlights = sortedHighlights.map((highlight: any) => ({
       highlight_text: highlight.highlight_text,
       highlight_sequence_number: highlight.highlight_sequence_number,
       highlight_type: highlight.highlight_type,
