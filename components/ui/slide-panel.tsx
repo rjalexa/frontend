@@ -7,6 +7,7 @@ interface SlidePanelProps {
   onClose: () => void
   children: React.ReactNode
   title?: React.ReactNode
+  titleClassName?: string
 }
 
 export function SlidePanel({ 
@@ -25,7 +26,7 @@ export function SlidePanel({
       <div className="h-full flex flex-col">
         <div className="px-4 py-3 border-b flex items-center justify-between">
           {title && (
-            <h2 className="text-lg font-semibold">{title}</h2>
+            <h2 className={cn("text-lg font-semibold", titleClassName)}>{title}</h2>
           )}
           <button
             onClick={onClose}
