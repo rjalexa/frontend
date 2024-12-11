@@ -42,6 +42,8 @@ interface Article {
   id: string;
   headline: string;
   meta_data?: Entity[];
+  datePublished?: string;
+  slug?: string;
 }
 
 interface PageParams {
@@ -279,15 +281,15 @@ export default function ArticlePage({ params }: PageProps) {
           </div>
         )}
       </div>
+      {selectedArticle && (
+        <HighlightsDialog
+          isOpen={highlightsOpen}
+          onClose={() => setHighlightsOpen(false)}
+          articleTitle={selectedArticle.headline}
+          datePublished={selectedArticle.datePublished}
+          slug={selectedArticle.slug}
+        />
+      )}
     </div>
-    {selectedArticle && (
-      <HighlightsDialog
-        isOpen={highlightsOpen}
-        onClose={() => setHighlightsOpen(false)}
-        articleTitle={selectedArticle.headline}
-        datePublished={selectedArticle.datePublished}
-        slug={selectedArticle.slug}
-      />
-    )}
   );
 }
