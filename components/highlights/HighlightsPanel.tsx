@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { SlidePanel } from "../ui/slide-panel";
+import { Highlighter } from "lucide-react";
 
 interface HighlightsPanelProps {
   isOpen: boolean;
@@ -69,8 +70,13 @@ export function HighlightsPanel({
     <SlidePanel
       isOpen={isOpen}
       onClose={onClose}
-      title="Punti Salienti"
-      titleClassName="text-green-700"
+      title={
+        <div className="flex items-center gap-2">
+          <Highlighter className="w-4 h-4" />
+          <span>Punti Salienti</span>
+        </div>
+      }
+      titleClassName="text-green-700 bg-green-100 px-4 py-2 rounded-md flex items-center"
     >
       <div className="p-4">
         
