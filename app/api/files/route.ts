@@ -13,7 +13,7 @@ function generateSlug(headline: string): string {
 export async function GET() {
   try {
     // Using path.resolve to handle parent directory access correctly
-    const dataDir = path.resolve(process.cwd(), '../data')
+    const dataDir = path.join(process.cwd(), 'data')
     console.log('Looking for files in:', dataDir)
     
     const files = await readdir(dataDir)
