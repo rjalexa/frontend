@@ -69,12 +69,10 @@ export function HighlightsPanel({
     <SlidePanel
       isOpen={isOpen}
       onClose={onClose}
-      title="Article Highlights"
+      title="Punti Salienti"
+      titleClassName="text-green-700"
     >
       <div className="p-4">
-        <p className="text-sm text-gray-600 mb-4">
-          Key highlights from &quot;{articleTitle}&quot;
-        </p>
         
         {isLoading ? (
           <div className="text-gray-600 flex items-center gap-2">
