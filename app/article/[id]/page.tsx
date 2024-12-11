@@ -9,7 +9,6 @@ import {
 import { MapPin, User, Building, ArrowLeft } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { Highlighter } from "lucide-react";
-import { HighlightsDialog } from "../../../components/highlights/HighlightsDialog";
 import { HighlightsPanel } from "../../../components/highlights/HighlightsPanel";
 
 interface LinkingInfo {

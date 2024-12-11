@@ -3,7 +3,6 @@
 import React, { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { ArrowUpDown } from "lucide-react";
-import { HighlightsDialog } from "../components/highlights/HighlightsDialog";
 
 interface Article {
   id: string;
