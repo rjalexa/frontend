@@ -1,4 +1,5 @@
 import { NextResponse } from 'next/server';
+import type { WeaviateClient } from 'weaviate-ts-client';
 
 // Configuration constants - matching health check
 const WEAVIATE_HOST = 'localhost';
@@ -13,7 +14,7 @@ const debugLog = (message: string, data?: any) => {
 };
 
 // Create Weaviate client
-const getWeaviateClient = async () => {
+const getWeaviateClient = async (): Promise<WeaviateClient> => {
   const { Client } = await import('weaviate-ts-client');
   return new Client({
     scheme: 'http',
