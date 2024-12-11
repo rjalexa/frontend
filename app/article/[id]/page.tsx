@@ -197,19 +197,18 @@ export default function ArticlePage({ params }: PageProps) {
             >
               <Building className="w-4 h-4" /> Organizations
             </button>
+          </div>
+          {hasLocationsWithCoordinates() && (
+            <div className="mt-6 flex justify-center">
+              <a
+                href={`/map/${article.id}?mode=all`}
+                className="px-6 py-3 rounded bg-blue-100 text-blue-700 hover:bg-blue-200 flex items-center gap-2 transition-colors"
+              >
+                <MapPin className="w-5 h-5" />
+                Mostra la mappa
+              </a>
             </div>
-            {hasLocationsWithCoordinates() && (
-              <div className="mt-6 flex justify-center">
-                <a
-                  href={`/map/${article.id}?mode=all`}
-                  className="px-6 py-3 rounded bg-blue-100 text-blue-700 hover:bg-blue-200 flex items-center gap-2 transition-colors"
-                >
-                  <MapPin className="w-5 h-5" />
-                  Mostra la mappa
-                </a>
-              </div>
-            )}
-          </>
+          )}
 
           {/* Add highlights button container */}
           <div className="ml-auto">
