@@ -199,16 +199,29 @@ export default function ArticlePage({ params }: PageProps) {
             </button>
           </div>
 
-          {/* View all locations button - only show if there are locations with coordinates */}
-          {hasLocationsWithCoordinates() && (
-            <a
-              href={`/map/${article.id}?mode=all`}
-              className="ml-auto px-4 py-2 rounded bg-blue-100 text-blue-700 hover:bg-blue-200 flex items-center gap-2 transition-colors"
+          {/* Add buttons container */}
+          <div className="ml-auto flex gap-2">
+            <button
+              onClick={() => {
+                setSelectedArticle(article);
+                setHighlightsOpen(true);
+              }}
+              className="px-4 py-2 rounded bg-green-100 text-green-700 hover:bg-green-200 flex items-center gap-2 transition-colors"
             >
-              <MapPin className="w-4 h-4" />
-              View all locations on map
-            </a>
-          )}
+              <Highlighter className="w-4 h-4" />
+              View Highlights
+            </button>
+            
+            {hasLocationsWithCoordinates() && (
+              <a
+                href={`/map/${article.id}?mode=all`}
+                className="px-4 py-2 rounded bg-blue-100 text-blue-700 hover:bg-blue-200 flex items-center gap-2 transition-colors"
+              >
+                <MapPin className="w-4 h-4" />
+                View all locations on map
+              </a>
+            )}
+          </div>
         </div>
 
         {article.meta_data ? (
