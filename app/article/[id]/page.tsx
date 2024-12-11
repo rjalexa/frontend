@@ -227,8 +227,7 @@ export default function ArticlePage({ params }: PageProps) {
 
 
         {article.meta_data ? (
-          <>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
             {filterEntities().map((entity) => (
               <Card
                 key={entity.id}
