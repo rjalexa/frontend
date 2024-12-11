@@ -202,6 +202,16 @@ export default function ArticlePage({ params }: PageProps) {
 
           {/* Add buttons container */}
           <div className="ml-auto flex gap-2">
+            {hasLocationsWithCoordinates() && (
+              <a
+                href={`/map/${article.id}?mode=all`}
+                className="px-4 py-2 rounded bg-blue-100 text-blue-700 hover:bg-blue-200 flex items-center gap-2 transition-colors"
+              >
+                <MapPin className="w-4 h-4" />
+                Mostra la mappa
+              </a>
+            )}
+
             <button
               onClick={() => {
                 setSelectedArticle(article);
@@ -210,18 +220,8 @@ export default function ArticlePage({ params }: PageProps) {
               className="px-4 py-2 rounded bg-green-100 text-green-700 hover:bg-green-200 flex items-center gap-2 transition-colors"
             >
               <Highlighter className="w-4 h-4" />
-              View Highlights
+              Punti salienti
             </button>
-
-            {hasLocationsWithCoordinates() && (
-              <a
-                href={`/map/${article.id}?mode=all`}
-                className="px-4 py-2 rounded bg-blue-100 text-blue-700 hover:bg-blue-200 flex items-center gap-2 transition-colors"
-              >
-                <MapPin className="w-4 h-4" />
-                View all locations on map
-              </a>
-            )}
           </div>
         </div>
 
