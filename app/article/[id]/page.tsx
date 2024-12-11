@@ -10,6 +10,7 @@ import { MapPin, User, Building, ArrowLeft } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { Highlighter } from "lucide-react";
 import { HighlightsDialog } from "../../../components/highlights/HighlightsDialog";
+import { HighlightsPanel } from "../../../components/highlights/HighlightsPanel";
 
 interface LinkingInfo {
   source: string;
@@ -211,7 +212,7 @@ export default function ArticlePage({ params }: PageProps) {
               <Highlighter className="w-4 h-4" />
               View Highlights
             </button>
-            
+
             {hasLocationsWithCoordinates() && (
               <a
                 href={`/map/${article.id}?mode=all`}
@@ -295,7 +296,7 @@ export default function ArticlePage({ params }: PageProps) {
         )}
       </div>
       {selectedArticle && (
-        <HighlightsDialog
+        <HighlightsPanel
           isOpen={highlightsOpen}
           onClose={() => setHighlightsOpen(false)}
           articleTitle={selectedArticle.headline}
