@@ -143,7 +143,7 @@ export default function Home() {
       {/* Main content */}
       <div className="p-4">
         <div className="max-w-6xl mx-auto">
-          <h1 className="text-2xl font-bold mb-4 text-gray-800">Articles</h1>
+          <h1 className="text-2xl font-bold mb-4 text-gray-800">Articoli selezionati</h1>
   
           <div className="overflow-x-auto">
             <table className="w-full border-collapse">
