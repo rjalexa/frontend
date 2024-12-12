@@ -120,9 +120,18 @@ export default function ArticlePage({ params }: { params: Promise<{ id: string }
     fetchArticle();
 
     const handleEscKey = (event: KeyboardEvent) => {
-      if (event.key === "Escape" && !highlightsOpen) {
+      if (event.key === "Escape") {
         event.preventDefault();
-        router.push("/");
+        if (highlightsOpen) {
+          return; // HighlightsPanel handles its own Escape
+        }
+        
+        // Use the exact same logic as the toggle button
+        if (activeView === "entities") {
+          setActiveView("article");
+        } else if (activeView === "article") {
+          router.push("/");
+        }
       }
     };
 
