@@ -80,7 +80,22 @@ export default function ArticlePage({ params }: PageProps) {
       }
     };
     fetchArticle();
-  }, [articleId]);
+
+    // Add escape key handler
+    const handleEscKey = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        router.push("/");
+      }
+    };
+
+    // Add event listener
+    document.addEventListener("keydown", handleEscKey);
+
+    // Cleanup function
+    return () => {
+      document.removeEventListener("keydown", handleEscKey);
+    };
+  }, [articleId, router]);
 
   const [highlightsOpen, setHighlightsOpen] = useState(false);
   const [selectedArticle, setSelectedArticle] = useState<Article | null>(null);
