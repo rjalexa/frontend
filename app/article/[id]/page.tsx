@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from "react";
 import { ArrowLeft, Highlighter, MapPin, User, Building, Search } from "lucide-react";
 import { useRouter } from "next/navigation";
-import { HighlightsPanel } from "../../../components/highlights/HighlightsPanel";
+import { HighlightsPanel } from "@/components/highlights/HighlightsPanel";
 import EntitiesView from "./EntitiesView";
 
 interface Article {
@@ -20,7 +20,12 @@ interface Article {
   articleTag?: string;
   topics?: string;
   tags?: string;
+  highlights?: Array<{
+    highlight_text: string;
+    highlight_sequence_number: number;
+  }>;
 }
+
 
 interface Entity {
   id: string;
@@ -50,7 +55,6 @@ interface LinkingInfo {
 }
 
 const ArticleContent = ({ article }: { article: Article }) => {
-  console.log("Article content:", article); // Debug log
   return (
     <div className="prose max-w-none">
       <h1 className="text-3xl font-bold mb-4 text-gray-900">
@@ -106,7 +110,7 @@ export default function ArticlePage({ params }: { params: Promise<{ id: string }
         const articles: Article[] = await response.json();
         const found = articles.find((a: Article) => a.id === articleId);
         if (found) {
-          console.log("Fetched article:", found); // Debug log
+          console.log("Fetched article:", found);
           setArticle(found);
         } else {
           setArticle(null);
@@ -208,8 +212,7 @@ export default function ArticlePage({ params }: { params: Promise<{ id: string }
           isOpen={highlightsOpen}
           onClose={() => setHighlightsOpen(false)}
           articleTitle={selectedArticle.headline}
-          datePublished={selectedArticle.datePublished}
-          slug={selectedArticle.slug}
+          highlights={selectedArticle.highlights || []}
         />
       )}
     </div>

@@ -1,7 +1,7 @@
+// app/api/files/route.ts
 import { readdir, readFile } from 'fs/promises'
 import path from 'path'
 import { NextResponse } from 'next/server'
-import { generateArticleId } from '@/lib/utils'
 
 function generateSlug(headline: string): string {
   return headline
@@ -12,7 +12,6 @@ function generateSlug(headline: string): string {
 
 export async function GET() {
   try {
-    // Using path.resolve to handle parent directory access correctly
     const dataDir = path.join(process.cwd(), 'data')
     console.log('Looking for files in:', dataDir)
     
@@ -29,12 +28,18 @@ export async function GET() {
           const content = await readFile(filePath, 'utf8')
           const parsed = JSON.parse(content)
           
-          // Add required fields for highlights
-          const articlesWithRequiredFields = parsed.map((article: any) => ({
-            ...article,
-            datePublished: article.date_created,
-            slug: generateSlug(article.headline)
-          }));
+          // Map the array of strings to the highlights structure
+          const articlesWithRequiredFields = parsed.map((article: any) => {
+            return {
+              ...article,
+              datePublished: article.date_created,
+              slug: generateSlug(article.headline),
+              highlights: article.mema_highlights?.map((text: string, index: number) => ({
+                highlight_text: text,
+                highlight_sequence_number: index + 1
+              })) || []
+            };
+          });
           
           articles.push(...articlesWithRequiredFields)
         } catch (fileError) {
