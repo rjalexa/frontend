@@ -8,6 +8,7 @@ import {
   User,
   Building,
   Search,
+  Microscope,
 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { HighlightsPanel } from "@/components/highlights/HighlightsPanel";
@@ -186,12 +187,13 @@ export default function ArticlePage({
             onClick={() =>
               setActiveView(activeView === "entities" ? "article" : "entities")
             }
-            className={`px-6 py-2 rounded-full transition-colors ${
+            className={`px-6 py-2 rounded-full transition-colors flex items-center gap-2 ${
               activeView === "entities"
                 ? "bg-blue-600 text-white"
                 : "bg-gray-100 text-gray-800 hover:bg-gray-200"
             }`}
           >
+            <Microscope className="w-4 h-4" />
             Entità e dettagli
           </button>
           {activeView !== "entities" && (
