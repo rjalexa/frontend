@@ -3,6 +3,7 @@ import type { Metadata } from "next";
 import localFont from "next/font/local";
 import { ThemeProvider } from "./providers/theme-provider";
 import "./globals.css";
+import { Playfair_Display } from 'next/font/google';
 
 const geistSans = localFont({
   src: './fonts/GeistVF.woff',
@@ -18,6 +19,11 @@ const geistMono = localFont({
   display: 'swap',
   preload: true,
   fallback: ['ui-monospace', 'monospace'],
+});
+
+const playfair = Playfair_Display({
+  subsets: ['latin'],
+  display: 'swap',
 });
 
 export const metadata: Metadata = {
