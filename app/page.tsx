@@ -117,9 +117,6 @@ export default function Home() {
     <div className="bg-white min-h-screen">
       {/* Header */}
       <div className="w-full">
-        {/* Red bar */}
-        <div className="w-full h-2 bg-red-600" />
-        
         {/* Header container */}
         <div className="max-w-6xl mx-auto px-4 py-6">
           <div className="flex justify-between items-center">
@@ -145,6 +142,9 @@ export default function Home() {
         
         {/* Bottom border */}
         <div className="w-full border-b border-gray-200" />
+        
+        {/* Red bar */}
+        <div className="w-full h-2 bg-red-600" />
       </div>
   
       {/* Main content */}

@@ -3,9 +3,6 @@ import { Menu } from "lucide-react";
 export default function Header() {
   return (
     <div className="w-full">
-      {/* Red bar */}
-      <div className="w-full h-2 bg-red-600" />
-      
       {/* Header container */}
       <div className="max-w-6xl mx-auto px-4 py-6">
         <div className="flex justify-between items-center">
@@ -31,6 +28,9 @@ export default function Header() {
       
       {/* Bottom border */}
       <div className="w-full border-b border-gray-200" />
+      
+      {/* Red bar */}
+      <div className="w-full h-2 bg-red-600" />
     </div>
   );
 }
