@@ -69,7 +69,8 @@ export function HighlightsPanel({
   useEffect(() => {
     const handleEscKey = (event: KeyboardEvent) => {
       if (event.key === "Escape") {
-        event.stopPropagation();
+        event.preventDefault(); // Prevent the event from bubbling up
+        event.stopPropagation(); // Belt and suspenders approach
         onClose();
       }
     };

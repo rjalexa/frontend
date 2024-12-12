@@ -73,7 +73,7 @@ export default function ArticlePage({ params }: PageProps) {
 
     // Add escape key handler
     const handleEscKey = (event: KeyboardEvent) => {
-      if (event.key === "Escape") {
+      if (event.key === "Escape" && !highlightsOpen) {
         router.push("/");
       }
     };
