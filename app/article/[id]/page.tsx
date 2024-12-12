@@ -30,7 +30,7 @@ interface Article {
   topics?: string;
   tags?: string;
   mema_summary?: string;
-  mema_topics?: string;
+  mema_topics?: string[];
   highlights?: Array<{
     highlight_text: string;
     highlight_sequence_number: number;
@@ -76,8 +76,8 @@ const TopicsPanel = ({
   const manifestoTopics = [article.articleTag, article.topics, article.tags]
     .filter(Boolean)
     .join(", ");
-  const memaTopics = typeof article.mema_topics === 'string' && article.mema_topics
-    ? article.mema_topics.replace(/([A-Z])/g, ', $1').substring(2)
+  const memaTopics = Array.isArray(article.mema_topics) && article.mema_topics.length > 0
+    ? article.mema_topics.join(", ")
     : "";
 
   if (!isOpen) return null;
