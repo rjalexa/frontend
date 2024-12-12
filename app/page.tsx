@@ -222,7 +222,7 @@ export default function Home() {
         </div>
   
         {selectedArticle && (
-          <HighlightsDialog
+          <HighlightsPanel
             isOpen={highlightsOpen}
             onClose={handleCloseHighlights}
             articleTitle={selectedArticle.headline}
