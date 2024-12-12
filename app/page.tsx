@@ -4,6 +4,7 @@ import React, { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { ArrowUpDown } from "lucide-react";
 import Header from '@/components/Header';
+import { HighlightsPanel } from '@/components/highlights/HighlightsPanel';
 
 interface Article {
   id: string;
@@ -185,7 +186,7 @@ export default function Home() {
         </div>
   
         {selectedArticle && (
-          <HighlightsDialog
+          <HighlightsPanel
             isOpen={highlightsOpen}
             onClose={handleCloseHighlights}
             articleTitle={selectedArticle.headline}
