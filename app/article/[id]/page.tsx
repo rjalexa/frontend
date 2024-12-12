@@ -76,8 +76,8 @@ const TopicsPanel = ({
   const manifestoTopics = [article.articleTag, article.topics, article.tags]
     .filter(Boolean)
     .join(", ");
-  const memaTopics = article.mema_topics 
-    ? article.mema_topics.replace(/([A-Z])/g, ', $1').substring(2) 
+  const memaTopics = typeof article.mema_topics === 'string' && article.mema_topics
+    ? article.mema_topics.replace(/([A-Z])/g, ', $1').substring(2)
     : "";
 
   if (!isOpen) return null;
