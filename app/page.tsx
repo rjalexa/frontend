@@ -121,7 +121,6 @@ export default function Home() {
   
             {/* Logo in the center */}
             <div className="flex flex-col items-center">
-              <div className="text-xs text-gray-600 mb-1">quotidiano comunista</div>
               <img src="/manifesto_logo.svg" alt="il manifesto" className="h-8" />
             </div>
   
