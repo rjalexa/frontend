@@ -9,6 +9,7 @@ import {
   Building,
   Search,
   Microscope,
+  FileText,
 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { HighlightsPanel } from "@/components/highlights/HighlightsPanel";
@@ -28,6 +29,7 @@ interface Article {
   articleTag?: string;
   topics?: string;
   tags?: string;
+  mema_summary?: string;
   highlights?: Array<{
     highlight_text: string;
     highlight_sequence_number: number;
@@ -61,7 +63,45 @@ interface LinkingInfo {
   };
 }
 
-const ArticleContent = ({ article }: { article: Article }) => {
+const SummaryPanel = ({ 
+  isOpen, 
+  onClose, 
+  summary 
+}: { 
+  isOpen: boolean; 
+  onClose: () => void; 
+  summary: string;
+}) => {
+  if (!isOpen) return null;
+
+  return (
+    <div className="bg-gray-50 rounded-lg p-6 mb-8 relative">
+      <button
+        onClick={onClose}
+        className="absolute top-4 right-4 text-gray-500 hover:text-gray-700"
+      >
+        ×
+      </button>
+      <div className="flex items-start gap-4">
+        <img src="/mema.svg" alt="MeMa Logo" className="w-16 h-6" />
+        <div className="flex-1">
+          <h3 className="text-lg font-semibold mb-2">Sommario MeMa</h3>
+          <p className="text-gray-700">{summary}</p>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+const ArticleContent = ({ 
+  article,
+  summaryOpen,
+  setSummaryOpen
+}: { 
+  article: Article;
+  summaryOpen: boolean;
+  setSummaryOpen: (open: boolean) => void;
+}) => {
   return (
     <div className="prose max-w-none">
       {/* Header section */}
@@ -92,6 +132,15 @@ const ArticleContent = ({ article }: { article: Article }) => {
         </div>
       </div>
 
+      {/* Summary Panel */}
+      {article.mema_summary && (
+        <SummaryPanel
+          isOpen={summaryOpen}
+          onClose={() => setSummaryOpen(false)}
+          summary={article.mema_summary}
+        />
+      )}
+
       {/* Article body section with positioning context */}
       <div id="article-body" className="relative">
         <div className="text-gray-800 text-lg leading-relaxed whitespace-pre-wrap">
@@ -115,6 +164,7 @@ export default function ArticlePage({
   const [activeView, setActiveView] = useState<"article" | "entities">("article");
   const [highlightsOpen, setHighlightsOpen] = useState(false);
   const [selectedArticle, setSelectedArticle] = useState<Article | null>(null);
+  const [summaryOpen, setSummaryOpen] = useState(false);
   const resolvedParams = React.use(params);
   const articleId = resolvedParams.id;
 
@@ -147,6 +197,10 @@ export default function ArticlePage({
           // If the highlights panel is open, let its own handler close it
           return;
         }
+        if (summaryOpen) {
+          setSummaryOpen(false);
+          return;
+        }
 
         // If we're currently viewing entities, pressing ESC goes back to the article view
         if (activeView === "entities") {
@@ -157,7 +211,7 @@ export default function ArticlePage({
 
     document.addEventListener("keydown", handleEscKey);
     return () => document.removeEventListener("keydown", handleEscKey);
-  }, [highlightsOpen, activeView]);
+  }, [highlightsOpen, activeView, summaryOpen]);
 
   if (loading) return <div className="p-4 text-gray-900">Loading...</div>;
   if (!article)
@@ -217,6 +271,21 @@ export default function ArticlePage({
               Punti salienti
             </button>
           )}
+          {activeView !== "entities" && (
+            <button
+              onClick={() => {
+                setSummaryOpen(!summaryOpen);
+              }}
+              className={`px-6 py-2 rounded-full transition-colors flex items-center gap-2 ${
+                summaryOpen
+                  ? "bg-blue-600 text-white"
+                  : "bg-gray-100 text-gray-800 hover:bg-gray-200"
+              }`}
+            >
+              <FileText className="w-4 h-4" />
+              Sommario
+            </button>
+          )}
         </div>
 
         {/* Content area */}
@@ -225,7 +294,11 @@ export default function ArticlePage({
             <EntitiesView article={article} />
           ) : (
             <>
-              <ArticleContent article={article} />
+              <ArticleContent 
+                article={article}
+                summaryOpen={summaryOpen}
+                setSummaryOpen={setSummaryOpen}
+              />
               {selectedArticle && (
                 <HighlightsPanel
                   isOpen={highlightsOpen}
