@@ -111,13 +111,8 @@ export default function Home() {
       <Header />
       <div className="p-4">
         <div className="max-w-6xl mx-auto">
+          <h1 className="text-2xl font-bold mb-4 text-gray-800">Articles</h1>
           <div className="overflow-x-auto">
-            <table className="w-full border-collapse"></table>
-    <div className="p-4 bg-white min-h-screen">
-      <div className="max-w-6xl mx-auto">
-        <h1 className="text-2xl font-bold mb-4 text-gray-800">Articles</h1>
-
-        <div className="overflow-x-auto">
           <table className="w-full border-collapse">
             <thead>
               <tr className="border-b bg-gray-50">
@@ -185,9 +180,8 @@ export default function Home() {
           </table>
         </div>
       </div>
-      </table>
+          </table>
           </div>
-        </div>
       {selectedArticle && (
         <HighlightsDialog
           isOpen={highlightsOpen}
