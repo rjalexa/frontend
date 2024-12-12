@@ -66,6 +66,23 @@ export function HighlightsPanel({
     fetchHighlights();
   }, [isOpen, datePublished, slug]);
 
+  useEffect(() => {
+    const handleEscKey = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        event.stopPropagation();
+        onClose();
+      }
+    };
+
+    if (isOpen) {
+      document.addEventListener("keydown", handleEscKey);
+    }
+
+    return () => {
+      document.removeEventListener("keydown", handleEscKey);
+    };
+  }, [isOpen, onClose]);
+
   return (
     <SlidePanel
       isOpen={isOpen}
