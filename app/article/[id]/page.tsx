@@ -118,25 +118,27 @@ export default function ArticlePage({ params }: { params: Promise<{ id: string }
       }
     };
     fetchArticle();
+  }, [articleId]);
 
+  useEffect(() => {
     const handleEscKey = (event: KeyboardEvent) => {
       if (event.key === "Escape") {
         event.preventDefault();
         if (highlightsOpen) {
-          return; // HighlightsPanel handles its own Escape
+          // If the highlights panel is open, let its own handler close it
+          return;
         }
-        
+  
+        // If we're currently viewing entities, pressing ESC goes back to the article view
         if (activeView === "entities") {
           setActiveView("article");
-        } else if (activeView === "article") {
-          router.push("/");
         }
       }
     };
 
     document.addEventListener("keydown", handleEscKey);
     return () => document.removeEventListener("keydown", handleEscKey);
-  }, [articleId, router, highlightsOpen]);
+  }, [highlightsOpen, activeView]);
 
   if (loading) return <div className="p-4 text-gray-900">Loading...</div>;
   if (!article) return <div className="p-4 text-gray-900">Article not found</div>;
