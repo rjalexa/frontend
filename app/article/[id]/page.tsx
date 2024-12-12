@@ -12,7 +12,6 @@ import {
   FileText,
 } from "lucide-react";
 import { useRouter } from "next/navigation";
-import { HighlightsPanel } from "@/components/highlights/HighlightsPanel";
 import EntitiesView from "./EntitiesView";
 
 interface Article {
@@ -63,6 +62,48 @@ interface LinkingInfo {
   };
 }
 
+const HighlightsPanel = ({ 
+  isOpen, 
+  onClose, 
+  articleTitle,
+  highlights 
+}: { 
+  isOpen: boolean;
+  onClose: () => void;
+  articleTitle: string;
+  highlights: Array<{
+    highlight_text: string;
+    highlight_sequence_number: number;
+  }>;
+}) => {
+  if (!isOpen) return null;
+
+  return (
+    <div className="bg-gray-50 rounded-lg p-6 mb-8 relative transition-all duration-300 ease-in-out">
+      <button
+        onClick={onClose}
+        className="absolute top-4 right-4 text-gray-500 hover:text-gray-700"
+      >
+        ×
+      </button>
+      <div className="flex items-start gap-4">
+        <img src="/mema.svg" alt="MeMa Logo" className="w-16 h-6" />
+        <div className="flex-1">
+          <h3 className="text-lg font-semibold mb-4">Punti salienti</h3>
+          <div className="space-y-3">
+            {highlights.map((highlight, index) => (
+              <div key={index} className="flex gap-2">
+                <span className="text-blue-600 font-medium">{index + 1}.</span>
+                <p className="text-gray-700">{highlight.highlight_text}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
 const SummaryPanel = ({ 
   isOpen, 
   onClose, 
@@ -75,7 +116,7 @@ const SummaryPanel = ({
   if (!isOpen) return null;
 
   return (
-    <div className="bg-gray-50 rounded-lg p-6 mb-8 relative">
+    <div className="bg-gray-50 rounded-lg p-6 mb-8 relative transform transition-all duration-300 ease-in-out">
       <button
         onClick={onClose}
         className="absolute top-4 right-4 text-gray-500 hover:text-gray-700"
@@ -96,11 +137,15 @@ const SummaryPanel = ({
 const ArticleContent = ({ 
   article,
   summaryOpen,
-  setSummaryOpen
+  setSummaryOpen,
+  highlightsOpen,
+  setHighlightsOpen
 }: { 
   article: Article;
   summaryOpen: boolean;
   setSummaryOpen: (open: boolean) => void;
+  highlightsOpen: boolean;
+  setHighlightsOpen: (open: boolean) => void;
 }) => {
   return (
     <div className="prose max-w-none">
@@ -132,12 +177,20 @@ const ArticleContent = ({
         </div>
       </div>
 
-      {/* Summary Panel */}
+      {/* Summary and Highlights Panels */}
       {article.mema_summary && (
         <SummaryPanel
           isOpen={summaryOpen}
           onClose={() => setSummaryOpen(false)}
           summary={article.mema_summary}
+        />
+      )}
+      {article.highlights && article.highlights.length > 0 && (
+        <HighlightsPanel
+          isOpen={highlightsOpen}
+          onClose={() => setHighlightsOpen(false)}
+          articleTitle={article.headline}
+          highlights={article.highlights}
         />
       )}
 
@@ -193,17 +246,15 @@ export default function ArticlePage({
     const handleEscKey = (event: KeyboardEvent) => {
       if (event.key === "Escape") {
         event.preventDefault();
+        // Close panels if they're open
         if (highlightsOpen) {
-          // If the highlights panel is open, let its own handler close it
-          return;
+          setHighlightsOpen(false);
         }
         if (summaryOpen) {
           setSummaryOpen(false);
-          return;
         }
-
-        // If we're currently viewing entities, pressing ESC goes back to the article view
-        if (activeView === "entities") {
+        // If no panels are open and we're in entities view, go back to article view
+        if (!highlightsOpen && !summaryOpen && activeView === "entities") {
           setActiveView("article");
         }
       }
@@ -253,13 +304,7 @@ export default function ArticlePage({
           {activeView !== "entities" && (
             <button
               onClick={() => {
-                if (highlightsOpen) {
-                  setHighlightsOpen(false);
-                  setSelectedArticle(null);
-                } else {
-                  setSelectedArticle(article);
-                  setHighlightsOpen(true);
-                }
+                setHighlightsOpen(!highlightsOpen);
               }}
               className={`px-6 py-2 rounded-full transition-colors flex items-center gap-2 ${
                 highlightsOpen
@@ -298,18 +343,9 @@ export default function ArticlePage({
                 article={article}
                 summaryOpen={summaryOpen}
                 setSummaryOpen={setSummaryOpen}
+                highlightsOpen={highlightsOpen}
+                setHighlightsOpen={setHighlightsOpen}
               />
-              {selectedArticle && (
-                <HighlightsPanel
-                  isOpen={highlightsOpen}
-                  onClose={() => {
-                    setHighlightsOpen(false);
-                    setSelectedArticle(null);
-                  }}
-                  articleTitle={selectedArticle.headline}
-                  highlights={selectedArticle.highlights || []}
-                />
-              )}
             </>
           )}
         </div>
