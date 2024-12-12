@@ -29,8 +29,16 @@ export default function Home() {
   const [articles, setArticles] = useState<Article[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [sortField, setSortField] = useState<SortField>("date_created");
-  const [sortDirection, setSortDirection] = useState<SortDirection>("desc");
+  const [sortField, setSortField] = useState<SortField>(() => 
+    typeof window !== 'undefined' 
+      ? (localStorage.getItem('sortField') as SortField) || "date_created"
+      : "date_created"
+  );
+  const [sortDirection, setSortDirection] = useState<SortDirection>(() =>
+    typeof window !== 'undefined'
+      ? (localStorage.getItem('sortDirection') as SortDirection) || "desc"
+      : "desc"
+  );
   const [highlightsOpen, setHighlightsOpen] = useState(false);
   const [selectedArticle, setSelectedArticle] = useState<Article | null>(null);
 
@@ -63,10 +71,14 @@ export default function Home() {
 
   const handleSort = (field: SortField) => {
     if (field === sortField) {
-      setSortDirection(sortDirection === "asc" ? "desc" : "asc");
+      const newDirection = sortDirection === "asc" ? "desc" : "asc";
+      setSortDirection(newDirection);
+      localStorage.setItem('sortDirection', newDirection);
     } else {
       setSortField(field);
       setSortDirection("desc");
+      localStorage.setItem('sortField', field);
+      localStorage.setItem('sortDirection', "desc");
     }
   };
 
