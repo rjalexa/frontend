@@ -5,12 +5,6 @@ import { useRouter } from "next/navigation";
 import { ArrowUpDown, Menu } from "lucide-react";
 import Header from '@/components/Header';
 import { HighlightsPanel } from '@/components/highlights/HighlightsPanel';
-import { Playfair_Display } from 'next/font/google';
-
-const playfair = Playfair_Display({
-  subsets: ['latin'],
-  display: 'swap',
-});
 
 interface Article {
   id: string;
@@ -127,8 +121,8 @@ export default function Home() {
   
             {/* Logo in the center */}
             <div className="flex flex-col items-center">
-              <div className="text-xs text-gray-600">quotidiano comunista</div>
-              <div className={`${playfair.className} text-4xl font-bold`}>il manifesto</div>
+              <div className="text-xs text-gray-600 mb-1">quotidiano comunista</div>
+              <img src="/manifesto_logo.svg" alt="il manifesto" className="h-8" />
             </div>
   
             {/* User icon on the right */}
