@@ -14,7 +14,7 @@ export default function Header() {
           {/* Logo in the center */}
           <div className="flex flex-col items-center">
             <div className="text-xs text-gray-600">quotidiano comunista</div>
-            <div className="font-serif text-4xl">il manifesto</div>
+            <div className="font-serif text-4xl font-bold">il manifesto</div>
           </div>
 
           {/* User icon on the right */}

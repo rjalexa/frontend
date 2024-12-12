@@ -128,7 +128,7 @@ export default function Home() {
             {/* Logo in the center */}
             <div className="flex flex-col items-center">
               <div className="text-xs text-gray-600">quotidiano comunista</div>
-              <div className={`${playfair.className} text-4xl`}>il manifesto</div>
+              <div className={`${playfair.className} text-4xl font-bold`}>il manifesto</div>
             </div>
   
             {/* User icon on the right */}
