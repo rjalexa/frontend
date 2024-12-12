@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import { ArrowLeft, Highlighter, MapPin, User, Building } from "lucide-react";
+import { ArrowLeft, Highlighter, MapPin, User, Building, Search } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { HighlightsPanel } from "../../../components/highlights/HighlightsPanel";
 import EntitiesView from "./EntitiesView";
@@ -53,13 +53,13 @@ const ArticleContent = ({ article }: { article: Article }) => {
   console.log("Article content:", article); // Debug log
   return (
     <div className="prose max-w-none">
-      {article.articleKicker && (
-        <div className="text-lg text-gray-600 mb-4">{article.articleKicker}</div>
-      )}
-      
       <h1 className="text-3xl font-bold mb-4 text-gray-900">
         {article.headline}
       </h1>
+
+      {article.articleKicker && (
+        <div className="text-lg text-gray-600 mb-6">{article.articleKicker}</div>
+      )}
       
       <div className="flex items-center justify-between text-lg text-gray-700 mb-8">
         {article.author && (
@@ -164,10 +164,19 @@ export default function ArticlePage({ params }: { params: Promise<{ id: string }
           </button>
           <button
             onClick={() => {
-              setSelectedArticle(article);
-              setHighlightsOpen(true);
+              if (highlightsOpen) {
+                setHighlightsOpen(false);
+                setSelectedArticle(null);
+              } else {
+                setSelectedArticle(article);
+                setHighlightsOpen(true);
+              }
             }}
-            className="px-6 py-2 rounded-full bg-green-100 text-green-700 hover:bg-green-200 flex items-center gap-2 transition-colors"
+            className={`px-6 py-2 rounded-full transition-colors flex items-center gap-2 ${
+              highlightsOpen
+                ? "bg-green-600 text-white"
+                : "bg-gray-100 text-gray-800 hover:bg-gray-200"
+            }`}
           >
             <Highlighter className="w-4 h-4" />
             Punti salienti
