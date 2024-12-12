@@ -126,7 +126,6 @@ export default function ArticlePage({ params }: { params: Promise<{ id: string }
           return; // HighlightsPanel handles its own Escape
         }
         
-        // Use the exact same logic as the toggle button
         if (activeView === "entities") {
           setActiveView("article");
         } else if (activeView === "article") {
