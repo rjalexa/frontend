@@ -1,7 +1,14 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import { ArrowLeft, Highlighter, MapPin, User, Building, Search } from "lucide-react";
+import {
+  ArrowLeft,
+  Highlighter,
+  MapPin,
+  User,
+  Building,
+  Search,
+} from "lucide-react";
 import { useRouter } from "next/navigation";
 import { HighlightsPanel } from "@/components/highlights/HighlightsPanel";
 import EntitiesView from "./EntitiesView";
@@ -25,7 +32,6 @@ interface Article {
     highlight_sequence_number: number;
   }>;
 }
-
 
 interface Entity {
   id: string;
@@ -57,43 +63,51 @@ interface LinkingInfo {
 const ArticleContent = ({ article }: { article: Article }) => {
   return (
     <div className="prose max-w-none">
-      <h1 className="text-3xl font-bold mb-4 text-gray-900">
-        {article.headline}
-      </h1>
+      {/* Header section */}
+      <div className="mb-12">
+        <h1 className="text-3xl font-bold mb-4 text-gray-900">
+          {article.headline}
+        </h1>
 
-      {article.articleKicker && (
-        <div className="text-lg text-gray-600 mb-6">{article.articleKicker}</div>
-      )}
-      
-      <div className="flex items-center justify-between text-lg text-gray-700 mb-8">
-        {article.author && (
-          <div className="font-bold">
-            By {article.author}
-          </div>
+        {article.articleKicker && (
+          <div className="text-lg text-gray-600 mb-6">{article.articleKicker}</div>
         )}
-        {article.datePublished && (
-          <time dateTime={article.datePublished}>
-            {new Date(article.datePublished).toLocaleDateString('en-US', {
-              year: 'numeric',
-              month: 'long',
-              day: 'numeric'
-            })}
-          </time>
-        )}
-      </div>
-      
-      {article.articleBody ? (
-        <div className="mt-8 text-gray-800 text-lg leading-relaxed whitespace-pre-wrap">
-          {article.articleBody}
+        
+        <div className="flex items-center justify-between text-lg text-gray-700">
+          {article.author && (
+            <div className="font-bold">
+              By {article.author}
+            </div>
+          )}
+          {article.datePublished && (
+            <time dateTime={article.datePublished}>
+              {new Date(article.datePublished).toLocaleDateString('en-US', {
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric'
+              })}
+            </time>
+          )}
         </div>
-      ) : (
-        <div className="mt-8 text-gray-500 italic">Article content not available</div>
-      )}
+      </div>
+
+      {/* Article body section with positioning context */}
+      <div id="article-body" className="relative">
+        <div className="text-gray-800 text-lg leading-relaxed whitespace-pre-wrap">
+          {article.articleBody || (
+            <div className="text-gray-500 italic">Article content not available</div>
+          )}
+        </div>
+      </div>
     </div>
   );
 };
 
-export default function ArticlePage({ params }: { params: Promise<{ id: string }> }) {
+export default function ArticlePage({
+  params,
+}: {
+  params: Promise<{ id: string }>;
+}) {
   const router = useRouter();
   const [article, setArticle] = useState<Article | null>(null);
   const [loading, setLoading] = useState(true);
@@ -132,7 +146,7 @@ export default function ArticlePage({ params }: { params: Promise<{ id: string }
           // If the highlights panel is open, let its own handler close it
           return;
         }
-  
+
         // If we're currently viewing entities, pressing ESC goes back to the article view
         if (activeView === "entities") {
           setActiveView("article");
@@ -145,7 +159,8 @@ export default function ArticlePage({ params }: { params: Promise<{ id: string }
   }, [highlightsOpen, activeView]);
 
   if (loading) return <div className="p-4 text-gray-900">Loading...</div>;
-  if (!article) return <div className="p-4 text-gray-900">Article not found</div>;
+  if (!article)
+    return <div className="p-4 text-gray-900">Article not found</div>;
 
   return (
     <div className="p-4 bg-white min-h-screen">
@@ -165,9 +180,12 @@ export default function ArticlePage({ params }: { params: Promise<{ id: string }
         </button>
 
         {/* Top row of buttons */}
-        <div className="flex gap-4 mb-8">
+        <div className="flex items-center gap-4 mb-8">
+          <img src="/mema.svg" alt="MeMa Logo" className="w-16 h-6" />
           <button
-            onClick={() => setActiveView(activeView === "entities" ? "article" : "entities")}
+            onClick={() =>
+              setActiveView(activeView === "entities" ? "article" : "entities")
+            }
             className={`px-6 py-2 rounded-full transition-colors ${
               activeView === "entities"
                 ? "bg-blue-600 text-white"
@@ -176,45 +194,51 @@ export default function ArticlePage({ params }: { params: Promise<{ id: string }
           >
             Entità e dettagli
           </button>
-          <button
-            onClick={() => {
-              if (highlightsOpen) {
-                setHighlightsOpen(false);
-                setSelectedArticle(null);
-              } else {
-                setSelectedArticle(article);
-                setHighlightsOpen(true);
-              }
-            }}
-            className={`px-6 py-2 rounded-full transition-colors flex items-center gap-2 ${
-              highlightsOpen
-                ? "bg-green-600 text-white"
-                : "bg-gray-100 text-gray-800 hover:bg-gray-200"
-            }`}
-          >
-            <Highlighter className="w-4 h-4" />
-            Punti salienti
-          </button>
+          {activeView !== "entities" && (
+            <button
+              onClick={() => {
+                if (highlightsOpen) {
+                  setHighlightsOpen(false);
+                  setSelectedArticle(null);
+                } else {
+                  setSelectedArticle(article);
+                  setHighlightsOpen(true);
+                }
+              }}
+              className={`px-6 py-2 rounded-full transition-colors flex items-center gap-2 ${
+                highlightsOpen
+                  ? "bg-green-600 text-white"
+                  : "bg-gray-100 text-gray-800 hover:bg-gray-200"
+              }`}
+            >
+              <Highlighter className="w-4 h-4" />
+              Punti salienti
+            </button>
+          )}
         </div>
 
         {/* Content area */}
-        <div className="mt-6">
+        <div className="relative mt-6 prose mx-auto">
           {activeView === "entities" ? (
             <EntitiesView article={article} />
           ) : (
-            <ArticleContent article={article} />
+            <>
+              <ArticleContent article={article} />
+              {selectedArticle && (
+                <HighlightsPanel
+                  isOpen={highlightsOpen}
+                  onClose={() => {
+                    setHighlightsOpen(false);
+                    setSelectedArticle(null);
+                  }}
+                  articleTitle={selectedArticle.headline}
+                  highlights={selectedArticle.highlights || []}
+                />
+              )}
+            </>
           )}
         </div>
       </div>
-
-      {selectedArticle && (
-        <HighlightsPanel
-          isOpen={highlightsOpen}
-          onClose={() => setHighlightsOpen(false)}
-          articleTitle={selectedArticle.headline}
-          highlights={selectedArticle.highlights || []}
-        />
-      )}
     </div>
   );
 }

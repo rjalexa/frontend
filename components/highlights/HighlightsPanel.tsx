@@ -24,14 +24,16 @@ export function HighlightsPanel({
       isOpen={isOpen}
       onClose={onClose}
       title={
-        <div className="flex items-center gap-2">
-          <Highlighter className="w-4 h-4" />
-          <span>Punti Salienti</span>
+        <div className="flex items-center justify-between w-full pr-2">
+          <div className="flex items-center gap-2 text-green-700 bg-green-100 px-4 py-2 rounded-md">
+            <Highlighter className="w-4 h-4" />
+            <span>Punti Salienti</span>
+          </div>
+          <img src="/mema.svg" alt="MeMa Logo" className="w-16 h-6 ml-6" />
         </div>
       }
-      titleClassName="text-green-700 bg-green-100 px-4 py-2 rounded-md flex items-center"
     >
-      <div className="p-4">
+      <div className="p-4 pb-2">
         {highlights.length === 0 ? (
           <div className="text-gray-500 text-center py-4">
             No highlights found for this article.

@@ -101,47 +101,49 @@ export default function EntitiesView({ article }: EntitiesViewProps) {
 
   return (
     <div>
-      <div className="flex flex-wrap gap-2 mb-4">
-        <button
-          onClick={() => setSelectedType("all")}
-          className={`px-4 py-2 rounded transition-colors ${
-            selectedType === "all"
-              ? "bg-blue-600 text-white"
-              : "bg-gray-100 text-gray-800 hover:bg-gray-200"
-          }`}
-        >
-          All
-        </button>
-        <button
-          onClick={() => setSelectedType("person")}
-          className={`px-4 py-2 rounded flex items-center gap-2 transition-colors ${
-            selectedType === "person"
-              ? "bg-green-600 text-white"
-              : "bg-gray-100 text-gray-800 hover:bg-gray-200"
-          }`}
-        >
-          <User className="w-4 h-4" /> People
-        </button>
-        <button
-          onClick={() => setSelectedType("location")}
-          className={`px-4 py-2 rounded flex items-center gap-2 transition-colors ${
-            selectedType === "location"
-              ? "bg-blue-600 text-white"
-              : "bg-gray-100 text-gray-800 hover:bg-gray-200"
-          }`}
-        >
-          <MapPin className="w-4 h-4" /> Locations
-        </button>
-        <button
-          onClick={() => setSelectedType("organization")}
-          className={`px-4 py-2 rounded flex items-center gap-2 transition-colors ${
-            selectedType === "organization"
-              ? "bg-purple-600 text-white"
-              : "bg-gray-100 text-gray-800 hover:bg-gray-200"
-          }`}
-        >
-          <Building className="w-4 h-4" /> Organizations
-        </button>
+      <div className="flex justify-between items-center mb-4">
+        <div className="flex flex-wrap gap-2">
+          <button
+            onClick={() => setSelectedType("all")}
+            className={`px-4 py-2 rounded transition-colors ${
+              selectedType === "all"
+                ? "bg-blue-600 text-white"
+                : "bg-gray-100 text-gray-800 hover:bg-gray-200"
+            }`}
+          >
+            All
+          </button>
+          <button
+            onClick={() => setSelectedType("person")}
+            className={`px-4 py-2 rounded flex items-center gap-2 transition-colors ${
+              selectedType === "person"
+                ? "bg-green-600 text-white"
+                : "bg-gray-100 text-gray-800 hover:bg-gray-200"
+            }`}
+          >
+            <User className="w-4 h-4" /> People
+          </button>
+          <button
+            onClick={() => setSelectedType("location")}
+            className={`px-4 py-2 rounded flex items-center gap-2 transition-colors ${
+              selectedType === "location"
+                ? "bg-blue-600 text-white"
+                : "bg-gray-100 text-gray-800 hover:bg-gray-200"
+            }`}
+          >
+            <MapPin className="w-4 h-4" /> Locations
+          </button>
+          <button
+            onClick={() => setSelectedType("organization")}
+            className={`px-4 py-2 rounded flex items-center gap-2 transition-colors ${
+              selectedType === "organization"
+                ? "bg-purple-600 text-white"
+                : "bg-gray-100 text-gray-800 hover:bg-gray-200"
+            }`}
+          >
+            <Building className="w-4 h-4" /> Organizations
+          </button>
+        </div>
       </div>
 
       {article.meta_data ? (

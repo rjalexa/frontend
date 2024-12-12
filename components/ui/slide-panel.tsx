@@ -1,3 +1,4 @@
+// components/ui/slide-panel.tsx
 import * as React from "react"
 import { cn } from "@/lib/utils"
 import { X } from "lucide-react"
@@ -30,16 +31,35 @@ export function SlidePanel({
     };
   }, [isOpen, onClose]);
 
+  React.useEffect(() => {
+    if (isOpen) {
+      const articleBody = document.getElementById('article-body');
+      if (articleBody) {
+        const rect = articleBody.getBoundingClientRect();
+        const panel = document.getElementById('highlights-panel');
+        if (panel) {
+          panel.style.top = `${rect.top}px`;
+        }
+      }
+    }
+  }, [isOpen]);
+
+  if (!isOpen) return null;
+
   return (
     <>
       {/* Panel */}
       <div
+        id="highlights-panel"
         className={cn(
-          "fixed inset-y-0 right-0 w-96 bg-white shadow-lg transform transition-transform duration-300 ease-in-out z-50",
-          isOpen ? "translate-x-0" : "translate-x-full"
+          "fixed w-[600px] bg-white shadow-lg transform transition-transform duration-300 ease-in-out z-50 rounded-lg",
+          "left-20"
         )}
+        style={{
+          transform: isOpen ? 'translateX(0)' : 'translateX(-100%)',
+        }}
       >
-        <div className="h-full flex flex-col">
+        <div className="flex flex-col">
           <div className="px-4 py-3 border-b flex items-center justify-between">
             {title && (
               <h2 className={cn("text-lg font-semibold", titleClassName)}>{title}</h2>
@@ -51,20 +71,18 @@ export function SlidePanel({
               <X className="h-5 w-5" />
             </button>
           </div>
-          <div className="flex-1 overflow-y-auto">
+          <div className="min-h-[200px] pb-3">
             {children}
           </div>
         </div>
       </div>
       
       {/* Backdrop */}
-      {isOpen && (
-        <div
-          className="fixed inset-0 bg-black/20 z-40 lg:hidden"
-          onClick={onClose}
-          aria-hidden="true"
-        />
-      )}
+      <div
+        className="fixed inset-0 bg-black/20 z-40"
+        onClick={onClose}
+        aria-hidden="true"
+      />
     </>
   )
 }
