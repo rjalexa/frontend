@@ -160,7 +160,10 @@ export default function ArticlePage({ params }: PageProps) {
     <div className="p-4 bg-white min-h-screen">
       <div className="max-w-6xl mx-auto">
         <button
-          onClick={() => router.push("/")}
+          onClick={() => router.push("/?sortField=" + 
+            localStorage.getItem('sortField') + 
+            "&sortDirection=" + 
+            localStorage.getItem('sortDirection'))}
           className="mb-4 flex items-center gap-2 text-blue-600 hover:text-blue-800"
         >
           <ArrowLeft className="w-4 h-4" /> Back to Articles

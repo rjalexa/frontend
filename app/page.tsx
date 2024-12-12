@@ -29,16 +29,19 @@ export default function Home() {
   const [articles, setArticles] = useState<Article[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [sortField, setSortField] = useState<SortField>(() => 
-    typeof window !== 'undefined' 
-      ? (localStorage.getItem('sortField') as SortField) || "date_created"
-      : "date_created"
-  );
-  const [sortDirection, setSortDirection] = useState<SortDirection>(() =>
-    typeof window !== 'undefined'
-      ? (localStorage.getItem('sortDirection') as SortDirection) || "desc"
-      : "desc"
-  );
+  const [sortField, setSortField] = useState<SortField>(() => {
+    if (typeof window === 'undefined') return "date_created";
+    const params = new URLSearchParams(window.location.search);
+    const fieldParam = params.get('sortField');
+    return (fieldParam as SortField) || localStorage.getItem('sortField') as SortField || "date_created";
+  });
+  
+  const [sortDirection, setSortDirection] = useState<SortDirection>(() => {
+    if (typeof window === 'undefined') return "desc";
+    const params = new URLSearchParams(window.location.search);
+    const directionParam = params.get('sortDirection');
+    return (directionParam as SortDirection) || localStorage.getItem('sortDirection') as SortDirection || "desc";
+  });
   const [highlightsOpen, setHighlightsOpen] = useState(false);
   const [selectedArticle, setSelectedArticle] = useState<Article | null>(null);
 
