@@ -68,19 +68,17 @@ export function HighlightsPanel({
 
   useEffect(() => {
     const handleEscKey = (event: KeyboardEvent) => {
-      if (event.key === "Escape") {
-        event.preventDefault(); // Prevent the event from bubbling up
-        event.stopPropagation(); // Belt and suspenders approach
+      if (event.key === "Escape" && isOpen) {
+        event.preventDefault();
+        event.stopPropagation();
         onClose();
       }
     };
 
-    if (isOpen) {
-      document.addEventListener("keydown", handleEscKey);
-    }
+    document.addEventListener("keydown", handleEscKey, true); // Using capture phase
 
     return () => {
-      document.removeEventListener("keydown", handleEscKey);
+      document.removeEventListener("keydown", handleEscKey, true);
     };
   }, [isOpen, onClose]);
 

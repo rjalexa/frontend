@@ -1,6 +1,6 @@
 "use client";
 import React, { useState, useEffect } from "react";
-import { ArrowLeft, Highlighter } from "lucide-react";
+import { ArrowLeft, Highlighter, MapPin, User, Building } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { HighlightsPanel } from "../../../components/highlights/HighlightsPanel";
 import EntitiesView from "./EntitiesView";
@@ -53,6 +53,9 @@ export default function ArticlePage({ params }: PageProps) {
   const [article, setArticle] = useState<Article | null>(null);
   const [loading, setLoading] = useState(true);
   const [activeView, setActiveView] = useState<"entities" | "other">("entities");
+  const [highlightsOpen, setHighlightsOpen] = useState(false);
+  const [selectedArticle, setSelectedArticle] = useState<Article | null>(null);
+  const [selectedType, setSelectedType] = useState<"all" | Entity["kind"]>("all");
   const resolvedParams = React.use(params) as PageParams;
   const articleId = resolvedParams.id;
 
@@ -71,24 +74,22 @@ export default function ArticlePage({ params }: PageProps) {
     };
     fetchArticle();
 
-    // Add escape key handler
     const handleEscKey = (event: KeyboardEvent) => {
-      if (event.key === "Escape" && !highlightsOpen) {
-        router.push("/");
+      if (event.key === "Escape") {
+        // Only navigate back if highlights panel is not open
+        if (!highlightsOpen) {
+          event.preventDefault();
+          router.push("/");
+        }
       }
     };
 
-    // Add event listener
-    document.addEventListener("keydown", handleEscKey);
+    document.addEventListener("keydown", handleEscKey, false);
 
-    // Cleanup function
     return () => {
-      document.removeEventListener("keydown", handleEscKey);
+      document.removeEventListener("keydown", handleEscKey, false);
     };
-  }, [articleId, router]);
-
-  const [highlightsOpen, setHighlightsOpen] = useState(false);
-  const [selectedArticle, setSelectedArticle] = useState<Article | null>(null);
+  }, [articleId, router, highlightsOpen]);
 
   const getIcon = (kind: Entity["kind"]) => {
     switch (kind) {
@@ -143,8 +144,7 @@ export default function ArticlePage({ params }: PageProps) {
   };
 
   if (loading) return <div className="p-4 text-gray-900">Loading...</div>;
-  if (!article)
-    return <div className="p-4 text-gray-900">Article not found</div>;
+  if (!article) return <div className="p-4 text-gray-900">Article not found</div>;
 
   return (
     <div className="p-4 bg-white min-h-screen">
@@ -189,13 +189,11 @@ export default function ArticlePage({ params }: PageProps) {
             <Highlighter className="w-4 h-4" />
             Punti salienti
           </button>
-          {/* Add more view buttons here as needed */}
         </div>
 
         {/* Content area */}
         <div className="mt-6">
           {activeView === "entities" && <EntitiesView article={article} />}
-          {/* Add more view components here as needed */}
         </div>
       </div>
 
