@@ -9,64 +9,18 @@ import {
   Microscope,
   FileText,
   Hash,
+  Globe,
 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import EntitiesView from "./EntitiesView";
 import Header from "@/components/Header";
+import dynamic from "next/dynamic";
+import type { Article, SortField, SortDirection } from "@/lib/types";
 
-
-type SortField = "date_created" | "headline" | "author";
-type SortDirection = "asc" | "desc";
-
-interface Article {
-  id: string;
-  headline: string;
-  author?: string;
-  datePublished?: string;
-  date_created: string;
-  kicker?: string;
-  body?: string;
-  meta_data?: Entity[];
-  slug?: string;
-  articleKicker?: string;
-  articleBody?: string;
-  articleTag?: string;
-  topics?: string;
-  tags?: string;
-  mema_summary?: string;
-  mema_topics?: string[];
-  highlights?: Array<{
-    highlight_text: string;
-    highlight_sequence_number: number;
-  }>;
-}
-
-interface Entity {
-  id: string;
-  kind: "person" | "location" | "organization";
-  label: string;
-  summary?: string;
-  coordinates?: string;
-  linking_info?: LinkingInfo[];
-}
-
-interface LinkingInfo {
-  source: string;
-  url: string;
-  title: string;
-  summary: string;
-  timestamp: string;
-  geoid?: number;
-  lat?: number;
-  lng?: number;
-  country_name?: string;
-  bbox?: {
-    north: number;
-    south: number;
-    east: number;
-    west: number;
-  };
-}
+// Dynamically import MapPanel to avoid SSR issues with Leaflet
+const MapPanel = dynamic(() => import("@/components/maps/MapPanel"), {
+  ssr: false,
+});
 
 const TopicsPanel = ({
   isOpen,
@@ -80,9 +34,10 @@ const TopicsPanel = ({
   const manifestoTopics = [article.articleTag, article.topics, article.tags]
     .filter(Boolean)
     .join(", ");
-  const memaTopics = Array.isArray(article.mema_topics) && article.mema_topics.length > 0
-    ? article.mema_topics.join(", ")
-    : "";
+  const memaTopics =
+    Array.isArray(article.mema_topics) && article.mema_topics.length > 0
+      ? article.mema_topics.join(", ")
+      : "";
 
   if (!isOpen) return null;
 
@@ -100,7 +55,7 @@ const TopicsPanel = ({
           <h3 className="text-lg font-semibold mb-2">Argomenti</h3>
           <div className="space-y-2">
             <p className="text-gray-700">
-              <span className="font-medium">Argomenti Manifesto: </span>
+              <span className="font-medium">Metadati attuali: </span>
               {manifestoTopics || "Nessun argomento disponibile"}
             </p>
             <p className="text-gray-700">
@@ -194,6 +149,8 @@ const ArticleContent = ({
   setHighlightsOpen,
   topicsOpen,
   setTopicsOpen,
+  mapOpen, // These props are used but not in the interface
+  setMapOpen,
 }: {
   article: Article;
   summaryOpen: boolean;
@@ -202,6 +159,8 @@ const ArticleContent = ({
   setHighlightsOpen: (open: boolean) => void;
   topicsOpen: boolean;
   setTopicsOpen: (open: boolean) => void;
+  mapOpen: boolean; // Add these to the interface
+  setMapOpen: (open: boolean) => void;
 }) => {
   return (
     <div className="prose max-w-none">
@@ -246,6 +205,11 @@ const ArticleContent = ({
         onClose={() => setTopicsOpen(false)}
         article={article}
       />
+      <MapPanel
+        isOpen={mapOpen}
+        onClose={() => setMapOpen(false)}
+        article={article}
+      />
       {article.highlights && article.highlights.length > 0 && (
         <HighlightsPanel
           isOpen={highlightsOpen}
@@ -269,78 +233,98 @@ const ArticleContent = ({
   );
 };
 
-export default function ArticlePage({ params }: { params: Promise<{ id: string }> }) {
+export default function ArticlePage({
+  params,
+}: {
+  params: Promise<{ id: string }>;
+}) {
   const router = useRouter();
   const [article, setArticle] = useState<Article | null>(null);
   const [loading, setLoading] = useState(true);
-  const [activeView, setActiveView] = useState<"article" | "entities">("article");
+  const [activeView, setActiveView] = useState<"article" | "entities">(
+    "article"
+  );
   const [allArticles, setAllArticles] = useState<Article[]>([]);
   const [currentIndex, setCurrentIndex] = useState<number>(-1);
   const [sortField, setSortField] = useState<SortField>(() => {
-    if (typeof localStorage !== 'undefined') {
-      return (localStorage.getItem('sortField') as SortField) || "date_created";
+    if (typeof localStorage !== "undefined") {
+      return (localStorage.getItem("sortField") as SortField) || "date_created";
     }
     return "date_created";
   });
   const [sortDirection, setSortDirection] = useState<SortDirection>(() => {
-    if (typeof localStorage !== 'undefined') {
-      return (localStorage.getItem('sortDirection') as SortDirection) || "desc";
+    if (typeof localStorage !== "undefined") {
+      return (localStorage.getItem("sortDirection") as SortDirection) || "desc";
     }
     return "desc";
   });
-  
+
   // Get panel states from localStorage or default to false
   const [highlightsOpen, setHighlightsOpen] = useState(() => {
-    if (typeof localStorage !== 'undefined') {
-      return localStorage.getItem('highlightsOpen') === 'true';
+    if (typeof localStorage !== "undefined") {
+      return localStorage.getItem("highlightsOpen") === "true";
     }
     return false;
   });
   const [summaryOpen, setSummaryOpen] = useState(() => {
-    if (typeof localStorage !== 'undefined') {
-      return localStorage.getItem('summaryOpen') === 'true';
+    if (typeof localStorage !== "undefined") {
+      return localStorage.getItem("summaryOpen") === "true";
     }
     return false;
   });
   const [topicsOpen, setTopicsOpen] = useState(() => {
-    if (typeof localStorage !== 'undefined') {
-      return localStorage.getItem('topicsOpen') === 'true';
+    if (typeof localStorage !== "undefined") {
+      return localStorage.getItem("topicsOpen") === "true";
     }
     return false;
   });
-  
+  // Add this new state for map
+  const [mapOpen, setMapOpen] = useState(() => {
+    if (typeof localStorage !== "undefined") {
+      return localStorage.getItem("mapOpen") === "true";
+    }
+    return false;
+  });
+
   const resolvedParams = React.use(params);
   const articleId = resolvedParams.id;
 
   // Save panel states to localStorage whenever they change
   useEffect(() => {
-    localStorage.setItem('highlightsOpen', highlightsOpen.toString());
+    localStorage.setItem("highlightsOpen", highlightsOpen.toString());
   }, [highlightsOpen]);
 
   useEffect(() => {
-    localStorage.setItem('summaryOpen', summaryOpen.toString());
+    localStorage.setItem("summaryOpen", summaryOpen.toString());
   }, [summaryOpen]);
 
   useEffect(() => {
-    localStorage.setItem('topicsOpen', topicsOpen.toString());
+    localStorage.setItem("topicsOpen", topicsOpen.toString());
   }, [topicsOpen]);
+  useEffect(() => {
+    localStorage.setItem("mapOpen", mapOpen.toString());
+  }, [mapOpen]);
 
   useEffect(() => {
     const fetchArticles = async () => {
       try {
         const response = await fetch("/api/files");
         let articles: Article[] = await response.json();
-        
+
         // Apply the same sorting logic as the parent page
         articles = [...articles].sort((a, b) => {
           const direction = sortDirection === "asc" ? 1 : -1;
-          
+
           if (sortField === "date_created") {
-            return direction * (new Date(a.date_created).getTime() - new Date(b.date_created).getTime());
+            return (
+              direction *
+              (new Date(a.date_created).getTime() -
+                new Date(b.date_created).getTime())
+            );
           }
-          
-          const aValue = (a[sortField] || '').toLowerCase();
-          const bValue = (b[sortField] || '').toLowerCase();
+
+          const aValue = (a[sortField] || "").toLowerCase();
+          const bValue = (b[sortField] || "").toLowerCase();
           return direction * aValue.localeCompare(bValue);
         });
 
@@ -380,7 +364,17 @@ export default function ArticlePage({ params }: { params: Promise<{ id: string }
         if (topicsOpen) {
           setTopicsOpen(false);
         }
-        if (!highlightsOpen && !summaryOpen && !topicsOpen && activeView === "entities") {
+        if (mapOpen) {
+          // Add this condition
+          setMapOpen(false);
+        }
+        if (
+          !highlightsOpen &&
+          !summaryOpen &&
+          !topicsOpen &&
+          !mapOpen &&
+          activeView === "entities"
+        ) {
           setActiveView("article");
         }
       }
@@ -388,15 +382,16 @@ export default function ArticlePage({ params }: { params: Promise<{ id: string }
 
     document.addEventListener("keydown", handleEscKey);
     return () => document.removeEventListener("keydown", handleEscKey);
-  }, [highlightsOpen, activeView, summaryOpen, topicsOpen]);
+  }, [highlightsOpen, summaryOpen, topicsOpen, mapOpen, activeView]);
 
   if (loading) return <div className="p-4 text-gray-900">Loading...</div>;
-  if (!article) return <div className="p-4 text-gray-900">Article not found</div>;
+  if (!article)
+    return <div className="p-4 text-gray-900">Article not found</div>;
 
   return (
     <div className="bg-white min-h-screen">
       <Header />
-      
+
       <main className="p-4">
         <div className="max-w-6xl mx-auto">
           <div className="flex items-center gap-4 mb-6">
@@ -418,7 +413,7 @@ export default function ArticlePage({ params }: { params: Promise<{ id: string }
               onClick={() => navigateToArticle(currentIndex - 1)}
               disabled={currentIndex <= 0}
               className={`flex items-center gap-2 text-blue-600 hover:text-blue-800 ${
-                currentIndex <= 0 ? 'opacity-50 cursor-not-allowed' : ''
+                currentIndex <= 0 ? "opacity-50 cursor-not-allowed" : ""
               }`}
             >
               <ArrowUp className="w-4 h-4" /> Precedente
@@ -427,7 +422,9 @@ export default function ArticlePage({ params }: { params: Promise<{ id: string }
               onClick={() => navigateToArticle(currentIndex + 1)}
               disabled={currentIndex >= allArticles.length - 1}
               className={`flex items-center gap-2 text-blue-600 hover:text-blue-800 ${
-                currentIndex >= allArticles.length - 1 ? 'opacity-50 cursor-not-allowed' : ''
+                currentIndex >= allArticles.length - 1
+                  ? "opacity-50 cursor-not-allowed"
+                  : ""
               }`}
             >
               <ArrowDown className="w-4 h-4" /> Successivo
@@ -437,7 +434,11 @@ export default function ArticlePage({ params }: { params: Promise<{ id: string }
           <div className="flex items-center gap-4 mb-8">
             <img src="/mema.svg" alt="MeMa Logo" className="w-16 h-6" />
             <button
-              onClick={() => setActiveView(activeView === "entities" ? "article" : "entities")}
+              onClick={() =>
+                setActiveView(
+                  activeView === "entities" ? "article" : "entities"
+                )
+              }
               className={`px-6 py-2 rounded-full transition-colors flex items-center gap-2 ${
                 activeView === "entities"
                   ? "bg-blue-600 text-white"
@@ -485,6 +486,22 @@ export default function ArticlePage({ params }: { params: Promise<{ id: string }
                   <Hash className="w-4 h-4" />
                   Argomenti
                 </button>
+
+                {article.meta_data?.some(
+                  (entity) => entity.kind === "location"
+                ) && (
+                  <button
+                    onClick={() => setMapOpen(!mapOpen)}
+                    className={`px-6 py-2 rounded-full transition-colors flex items-center gap-2 ${
+                      mapOpen
+                        ? "bg-blue-600 text-white"
+                        : "bg-gray-100 text-gray-800 hover:bg-gray-200"
+                    }`}
+                  >
+                    <Globe className="w-4 h-4" />
+                    Mappa
+                  </button>
+                )}
               </div>
             )}
           </div>
@@ -501,6 +518,8 @@ export default function ArticlePage({ params }: { params: Promise<{ id: string }
                 setHighlightsOpen={setHighlightsOpen}
                 topicsOpen={topicsOpen}
                 setTopicsOpen={setTopicsOpen}
+                mapOpen={mapOpen} // Add these props
+                setMapOpen={setMapOpen}
               />
             )}
           </div>
@@ -509,5 +528,3 @@ export default function ArticlePage({ params }: { params: Promise<{ id: string }
     </div>
   );
 }
-
-

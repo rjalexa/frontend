@@ -7,39 +7,8 @@ import {
   CardContent,
 } from "../../../components/ui/card";
 import { MapPin, User, Building } from "lucide-react";
+import { Article, Entity} from '@/lib/types';
 
-interface LinkingInfo {
-  source: string;
-  url: string;
-  title: string;
-  summary: string;
-  timestamp: string;
-  geoid?: number;
-  lat?: number;
-  lng?: number;
-  country_name?: string;
-  bbox?: {
-    north: number;
-    south: number;
-    east: number;
-    west: number;
-  };
-}
-
-interface Entity {
-  id: string;
-  kind: "person" | "location" | "organization";
-  label: string;
-  summary?: string;
-  coordinates?: string;
-  linking_info?: LinkingInfo[];
-}
-
-interface Article {
-  id: string;
-  headline: string;
-  meta_data?: Entity[];
-}
 
 interface EntitiesViewProps {
   article: Article;
