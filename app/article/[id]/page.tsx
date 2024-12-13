@@ -3,11 +3,9 @@
 import React, { useState, useEffect } from "react";
 import {
   ArrowLeft,
+  ArrowUp,
+  ArrowDown,
   Highlighter,
-  MapPin,
-  User,
-  Building,
-  Search,
   Microscope,
   FileText,
   Hash,
@@ -15,11 +13,16 @@ import {
 import { useRouter } from "next/navigation";
 import EntitiesView from "./EntitiesView";
 
+
+type SortField = "date_created" | "headline" | "author";
+type SortDirection = "asc" | "desc";
+
 interface Article {
   id: string;
   headline: string;
   author?: string;
   datePublished?: string;
+  date_created: string;
   kicker?: string;
   body?: string;
   meta_data?: Entity[];
@@ -273,24 +276,82 @@ export default function ArticlePage({
   const router = useRouter();
   const [article, setArticle] = useState<Article | null>(null);
   const [loading, setLoading] = useState(true);
-  const [activeView, setActiveView] = useState<"article" | "entities">(
-    "article"
-  );
-  const [highlightsOpen, setHighlightsOpen] = useState(false);
-  const [summaryOpen, setSummaryOpen] = useState(false);
-  const [topicsOpen, setTopicsOpen] = useState(false);
+  const [activeView, setActiveView] = useState<"article" | "entities">("article");
+  const [allArticles, setAllArticles] = useState<Article[]>([]);
+  const [currentIndex, setCurrentIndex] = useState<number>(-1);
+  const [sortField, setSortField] = useState<SortField>(() => {
+    if (typeof localStorage !== 'undefined') {
+      return (localStorage.getItem('sortField') as SortField) || "date_created";
+    }
+    return "date_created";
+  });
+  const [sortDirection, setSortDirection] = useState<SortDirection>(() => {
+    if (typeof localStorage !== 'undefined') {
+      return (localStorage.getItem('sortDirection') as SortDirection) || "desc";
+    }
+    return "desc";
+  });
+  
+  // Get panel states from localStorage or default to false
+  const [highlightsOpen, setHighlightsOpen] = useState(() => {
+    if (typeof localStorage !== 'undefined') {
+      return localStorage.getItem('highlightsOpen') === 'true';
+    }
+    return false;
+  });
+  const [summaryOpen, setSummaryOpen] = useState(() => {
+    if (typeof localStorage !== 'undefined') {
+      return localStorage.getItem('summaryOpen') === 'true';
+    }
+    return false;
+  });
+  const [topicsOpen, setTopicsOpen] = useState(() => {
+    if (typeof localStorage !== 'undefined') {
+      return localStorage.getItem('topicsOpen') === 'true';
+    }
+    return false;
+  });
+  
   const resolvedParams = React.use(params);
   const articleId = resolvedParams.id;
 
+  // Save panel states to localStorage whenever they change
   useEffect(() => {
-    const fetchArticle = async () => {
+    localStorage.setItem('highlightsOpen', highlightsOpen.toString());
+  }, [highlightsOpen]);
+
+  useEffect(() => {
+    localStorage.setItem('summaryOpen', summaryOpen.toString());
+  }, [summaryOpen]);
+
+  useEffect(() => {
+    localStorage.setItem('topicsOpen', topicsOpen.toString());
+  }, [topicsOpen]);
+
+  useEffect(() => {
+    const fetchArticles = async () => {
       try {
         const response = await fetch("/api/files");
-        const articles: Article[] = await response.json();
-        const found = articles.find((a: Article) => a.id === articleId);
-        if (found) {
-          console.log("Fetched article:", found);
-          setArticle(found);
+        let articles: Article[] = await response.json();
+        
+        // Apply the same sorting logic as the parent page
+        articles = [...articles].sort((a, b) => {
+          const direction = sortDirection === "asc" ? 1 : -1;
+          
+          if (sortField === "date_created") {
+            return direction * (new Date(a.date_created).getTime() - new Date(b.date_created).getTime());
+          }
+          
+          const aValue = (a[sortField] || '').toLowerCase();
+          const bValue = (b[sortField] || '').toLowerCase();
+          return direction * aValue.localeCompare(bValue);
+        });
+
+        setAllArticles(articles);
+        const index = articles.findIndex((a: Article) => a.id === articleId);
+        setCurrentIndex(index);
+        if (index !== -1) {
+          setArticle(articles[index]);
         } else {
           setArticle(null);
         }
@@ -300,14 +361,19 @@ export default function ArticlePage({
         setLoading(false);
       }
     };
-    fetchArticle();
-  }, [articleId]);
+    fetchArticles();
+  }, [articleId, sortField, sortDirection]);
+
+  const navigateToArticle = (index: number) => {
+    if (index >= 0 && index < allArticles.length) {
+      router.push(`/article/${allArticles[index].id}`);
+    }
+  };
 
   useEffect(() => {
     const handleEscKey = (event: KeyboardEvent) => {
       if (event.key === "Escape") {
         event.preventDefault();
-        // Close panels if they're open
         if (highlightsOpen) {
           setHighlightsOpen(false);
         }
@@ -317,13 +383,7 @@ export default function ArticlePage({
         if (topicsOpen) {
           setTopicsOpen(false);
         }
-        // If no panels are open and we're in entities view, go back to article view
-        if (
-          !highlightsOpen &&
-          !summaryOpen &&
-          !topicsOpen &&
-          activeView === "entities"
-        ) {
+        if (!highlightsOpen && !summaryOpen && !topicsOpen && activeView === "entities") {
           setActiveView("article");
         }
       }
@@ -334,35 +394,51 @@ export default function ArticlePage({
   }, [highlightsOpen, activeView, summaryOpen, topicsOpen]);
 
   if (loading) return <div className="p-4 text-gray-900">Loading...</div>;
-  if (!article)
-    return <div className="p-4 text-gray-900">Article not found</div>;
-
-  console.log("Debug: Rendering buttons, activeView =", activeView); // Debug log
+  if (!article) return <div className="p-4 text-gray-900">Article not found</div>;
 
   return (
     <div className="p-4 bg-white min-h-screen">
       <div className="max-w-6xl mx-auto">
-        <button
-          onClick={() =>
-            router.push(
-              "/?sortField=" +
-                localStorage.getItem("sortField") +
-                "&sortDirection=" +
-                localStorage.getItem("sortDirection")
-            )
-          }
-          className="mb-6 flex items-center gap-2 text-blue-600 hover:text-blue-800"
-        >
-          <ArrowLeft className="w-4 h-4" /> Back to Articles
-        </button>
+        <div className="flex items-center gap-4 mb-6">
+            <button
+              onClick={() =>
+                router.push(
+                  "/?sortField=" +
+                    localStorage.getItem("sortField") +
+                    "&sortDirection=" +
+                    localStorage.getItem("sortDirection")
+                )
+              }
+              className="flex items-center gap-2 text-blue-600 hover:text-blue-800"
+            >
+              <ArrowLeft className="w-4 h-4" /> Lista articoli
+            </button>
+            <div className="w-px h-4 bg-gray-300" />
+            <button
+              onClick={() => navigateToArticle(currentIndex - 1)}
+              disabled={currentIndex <= 0}
+              className={`flex items-center gap-2 text-blue-600 hover:text-blue-800 ${
+                currentIndex <= 0 ? 'opacity-50 cursor-not-allowed' : ''
+              }`}
+            >
+              <ArrowUp className="w-4 h-4" /> Precedente
+            </button>
+            <button
+              onClick={() => navigateToArticle(currentIndex + 1)}
+              disabled={currentIndex >= allArticles.length - 1}
+              className={`flex items-center gap-2 text-blue-600 hover:text-blue-800 ${
+                currentIndex >= allArticles.length - 1 ? 'opacity-50 cursor-not-allowed' : ''
+              }`}
+            >
+              <ArrowDown className="w-4 h-4" /> Successivo
+            </button>
+        </div>
 
-        {/* Top row of buttons */}
+        {/* Rest of the component remains the same */}
         <div className="flex items-center gap-4 mb-8">
           <img src="/mema.svg" alt="MeMa Logo" className="w-16 h-6" />
           <button
-            onClick={() =>
-              setActiveView(activeView === "entities" ? "article" : "entities")
-            }
+            onClick={() => setActiveView(activeView === "entities" ? "article" : "entities")}
             className={`px-6 py-2 rounded-full transition-colors flex items-center gap-2 ${
               activeView === "entities"
                 ? "bg-blue-600 text-white"
@@ -373,7 +449,6 @@ export default function ArticlePage({
             Entità e dettagli
           </button>
 
-          {/* Group all non-entities buttons together */}
           {activeView !== "entities" && (
             <div className="flex items-center gap-4">
               <button
@@ -415,7 +490,6 @@ export default function ArticlePage({
           )}
         </div>
 
-        {/* Content area */}
         <div className="relative mt-6 prose mx-auto">
           {activeView === "entities" ? (
             <EntitiesView article={article} />
@@ -435,3 +509,5 @@ export default function ArticlePage({
     </div>
   );
 }
+
+
