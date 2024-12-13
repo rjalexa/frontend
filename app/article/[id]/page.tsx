@@ -153,8 +153,8 @@ export default function ArticlePage({
     <div className="bg-white min-h-screen">
       <Header />
 
-      <main className="p-4">
-        <div className="max-w-6xl mx-auto">
+      <main className="px-8">
+        <div className="mx-auto">
           {/* Navigation buttons */}
           <div className="flex items-center gap-4 mb-6">
             <button
@@ -253,7 +253,7 @@ export default function ArticlePage({
           </div>
 
           {/* Main content */}
-          <div className="relative mt-6 prose mx-auto">
+          <div className="relative mt-6">
             {activeView === "entities" ? (
               <EntitiesView article={article} />
             ) : (

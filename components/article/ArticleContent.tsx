@@ -29,7 +29,7 @@ const ArticleContent = ({
   setMapOpen,
 }: ArticleContentProps) => {
   return (
-    <div className="max-w-[65ch] mx-auto">
+    <div className="w-full px-8">
       {/* Header section */}
       <div className="mb-8">
         <h1 className="text-3xl font-bold mb-4 text-gray-900">
@@ -71,7 +71,7 @@ const ArticleContent = ({
         <SummaryPanel
           isOpen={summaryOpen}
           onClose={() => setSummaryOpen(false)}
-          summary={article.mema_summary}
+          summary={article.mema_summary || null}
         />
 
         {/* Highlights Panel */}
