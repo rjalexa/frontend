@@ -12,6 +12,7 @@ import {
 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import EntitiesView from "./EntitiesView";
+import Header from "@/components/Header";
 
 
 type SortField = "date_created" | "headline" | "author";
@@ -268,11 +269,7 @@ const ArticleContent = ({
   );
 };
 
-export default function ArticlePage({
-  params,
-}: {
-  params: Promise<{ id: string }>;
-}) {
+export default function ArticlePage({ params }: { params: Promise<{ id: string }> }) {
   const router = useRouter();
   const [article, setArticle] = useState<Article | null>(null);
   const [loading, setLoading] = useState(true);
@@ -397,9 +394,12 @@ export default function ArticlePage({
   if (!article) return <div className="p-4 text-gray-900">Article not found</div>;
 
   return (
-    <div className="p-4 bg-white min-h-screen">
-      <div className="max-w-6xl mx-auto">
-        <div className="flex items-center gap-4 mb-6">
+    <div className="bg-white min-h-screen">
+      <Header />
+      
+      <main className="p-4">
+        <div className="max-w-6xl mx-auto">
+          <div className="flex items-center gap-4 mb-6">
             <button
               onClick={() =>
                 router.push(
@@ -432,80 +432,80 @@ export default function ArticlePage({
             >
               <ArrowDown className="w-4 h-4" /> Successivo
             </button>
+          </div>
+
+          <div className="flex items-center gap-4 mb-8">
+            <img src="/mema.svg" alt="MeMa Logo" className="w-16 h-6" />
+            <button
+              onClick={() => setActiveView(activeView === "entities" ? "article" : "entities")}
+              className={`px-6 py-2 rounded-full transition-colors flex items-center gap-2 ${
+                activeView === "entities"
+                  ? "bg-blue-600 text-white"
+                  : "bg-gray-100 text-gray-800 hover:bg-gray-200"
+              }`}
+            >
+              <Microscope className="w-4 h-4" />
+              Entità e dettagli
+            </button>
+
+            {activeView !== "entities" && (
+              <div className="flex items-center gap-4">
+                <button
+                  onClick={() => setHighlightsOpen(!highlightsOpen)}
+                  className={`px-6 py-2 rounded-full transition-colors flex items-center gap-2 ${
+                    highlightsOpen
+                      ? "bg-blue-600 text-white"
+                      : "bg-gray-100 text-gray-800 hover:bg-gray-200"
+                  }`}
+                >
+                  <Highlighter className="w-4 h-4" />
+                  Punti salienti
+                </button>
+
+                <button
+                  onClick={() => setSummaryOpen(!summaryOpen)}
+                  className={`px-6 py-2 rounded-full transition-colors flex items-center gap-2 ${
+                    summaryOpen
+                      ? "bg-blue-600 text-white"
+                      : "bg-gray-100 text-gray-800 hover:bg-gray-200"
+                  }`}
+                >
+                  <FileText className="w-4 h-4" />
+                  Sommario
+                </button>
+
+                <button
+                  onClick={() => setTopicsOpen(!topicsOpen)}
+                  className={`px-6 py-2 rounded-full transition-colors flex items-center gap-2 ${
+                    topicsOpen
+                      ? "bg-blue-600 text-white"
+                      : "bg-gray-100 text-gray-800 hover:bg-gray-200"
+                  }`}
+                >
+                  <Hash className="w-4 h-4" />
+                  Argomenti
+                </button>
+              </div>
+            )}
+          </div>
+
+          <div className="relative mt-6 prose mx-auto">
+            {activeView === "entities" ? (
+              <EntitiesView article={article} />
+            ) : (
+              <ArticleContent
+                article={article}
+                summaryOpen={summaryOpen}
+                setSummaryOpen={setSummaryOpen}
+                highlightsOpen={highlightsOpen}
+                setHighlightsOpen={setHighlightsOpen}
+                topicsOpen={topicsOpen}
+                setTopicsOpen={setTopicsOpen}
+              />
+            )}
+          </div>
         </div>
-
-        {/* Rest of the component remains the same */}
-        <div className="flex items-center gap-4 mb-8">
-          <img src="/mema.svg" alt="MeMa Logo" className="w-16 h-6" />
-          <button
-            onClick={() => setActiveView(activeView === "entities" ? "article" : "entities")}
-            className={`px-6 py-2 rounded-full transition-colors flex items-center gap-2 ${
-              activeView === "entities"
-                ? "bg-blue-600 text-white"
-                : "bg-gray-100 text-gray-800 hover:bg-gray-200"
-            }`}
-          >
-            <Microscope className="w-4 h-4" />
-            Entità e dettagli
-          </button>
-
-          {activeView !== "entities" && (
-            <div className="flex items-center gap-4">
-              <button
-                onClick={() => setHighlightsOpen(!highlightsOpen)}
-                className={`px-6 py-2 rounded-full transition-colors flex items-center gap-2 ${
-                  highlightsOpen
-                    ? "bg-blue-600 text-white"
-                    : "bg-gray-100 text-gray-800 hover:bg-gray-200"
-                }`}
-              >
-                <Highlighter className="w-4 h-4" />
-                Punti salienti
-              </button>
-
-              <button
-                onClick={() => setSummaryOpen(!summaryOpen)}
-                className={`px-6 py-2 rounded-full transition-colors flex items-center gap-2 ${
-                  summaryOpen
-                    ? "bg-blue-600 text-white"
-                    : "bg-gray-100 text-gray-800 hover:bg-gray-200"
-                }`}
-              >
-                <FileText className="w-4 h-4" />
-                Sommario
-              </button>
-
-              <button
-                onClick={() => setTopicsOpen(!topicsOpen)}
-                className={`px-6 py-2 rounded-full transition-colors flex items-center gap-2 ${
-                  topicsOpen
-                    ? "bg-blue-600 text-white"
-                    : "bg-gray-100 text-gray-800 hover:bg-gray-200"
-                }`}
-              >
-                <Hash className="w-4 h-4" />
-                Argomenti
-              </button>
-            </div>
-          )}
-        </div>
-
-        <div className="relative mt-6 prose mx-auto">
-          {activeView === "entities" ? (
-            <EntitiesView article={article} />
-          ) : (
-            <ArticleContent
-              article={article}
-              summaryOpen={summaryOpen}
-              setSummaryOpen={setSummaryOpen}
-              highlightsOpen={highlightsOpen}
-              setHighlightsOpen={setHighlightsOpen}
-              topicsOpen={topicsOpen}
-              setTopicsOpen={setTopicsOpen}
-            />
-          )}
-        </div>
-      </div>
+      </main>
     </div>
   );
 }
