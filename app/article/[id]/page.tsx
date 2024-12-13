@@ -5,8 +5,8 @@ import {
   ArrowLeft,
   ArrowUp,
   ArrowDown,
-  Highlighter,
   Microscope,
+  Highlighter,
   FileText,
   Hash,
   Globe,
@@ -14,224 +14,8 @@ import {
 import { useRouter } from "next/navigation";
 import EntitiesView from "./EntitiesView";
 import Header from "@/components/Header";
-import dynamic from "next/dynamic";
+import ArticleContent from "@/components/article/ArticleContent";
 import type { Article, SortField, SortDirection } from "@/lib/types";
-
-// Dynamically import MapPanel to avoid SSR issues with Leaflet
-const MapPanel = dynamic(() => import("@/components/maps/MapPanel"), {
-  ssr: false,
-});
-
-const TopicsPanel = ({
-  isOpen,
-  onClose,
-  article,
-}: {
-  isOpen: boolean;
-  onClose: () => void;
-  article: Article;
-}) => {
-  const manifestoTopics = [article.articleTag, article.topics, article.tags]
-    .filter(Boolean)
-    .join(", ");
-  const memaTopics =
-    Array.isArray(article.mema_topics) && article.mema_topics.length > 0
-      ? article.mema_topics.join(", ")
-      : "";
-
-  if (!isOpen) return null;
-
-  return (
-    <div className="bg-gray-50 rounded-lg p-6 mb-8 relative transform transition-all duration-300 ease-in-out">
-      <button
-        onClick={onClose}
-        className="absolute top-4 right-4 text-gray-500 hover:text-gray-700"
-      >
-        ×
-      </button>
-      <div className="flex items-start gap-4">
-        <img src="/mema.svg" alt="MeMa Logo" className="w-16 h-6" />
-        <div className="flex-1">
-          <h3 className="text-lg font-semibold mb-2">Argomenti</h3>
-          <div className="space-y-2">
-            <p className="text-gray-700">
-              <span className="font-medium">Metadati attuali: </span>
-              {manifestoTopics || "Nessun argomento disponibile"}
-            </p>
-            <p className="text-gray-700">
-              <span className="font-medium">Argomenti MeMa: </span>
-              {memaTopics || "Nessun argomento disponibile"}
-            </p>
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-};
-
-const HighlightsPanel = ({
-  isOpen,
-  onClose,
-  articleTitle,
-  highlights,
-}: {
-  isOpen: boolean;
-  onClose: () => void;
-  articleTitle: string;
-  highlights: Array<{
-    highlight_text: string;
-    highlight_sequence_number: number;
-  }>;
-}) => {
-  if (!isOpen) return null;
-
-  return (
-    <div className="bg-gray-50 rounded-lg p-6 mb-8 relative transition-all duration-300 ease-in-out">
-      <button
-        onClick={onClose}
-        className="absolute top-4 right-4 text-gray-500 hover:text-gray-700"
-      >
-        ×
-      </button>
-      <div className="flex items-start gap-4">
-        <img src="/mema.svg" alt="MeMa Logo" className="w-16 h-6" />
-        <div className="flex-1">
-          <h3 className="text-lg font-semibold mb-4">Punti salienti</h3>
-          <div className="space-y-3">
-            {highlights.map((highlight, index) => (
-              <div key={index} className="flex gap-2">
-                <span className="text-blue-600 font-medium">{index + 1}.</span>
-                <p className="text-gray-700">{highlight.highlight_text}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-};
-
-const SummaryPanel = ({
-  isOpen,
-  onClose,
-  summary,
-}: {
-  isOpen: boolean;
-  onClose: () => void;
-  summary: string;
-}) => {
-  if (!isOpen) return null;
-
-  return (
-    <div className="bg-gray-50 rounded-lg p-6 mb-8 relative transform transition-all duration-300 ease-in-out">
-      <button
-        onClick={onClose}
-        className="absolute top-4 right-4 text-gray-500 hover:text-gray-700"
-      >
-        ×
-      </button>
-      <div className="flex items-start gap-4">
-        <img src="/mema.svg" alt="MeMa Logo" className="w-16 h-6" />
-        <div className="flex-1">
-          <h3 className="text-lg font-semibold mb-2">Sommario MeMa</h3>
-          <p className="text-gray-700">{summary}</p>
-        </div>
-      </div>
-    </div>
-  );
-};
-
-const ArticleContent = ({
-  article,
-  summaryOpen,
-  setSummaryOpen,
-  highlightsOpen,
-  setHighlightsOpen,
-  topicsOpen,
-  setTopicsOpen,
-  mapOpen, // These props are used but not in the interface
-  setMapOpen,
-}: {
-  article: Article;
-  summaryOpen: boolean;
-  setSummaryOpen: (open: boolean) => void;
-  highlightsOpen: boolean;
-  setHighlightsOpen: (open: boolean) => void;
-  topicsOpen: boolean;
-  setTopicsOpen: (open: boolean) => void;
-  mapOpen: boolean; // Add these to the interface
-  setMapOpen: (open: boolean) => void;
-}) => {
-  return (
-    <div className="prose max-w-none">
-      {/* Header section */}
-      <div className="mb-12">
-        <h1 className="text-3xl font-bold mb-4 text-gray-900">
-          {article.headline}
-        </h1>
-
-        {article.articleKicker && (
-          <div className="text-lg text-gray-600 mb-6">
-            {article.articleKicker}
-          </div>
-        )}
-
-        <div className="flex items-center justify-between text-lg text-gray-700">
-          {article.author && (
-            <div className="font-bold">By {article.author}</div>
-          )}
-          {article.datePublished && (
-            <time dateTime={article.datePublished}>
-              {new Date(article.datePublished).toLocaleDateString("en-US", {
-                year: "numeric",
-                month: "long",
-                day: "numeric",
-              })}
-            </time>
-          )}
-        </div>
-      </div>
-
-      {/* Summary, Highlights, and Topics Panels */}
-      {article.mema_summary && (
-        <SummaryPanel
-          isOpen={summaryOpen}
-          onClose={() => setSummaryOpen(false)}
-          summary={article.mema_summary}
-        />
-      )}
-      <TopicsPanel
-        isOpen={topicsOpen}
-        onClose={() => setTopicsOpen(false)}
-        article={article}
-      />
-      <MapPanel
-        isOpen={mapOpen}
-        onClose={() => setMapOpen(false)}
-        article={article}
-      />
-      {article.highlights && article.highlights.length > 0 && (
-        <HighlightsPanel
-          isOpen={highlightsOpen}
-          onClose={() => setHighlightsOpen(false)}
-          articleTitle={article.headline}
-          highlights={article.highlights}
-        />
-      )}
-
-      {/* Article body section with positioning context */}
-      <div id="article-body" className="relative">
-        <div className="text-gray-800 text-lg leading-relaxed whitespace-pre-wrap">
-          {article.articleBody || (
-            <div className="text-gray-500 italic">
-              Article content not available
-            </div>
-          )}
-        </div>
-      </div>
-    </div>
-  );
-};
 
 export default function ArticlePage({
   params,
@@ -241,101 +25,76 @@ export default function ArticlePage({
   const router = useRouter();
   const [article, setArticle] = useState<Article | null>(null);
   const [loading, setLoading] = useState(true);
-  const [activeView, setActiveView] = useState<"article" | "entities">(
-    "article"
-  );
+  const [activeView, setActiveView] = useState<"article" | "entities">("article");
   const [allArticles, setAllArticles] = useState<Article[]>([]);
   const [currentIndex, setCurrentIndex] = useState<number>(-1);
-  const [sortField, setSortField] = useState<SortField>(() => {
-    if (typeof localStorage !== "undefined") {
-      return (localStorage.getItem("sortField") as SortField) || "date_created";
-    }
-    return "date_created";
-  });
-  const [sortDirection, setSortDirection] = useState<SortDirection>(() => {
-    if (typeof localStorage !== "undefined") {
-      return (localStorage.getItem("sortDirection") as SortDirection) || "desc";
-    }
-    return "desc";
-  });
 
-  // Get panel states from localStorage or default to false
-  const [highlightsOpen, setHighlightsOpen] = useState(() => {
-    if (typeof localStorage !== "undefined") {
-      return localStorage.getItem("highlightsOpen") === "true";
-    }
-    return false;
-  });
-  const [summaryOpen, setSummaryOpen] = useState(() => {
-    if (typeof localStorage !== "undefined") {
-      return localStorage.getItem("summaryOpen") === "true";
-    }
-    return false;
-  });
-  const [topicsOpen, setTopicsOpen] = useState(() => {
-    if (typeof localStorage !== "undefined") {
-      return localStorage.getItem("topicsOpen") === "true";
-    }
-    return false;
-  });
-  // Add this new state for map
-  const [mapOpen, setMapOpen] = useState(() => {
-    if (typeof localStorage !== "undefined") {
-      return localStorage.getItem("mapOpen") === "true";
-    }
-    return false;
-  });
+  // Sort states
+  const [sortField, setSortField] = useState<SortField>(() => 
+    (localStorage.getItem("sortField") as SortField) || "date_created"
+  );
+  const [sortDirection, setSortDirection] = useState<SortDirection>(() => 
+    (localStorage.getItem("sortDirection") as SortDirection) || "desc"
+  );
+
+  // Panel states
+  const [highlightsOpen, setHighlightsOpen] = useState(() => 
+    localStorage.getItem("highlightsOpen") === "true"
+  );
+  const [summaryOpen, setSummaryOpen] = useState(() => 
+    localStorage.getItem("summaryOpen") === "true"
+  );
+  const [topicsOpen, setTopicsOpen] = useState(() => 
+    localStorage.getItem("topicsOpen") === "true"
+  );
+
+  // Separate desired and actual map states
+  const [desiredMapState, setDesiredMapState] = useState(() => 
+    localStorage.getItem("desiredMapState") === "true"
+  );
+  const [mapOpen, setMapOpen] = useState(false);
 
   const resolvedParams = React.use(params);
   const articleId = resolvedParams.id;
 
-  // Save panel states to localStorage whenever they change
+  // Persist panel states to localStorage
   useEffect(() => {
-    localStorage.setItem("highlightsOpen", highlightsOpen.toString());
+    localStorage.setItem("highlightsOpen", String(highlightsOpen));
   }, [highlightsOpen]);
 
   useEffect(() => {
-    localStorage.setItem("summaryOpen", summaryOpen.toString());
+    localStorage.setItem("summaryOpen", String(summaryOpen));
   }, [summaryOpen]);
 
   useEffect(() => {
-    localStorage.setItem("topicsOpen", topicsOpen.toString());
+    localStorage.setItem("topicsOpen", String(topicsOpen));
   }, [topicsOpen]);
-  useEffect(() => {
-    localStorage.setItem("mapOpen", mapOpen.toString());
-  }, [mapOpen]);
 
+  useEffect(() => {
+    localStorage.setItem("desiredMapState", String(desiredMapState));
+  }, [desiredMapState]);
+
+  // Fetch articles
   useEffect(() => {
     const fetchArticles = async () => {
       try {
         const response = await fetch("/api/files");
         let articles: Article[] = await response.json();
 
-        // Apply the same sorting logic as the parent page
         articles = [...articles].sort((a, b) => {
           const direction = sortDirection === "asc" ? 1 : -1;
-
           if (sortField === "date_created") {
-            return (
-              direction *
-              (new Date(a.date_created).getTime() -
-                new Date(b.date_created).getTime())
-            );
+            return direction * (new Date(a.date_created).getTime() - new Date(b.date_created).getTime());
           }
-
           const aValue = (a[sortField] || "").toLowerCase();
           const bValue = (b[sortField] || "").toLowerCase();
           return direction * aValue.localeCompare(bValue);
         });
 
         setAllArticles(articles);
-        const index = articles.findIndex((a: Article) => a.id === articleId);
+        const index = articles.findIndex((a) => a.id === articleId);
         setCurrentIndex(index);
-        if (index !== -1) {
-          setArticle(articles[index]);
-        } else {
-          setArticle(null);
-        }
+        setArticle(index !== -1 ? articles[index] : null);
       } catch (error) {
         console.error("Error:", error);
       } finally {
@@ -345,48 +104,50 @@ export default function ArticlePage({
     fetchArticles();
   }, [articleId, sortField, sortDirection]);
 
+  // Handle map visibility based on article locations
+  useEffect(() => {
+    if (article) {
+      const hasLocations = article.meta_data?.some(entity => entity.kind === "location");
+      setMapOpen(hasLocations ? desiredMapState : false);
+    }
+  }, [article, desiredMapState]);
+
   const navigateToArticle = (index: number) => {
     if (index >= 0 && index < allArticles.length) {
       router.push(`/article/${allArticles[index].id}`);
     }
   };
 
+  // Handle escape key
   useEffect(() => {
     const handleEscKey = (event: KeyboardEvent) => {
       if (event.key === "Escape") {
-        event.preventDefault();
-        if (highlightsOpen) {
-          setHighlightsOpen(false);
-        }
-        if (summaryOpen) {
-          setSummaryOpen(false);
-        }
-        if (topicsOpen) {
-          setTopicsOpen(false);
-        }
-        if (mapOpen) {
-          // Add this condition
+        if (highlightsOpen) setHighlightsOpen(false);
+        else if (summaryOpen) setSummaryOpen(false);
+        else if (topicsOpen) setTopicsOpen(false);
+        else if (mapOpen) {
           setMapOpen(false);
+          setDesiredMapState(false);
         }
-        if (
-          !highlightsOpen &&
-          !summaryOpen &&
-          !topicsOpen &&
-          !mapOpen &&
-          activeView === "entities"
-        ) {
-          setActiveView("article");
-        }
+        else if (activeView === "entities") setActiveView("article");
       }
     };
 
-    document.addEventListener("keydown", handleEscKey);
-    return () => document.removeEventListener("keydown", handleEscKey);
+    window.addEventListener("keydown", handleEscKey);
+    return () => window.removeEventListener("keydown", handleEscKey);
   }, [highlightsOpen, summaryOpen, topicsOpen, mapOpen, activeView]);
 
   if (loading) return <div className="p-4 text-gray-900">Loading...</div>;
-  if (!article)
-    return <div className="p-4 text-gray-900">Article not found</div>;
+  if (!article) return <div className="p-4 text-gray-900">Article not found</div>;
+
+  // Panel toggle handlers
+  const handleHighlightsToggle = () => setHighlightsOpen(!highlightsOpen);
+  const handleSummaryToggle = () => setSummaryOpen(!summaryOpen);
+  const handleTopicsToggle = () => setTopicsOpen(!topicsOpen);
+  const handleMapToggle = () => {
+    const newState = !desiredMapState;
+    setDesiredMapState(newState);
+  };
 
   return (
     <div className="bg-white min-h-screen">
@@ -394,16 +155,10 @@ export default function ArticlePage({
 
       <main className="p-4">
         <div className="max-w-6xl mx-auto">
+          {/* Navigation buttons */}
           <div className="flex items-center gap-4 mb-6">
             <button
-              onClick={() =>
-                router.push(
-                  "/?sortField=" +
-                    localStorage.getItem("sortField") +
-                    "&sortDirection=" +
-                    localStorage.getItem("sortDirection")
-                )
-              }
+              onClick={() => router.push(`/?sortField=${sortField}&sortDirection=${sortDirection}`)}
               className="flex items-center gap-2 text-blue-600 hover:text-blue-800"
             >
               <ArrowLeft className="w-4 h-4" /> Lista articoli
@@ -422,90 +177,82 @@ export default function ArticlePage({
               onClick={() => navigateToArticle(currentIndex + 1)}
               disabled={currentIndex >= allArticles.length - 1}
               className={`flex items-center gap-2 text-blue-600 hover:text-blue-800 ${
-                currentIndex >= allArticles.length - 1
-                  ? "opacity-50 cursor-not-allowed"
-                  : ""
+                currentIndex >= allArticles.length - 1 ? "opacity-50 cursor-not-allowed" : ""
               }`}
             >
               <ArrowDown className="w-4 h-4" /> Successivo
             </button>
           </div>
 
+          {/* MeMa logo and controls */}
           <div className="flex items-center gap-4 mb-8">
             <img src="/mema.svg" alt="MeMa Logo" className="w-16 h-6" />
-            <button
-              onClick={() =>
-                setActiveView(
-                  activeView === "entities" ? "article" : "entities"
-                )
-              }
-              className={`px-6 py-2 rounded-full transition-colors flex items-center gap-2 ${
-                activeView === "entities"
-                  ? "bg-blue-600 text-white"
-                  : "bg-gray-100 text-gray-800 hover:bg-gray-200"
-              }`}
-            >
-              <Microscope className="w-4 h-4" />
-              Entità e dettagli
-            </button>
+            <div className="flex items-center gap-4">
+              <button
+                onClick={() => setActiveView(activeView === "entities" ? "article" : "entities")}
+                className={`px-6 py-2 rounded-full transition-colors flex items-center gap-2 ${
+                  activeView === "entities"
+                    ? "bg-blue-600 text-white"
+                    : "bg-gray-100 text-gray-800 hover:bg-gray-200"
+                }`}
+              >
+                <Microscope className="w-4 h-4" />
+                Entità e dettagli
+              </button>
 
-            {activeView !== "entities" && (
-              <div className="flex items-center gap-4">
+              <button
+                onClick={handleTopicsToggle}
+                className={`px-6 py-2 rounded-full transition-colors flex items-center gap-2 ${
+                  topicsOpen
+                    ? "bg-blue-600 text-white"
+                    : "bg-gray-100 text-gray-800 hover:bg-gray-200"
+                }`}
+              >
+                <Hash className="w-4 h-4" />
+                Argomenti
+              </button>
+
+              <button
+                onClick={handleSummaryToggle}
+                className={`px-6 py-2 rounded-full transition-colors flex items-center gap-2 ${
+                  summaryOpen
+                    ? "bg-blue-600 text-white"
+                    : "bg-gray-100 text-gray-800 hover:bg-gray-200"
+                }`}
+              >
+                <FileText className="w-4 h-4" />
+                Sommario
+              </button>
+
+              <button
+                onClick={handleHighlightsToggle}
+                className={`px-6 py-2 rounded-full transition-colors flex items-center gap-2 ${
+                  highlightsOpen
+                    ? "bg-blue-600 text-white"
+                    : "bg-gray-100 text-gray-800 hover:bg-gray-200"
+                }`}
+              >
+                <Highlighter className="w-4 h-4" />
+                Punti salienti
+              </button>
+
+              {article.meta_data?.some(entity => entity.kind === "location") && (
                 <button
-                  onClick={() => setHighlightsOpen(!highlightsOpen)}
+                  onClick={handleMapToggle}
                   className={`px-6 py-2 rounded-full transition-colors flex items-center gap-2 ${
-                    highlightsOpen
+                    mapOpen
                       ? "bg-blue-600 text-white"
                       : "bg-gray-100 text-gray-800 hover:bg-gray-200"
                   }`}
                 >
-                  <Highlighter className="w-4 h-4" />
-                  Punti salienti
+                  <Globe className="w-4 h-4" />
+                  Mappa
                 </button>
-
-                <button
-                  onClick={() => setSummaryOpen(!summaryOpen)}
-                  className={`px-6 py-2 rounded-full transition-colors flex items-center gap-2 ${
-                    summaryOpen
-                      ? "bg-blue-600 text-white"
-                      : "bg-gray-100 text-gray-800 hover:bg-gray-200"
-                  }`}
-                >
-                  <FileText className="w-4 h-4" />
-                  Sommario
-                </button>
-
-                <button
-                  onClick={() => setTopicsOpen(!topicsOpen)}
-                  className={`px-6 py-2 rounded-full transition-colors flex items-center gap-2 ${
-                    topicsOpen
-                      ? "bg-blue-600 text-white"
-                      : "bg-gray-100 text-gray-800 hover:bg-gray-200"
-                  }`}
-                >
-                  <Hash className="w-4 h-4" />
-                  Argomenti
-                </button>
-
-                {article.meta_data?.some(
-                  (entity) => entity.kind === "location"
-                ) && (
-                  <button
-                    onClick={() => setMapOpen(!mapOpen)}
-                    className={`px-6 py-2 rounded-full transition-colors flex items-center gap-2 ${
-                      mapOpen
-                        ? "bg-blue-600 text-white"
-                        : "bg-gray-100 text-gray-800 hover:bg-gray-200"
-                    }`}
-                  >
-                    <Globe className="w-4 h-4" />
-                    Mappa
-                  </button>
-                )}
-              </div>
-            )}
+              )}
+            </div>
           </div>
 
+          {/* Main content */}
           <div className="relative mt-6 prose mx-auto">
             {activeView === "entities" ? (
               <EntitiesView article={article} />
@@ -518,7 +265,7 @@ export default function ArticlePage({
                 setHighlightsOpen={setHighlightsOpen}
                 topicsOpen={topicsOpen}
                 setTopicsOpen={setTopicsOpen}
-                mapOpen={mapOpen} // Add these props
+                mapOpen={mapOpen}
                 setMapOpen={setMapOpen}
               />
             )}
