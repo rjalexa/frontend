@@ -326,7 +326,12 @@
         "id": "2e428f6364a04f2ead0fd2b085ac536b",
         "kind": "organization",
         "label": "ministero dell'energia",
-        "linking_info": [],
+        "linking_info": [
+          {
+            "source": "ai",
+            "summary": "Il ministero dell'energia è uno dei 12 dicasteri che necessitano di approvazione dei bilanci prima dell'inizio dell'anno fiscale. La procedura di approvazione comprende anche i ministeri del commercio, agricoltura, finanza e interni, oltre che una parte della spesa militare."
+          }
+        ],
         "score": null
       },
       {
@@ -2162,7 +2167,12 @@
         "id": "c904e1a34b08490992711dd4e1c9cb06",
         "kind": "organization",
         "label": "Istituto comprensivo Simonetta Salacone",
-        "linking_info": [],
+        "linking_info": [
+          {
+            "source": "ai",
+            "summary": "L'Istituto comprensivo Simonetta Salacone è una scuola i cui genitori hanno partecipato al presidio romano per Khaled el Qaisi."
+          }
+        ],
         "score": null
       },
       {
@@ -2184,21 +2194,36 @@
         "id": "7b5d00c4f890462398c4569933bd6a5f",
         "kind": "person",
         "label": "Arianna Longo",
-        "linking_info": [],
+        "linking_info": [
+          {
+            "source": "ai",
+            "summary": "Arianna Longo è un'attivista di Nonna Roma che ha partecipato al presidio romano per Khaled el Qaisi."
+          }
+        ],
         "score": null
       },
       {
         "id": "7f3582373f28433ab1c2308ae020ce55",
         "kind": "organization",
         "label": "Nonna Roma",
-        "linking_info": [],
+        "linking_info": [
+          {
+            "source": "ai",
+            "summary": "Nonna Roma è un'organizzazione che ha partecipato al presidio romano per Khaled el Qaisi."
+          }
+        ],
         "score": null
       },
       {
         "id": "b487fa576b1441a5ae585dbb17eda76a",
         "kind": "person",
         "label": "Vincenzo Migliucci",
-        "linking_info": [],
+        "linking_info": [
+          {
+            "source": "ai",
+            "summary": "Vincenzo Migliucci è un attivista dei Cobas che ha partecipato al presidio romano per Khaled el Qaisi."
+          }
+        ],
         "score": null
       },
       {
@@ -2423,7 +2448,12 @@
         "id": "1e1e1d0e3b484546bc323edaeb7a9973",
         "kind": "organization",
         "label": "Giovani palestinesi d'Italia",
-        "linking_info": [],
+        "linking_info": [
+          {
+            "source": "ai",
+            "summary": "Giovani palestinesi d'Italia è un'organizzazione che ha partecipato al presidio romano per Khaled el Qaisi."
+          }
+        ],
         "score": null
       },
       {
@@ -2445,14 +2475,24 @@
         "id": "25bfe2e092794b68abeb7fcb08d1109b",
         "kind": "organization",
         "label": "Centro Antiviolenza Donna L.I.S.A.",
-        "linking_info": [],
+        "linking_info": [
+          {
+            "source": "ai",
+            "summary": "Centro Antiviolenza Donna L.I.S.A. è un'organizzazione che ha partecipato al presidio romano per Khaled el Qaisi."
+          }
+        ],
         "score": null
       },
       {
         "id": "cede5961699646d39cda306b885ea582",
         "kind": "person",
         "label": "Francesca Antinucci",
-        "linking_info": [],
+        "linking_info": [
+          {
+            "source": "ai",
+            "summary": "Francesca Antinucci è la moglie di Khaled el Qaisi, un italiano-palestinese detenuto da Israele."
+          }
+        ],
         "score": null
       },
       {
@@ -2506,7 +2546,12 @@
         "id": "d737ee14255049df8bb74a7821ca16a0",
         "kind": "person",
         "label": "Simonetta Crisci",
-        "linking_info": [],
+        "linking_info": [
+          {
+            "source": "ai",
+            "summary": "Simonetta Crisci è un'avvocata che conosce bene le modalità di detenzione utilizzate da Israele."
+          }
+        ],
         "score": null
       },
       {
@@ -2545,14 +2590,24 @@
         "id": "ec29ee1175ed4a188749d0107692e9b1",
         "kind": "person",
         "label": "Jacopo Smeriglio",
-        "linking_info": [],
+        "linking_info": [
+          {
+            "source": "ai",
+            "summary": "Jacopo Smeriglio è un attivista di Gaza FreeStyle che ha partecipato al presidio romano per Khaled el Qaisi."
+          }
+        ],
         "score": null
       },
       {
         "id": "fa1c86becc0a44e3b61e9b165469a04b",
         "kind": "organization",
         "label": "Gaza FreeStyle",
-        "linking_info": [],
+        "linking_info": [
+          {
+            "source": "ai",
+            "summary": "Gaza FreeStyle è un'organizzazione che ha partecipato al presidio romano per Khaled el Qaisi."
+          }
+        ],
         "score": null
       },
       {
@@ -2606,7 +2661,12 @@
         "id": "9eda5aa37aa74f6bbee13ef452ff3c44",
         "kind": "organization",
         "label": "Comitato #FreeKhaled",
-        "linking_info": [],
+        "linking_info": [
+          {
+            "source": "ai",
+            "summary": "Comitato #FreeKhaled è un'organizzazione lanciata dalla famiglia di Khaled el Qaisi per chiedere la sua liberazione."
+          }
+        ],
         "score": null
       }
     ],
@@ -2684,7 +2744,12 @@
         "id": "ff2d8f166f534a06b471413922dfb254",
         "kind": "person",
         "label": "Iolanda Apostolico",
-        "linking_info": [],
+        "linking_info": [
+          {
+            "source": "ai",
+            "summary": "Iolanda Apostolico è la giudice che ha firmato la decisione di non convalidare il trattenimento di tre migranti su quattro e di decretare il non luogo a procedere per l'ultimo."
+          }
+        ],
         "score": null
       },
       {
@@ -2930,21 +2995,36 @@
         "id": "a67f83e0b744449e96ada99065e4993c",
         "kind": "person",
         "label": "Riccardo Campochiaro",
-        "linking_info": [],
+        "linking_info": [
+          {
+            "source": "ai",
+            "summary": "Riccardo Campochiaro è un avvocato di Asgi e presidente del Centro Astalli Catania che difende i tre migranti rimessi in libertà, ha spiegato le motivazioni della sentenza del tribunale di Catania."
+          }
+        ],
         "score": null
       },
       {
         "id": "4c3e0deab9ba4c4cb4f97237b134e324",
         "kind": "organization",
         "label": "Asgi",
-        "linking_info": [],
+        "linking_info": [
+          {
+            "source": "ai",
+            "summary": "Asgi è un'organizzazione che si occupa di difendere i diritti dei migranti, il suo avvocato Riccardo Campochiaro ha difeso i tre migranti rimessi in libertà."
+          }
+        ],
         "score": null
       },
       {
         "id": "f49d57f4b7fd48b58ef34b31552f4862",
         "kind": "organization",
         "label": "Centro Astalli Catania",
-        "linking_info": [],
+        "linking_info": [
+          {
+            "source": "ai",
+            "summary": "Il Centro Astalli Catania è un'organizzazione che si occupa di aiutare i migranti, il suo presidente Riccardo Campochiaro ha difeso i tre migranti rimessi in libertà."
+          }
+        ],
         "score": null
       },
       {
@@ -3141,7 +3221,12 @@
         "id": "91025dd9d3a044579b958ea4013469e0",
         "kind": "person",
         "label": "Andrea Argentieri",
-        "linking_info": [],
+        "linking_info": [
+          {
+            "source": "ai",
+            "summary": "Andrea Argentieri è un attore della compagnia Fanny&Alexander che ha interpretato Charles Manson nello spettacolo 'Manson'. Ha utilizzato una tecnica di recitazione chiamata 'eterodirezione' per entrare nei panni del criminale."
+          }
+        ],
         "score": null
       },
       {
@@ -3195,14 +3280,24 @@
         "id": "c30bcb950e4e48b9a319d63f584b58d4",
         "kind": "person",
         "label": "Luigi De Angelis",
-        "linking_info": [],
+        "linking_info": [
+          {
+            "source": "ai",
+            "summary": "Luigi De Angelis è il regista dello spettacolo 'Manson', che mira a far riflettere il pubblico sulla figura di Charles Manson e sulla sua capacità di affascinare le persone nonostante i suoi crimini."
+          }
+        ],
         "score": null
       },
       {
         "id": "005b07ca7233419cb067270de4085a45",
         "kind": "person",
         "label": "Chiara Lagani",
-        "linking_info": [],
+        "linking_info": [
+          {
+            "source": "ai",
+            "summary": "Chiara Lagani è la drammaturga dello spettacolo 'Manson', che esplora la figura di Charles Manson e la sua capacità di riflettere l'oscurità umana."
+          }
+        ],
         "score": null
       },
       {
@@ -3373,14 +3468,24 @@
         "id": "a81076e08c684a499b33ee1a28bcaf45",
         "kind": "person",
         "label": "Giuseppe Santalucia",
-        "linking_info": [],
+        "linking_info": [
+          {
+            "source": "ai",
+            "summary": "Giuseppe Santalucia è il presidente dell'Anm. Ha affermato che è fisiologico che ci possano essere provvedimenti dei giudici che vanno contro alcuni progetti e programmi del governo."
+          }
+        ],
         "score": null
       },
       {
         "id": "840796a9dd5944f787f1a989be390e16",
         "kind": "person",
         "label": "Giovanni Zaccaro",
-        "linking_info": [],
+        "linking_info": [
+          {
+            "source": "ai",
+            "summary": "Giovanni Zaccaro è un magistrato in servizio a Bari, già consigliere al Csm ed esponente di Area. Ha commentato la decisione del tribunale di Catania, sottolineando che la libertà personale è inviolabile e che l'autorità giudiziaria è un presidio fondamentale per la sua difesa."
+          }
+        ],
         "score": null
       },
       {
@@ -3952,14 +4057,24 @@
         "id": "3cfc123831ee46f384be27dfa3bd1724",
         "kind": "organization",
         "label": "Governo armeno",
-        "linking_info": [],
+        "linking_info": [
+          {
+            "source": "ai",
+            "summary": "Il governo armeno, guidato da Nikol Pashinyan, è stato criticato per non aver saputo proteggere il proprio Paese e per scelte errate in politica estera. Ha chiesto assistenza alla Commissione europea per sostenere economicamente gli sfollati giunti dal Nagorno-Karabakh."
+          }
+        ],
         "score": null
       },
       {
         "id": "53cf129119404747a5d0b76f7189509c",
         "kind": "organization",
         "label": "Governo azero",
-        "linking_info": [],
+        "linking_info": [
+          {
+            "source": "ai",
+            "summary": "Il governo azero, guidato da Aliyev, ha lanciato un'operazione militare contro il Nagorno-Karabakh, accusando gli indipendentisti armeni di aver ucciso sei suoi soldati. Ha anche dichiarato che un suo soldato è stato ucciso da un cecchino armeno vicino all'area di Kut."
+          }
+        ],
         "score": null
       },
       {
@@ -4235,21 +4350,36 @@
         "id": "2051f4c64f9d4dc0ba175e6b139566da",
         "kind": "person",
         "label": "Renata Ciaravino",
-        "linking_info": [],
+        "linking_info": [
+          {
+            "source": "ai",
+            "summary": "Renata Ciaravino è l'autrice del libretto dell'opera Raffa in the Sky."
+          }
+        ],
         "score": null
       },
       {
         "id": "8c2fb7d074534aec985a0417f52fb16b",
         "kind": "person",
         "label": "Alberto Mattioli",
-        "linking_info": [],
+        "linking_info": [
+          {
+            "source": "ai",
+            "summary": "Alberto Mattioli è l'autore del libretto dell'opera Raffa in the Sky e ha definito lo spettacolo come un'opera lirica vera."
+          }
+        ],
         "score": null
       },
       {
         "id": "741aef6ca5de47ffb9bed915a308be45",
         "kind": "person",
         "label": "Lamberto Curtoni",
-        "linking_info": [],
+        "linking_info": [
+          {
+            "source": "ai",
+            "summary": "Lamberto Curtoni è il compositore dell'opera Raffa in the Sky e ha utilizzato le canzoni più famose di Raffaella Carrà come materiale sonoro da costruzione."
+          }
+        ],
         "score": null
       },
       {
@@ -4271,28 +4401,48 @@
         "id": "89e4ef2ac5de4541baa1ccb9925db5bd",
         "kind": "person",
         "label": "Edoardo Sanchi",
-        "linking_info": [],
+        "linking_info": [
+          {
+            "source": "ai",
+            "summary": "Edoardo Sanchi è il responsabile delle scene dell'opera Raffa in the Sky."
+          }
+        ],
         "score": null
       },
       {
         "id": "d85560d3784d40a487c2ebf63f4a10c8",
         "kind": "person",
         "label": "Alessio Rosati",
-        "linking_info": [],
+        "linking_info": [
+          {
+            "source": "ai",
+            "summary": "Alessio Rosati è il responsabile dei costumi dell'opera Raffa in the Sky."
+          }
+        ],
         "score": null
       },
       {
         "id": "a0afb3cc7c264a52bba6e08bee35544e",
         "kind": "person",
         "label": "Mattia Agatiello",
-        "linking_info": [],
+        "linking_info": [
+          {
+            "source": "ai",
+            "summary": "Mattia Agatiello è il coreografo dell'opera Raffa in the Sky."
+          }
+        ],
         "score": null
       },
       {
         "id": "98c2ca0ce38e4294867e187809e92110",
         "kind": "person",
         "label": "Alessandro Andreoli",
-        "linking_info": [],
+        "linking_info": [
+          {
+            "source": "ai",
+            "summary": "Alessandro Andreoli è il responsabile del light design dell'opera Raffa in the Sky."
+          }
+        ],
         "score": null
       },
       {
@@ -4314,35 +4464,60 @@
         "id": "ee35e1d86ca9408394ba49d3d44b7819",
         "kind": "person",
         "label": "Gaia Petrone",
-        "linking_info": [],
+        "linking_info": [
+          {
+            "source": "ai",
+            "summary": "Gaia Petrone è una cantante lirica che ha partecipato all'opera Raffa in the Sky."
+          }
+        ],
         "score": null
       },
       {
         "id": "e2612a2083bf4d26b2d8a42c7c807f52",
         "kind": "person",
         "label": "Dave Monaco",
-        "linking_info": [],
+        "linking_info": [
+          {
+            "source": "ai",
+            "summary": "Dave Monaco è un cantante lirico che ha partecipato all'opera Raffa in the Sky."
+          }
+        ],
         "score": null
       },
       {
         "id": "ccbf6a1fe1d04be2a9cd85c319b1d040",
         "kind": "person",
         "label": "Haris Andrianos",
-        "linking_info": [],
+        "linking_info": [
+          {
+            "source": "ai",
+            "summary": "Haris Andrianos è un cantante lirico che ha partecipato all'opera Raffa in the Sky."
+          }
+        ],
         "score": null
       },
       {
         "id": "8cacfe505c5848669aea75249ab907de",
         "kind": "person",
         "label": "Roberto Lorenzi",
-        "linking_info": [],
+        "linking_info": [
+          {
+            "source": "ai",
+            "summary": "Roberto Lorenzi è un cantante lirico che ha partecipato all'opera Raffa in the Sky."
+          }
+        ],
         "score": null
       },
       {
         "id": "d0d479a7decf42dfb7262ce90e51fdc6",
         "kind": "person",
         "label": "Chiara Dello Iacovo",
-        "linking_info": [],
+        "linking_info": [
+          {
+            "source": "ai",
+            "summary": "Chiara Dello Iacovo è una cantante pop che ha debuttato in un teatro d'opera con l'opera Raffa in the Sky, interpretando la parte di Raffaella Carrà."
+          }
+        ],
         "score": null
       },
       {
@@ -5274,7 +5449,12 @@
         "id": "b8364e5464134cc9b477db988a92bf08",
         "kind": "organization",
         "label": "Friday fot Future",
-        "linking_info": [],
+        "linking_info": [
+          {
+            "source": "ai",
+            "summary": "Friday fot Future è un'organizzazione ambientalista che da tempo sostiene l'importanza delle elezioni europee e si unisce all'iniziativa di Michele Santoro e Raniero La Valle per presentare una lista alle elezioni europee con un programma che include l'indicazione di alcuni punti programmatici da approfondire nei prossimi mesi."
+          }
+        ],
         "score": null
       },
       {
@@ -5996,7 +6176,12 @@
         "id": "25727ccc90b24762a4b38f4efd0e8024",
         "kind": "person",
         "label": "Hani Masri",
-        "linking_info": [],
+        "linking_info": [
+          {
+            "source": "ai",
+            "summary": "L'analista Hani Masri invita a considerare le manovre di attori internazionali nella scelta del nuovo premier dell'Anp, sottolineando come l'amministrazione Biden cerchi di normalizzare i rapporti tra Arabia saudita e Israele."
+          }
+        ],
         "score": null
       },
       {
@@ -6893,21 +7078,36 @@
         "id": "638c5117a80f42ab9ef2241129462596",
         "kind": "person",
         "label": "Ricardo Apcarian",
-        "linking_info": [],
+        "linking_info": [
+          {
+            "source": "ai",
+            "summary": "Ricardo Apcarian è un giudice che ha stabilito che al lago Escondido si arriverà solo seguendo un impervio percorso di 33 chilometri."
+          }
+        ],
         "score": null
       },
       {
         "id": "46749fd8db224e98abe6dc2d962081c8",
         "kind": "person",
         "label": "Sergio Barotto",
-        "linking_info": [],
+        "linking_info": [
+          {
+            "source": "ai",
+            "summary": "Sergio Barotto è un giudice che ha stabilito che al lago Escondido si arriverà solo seguendo un impervio percorso di 33 chilometri."
+          }
+        ],
         "score": null
       },
       {
         "id": "1487c7434f7b4081a1666808e5ee56d0",
         "kind": "person",
         "label": "Cecilia Criado",
-        "linking_info": [],
+        "linking_info": [
+          {
+            "source": "ai",
+            "summary": "Cecilia Criado è un giudice che ha stabilito che al lago Escondido si arriverà solo seguendo un impervio percorso di 33 chilometri."
+          }
+        ],
         "score": null
       },
       {
@@ -6944,14 +7144,24 @@
         "id": "2f6cc5f92bdc448499c99a93d5f1f632",
         "kind": "organization",
         "label": "Tribunale superiore di giustizia del Río Negro",
-        "linking_info": [],
+        "linking_info": [
+          {
+            "source": "ai",
+            "summary": "Il Tribunale superiore di giustizia del Río Negro ha ordinato, già nel 2009 e poi ancora nel 2013, di consentire il passaggio per il cammino di Tacuifí."
+          }
+        ],
         "score": null
       },
       {
         "id": "cd2ba53501c74e7b8f8a0970b453bc71",
         "kind": "organization",
         "label": "Corte di appello di Bariloche",
-        "linking_info": [],
+        "linking_info": [
+          {
+            "source": "ai",
+            "summary": "La Corte di appello di Bariloche ha fatto lo stesso ordine del Tribunale superiore di giustizia del Río Negro nel settembre del 2022."
+          }
+        ],
         "score": null
       }
     ],
@@ -7214,14 +7424,24 @@
         "id": "ba11e660a2314fcc991c69a20a412be3",
         "kind": "person",
         "label": "Lucio Biasiori",
-        "linking_info": [],
+        "linking_info": [
+          {
+            "source": "ai",
+            "summary": "Lucio Biasiori è il curatore dell'edizione italiana del libro di Ernst H. Gombrich, La preferenza per il primitivo Episodi della storia del gusto e dell'arte occidentale."
+          }
+        ],
         "score": null
       },
       {
         "id": "cda8455346244fffbbaca395e5884275",
         "kind": "person",
         "label": "Valentina Palombi",
-        "linking_info": [],
+        "linking_info": [
+          {
+            "source": "ai",
+            "summary": "Valentina Palombi è la traduttrice dell'edizione italiana del libro di Ernst H. Gombrich, La preferenza per il primitivo Episodi della storia del gusto e dell'arte occidentale."
+          }
+        ],
         "score": null
       },
       {
@@ -9017,14 +9237,24 @@
         "id": "e528f8bc77d84824b676c8477894e0f2",
         "kind": "person",
         "label": "Roberto Merlo",
-        "linking_info": [],
+        "linking_info": [
+          {
+            "source": "ai",
+            "summary": "Roberto Merlo è il traduttore del libro L'ombra in esilio di Norman Manea, insieme a Barbara Pavetto, per la casa editrice Il Saggiatore."
+          }
+        ],
         "score": null
       },
       {
         "id": "8fa857746d8640d994050985881557ce",
         "kind": "person",
         "label": "Barbara Pavetto",
-        "linking_info": [],
+        "linking_info": [
+          {
+            "source": "ai",
+            "summary": "Barbara Pavetto è la traduttrice del libro L'ombra in esilio di Norman Manea, insieme a Roberto Merlo, per la casa editrice Il Saggiatore."
+          }
+        ],
         "score": null
       },
       {
@@ -9279,7 +9509,12 @@
         "id": "7ac98ea009ce426a9678842dba1a6edd",
         "kind": "person",
         "label": "Hermann J. Weigand",
-        "linking_info": [],
+        "linking_info": [
+          {
+            "source": "ai",
+            "summary": "Hermann J. Weigand è uno degli autori citati nella narrazione del libro L'ombra in esilio di Norman Manea."
+          }
+        ],
         "score": null
       },
       {
@@ -9568,7 +9803,12 @@
         "id": "7bec7cc899204338abf082b206e3e1ec",
         "kind": "person",
         "label": "Gianfrancesco Bussarli",
-        "linking_info": [],
+        "linking_info": [
+          {
+            "source": "ai",
+            "summary": "Gianfrancesco Bussarli è l'autore del libretto del 1677 che Nicola Francesco Haym ha riscritto per l'opera di Händel 'Giulio Cesare in Egitto'."
+          }
+        ],
         "score": null
       },
       {
@@ -9680,7 +9920,12 @@
         "id": "4de4b874295246fe90ed2d1c744a7e00",
         "kind": "person",
         "label": "Mary Bevan",
-        "linking_info": [],
+        "linking_info": [
+          {
+            "source": "ai",
+            "summary": "Mary Bevan interpreterà la parte di Cleopatra nell'opera 'Giulio Cesare in Egitto' al Teatro dell'Opera di Roma, diretta da Rinaldo Alessandrini e messa in scena da Damiano Michieletto."
+          }
+        ],
         "score": null
       },
       {
@@ -10124,14 +10369,24 @@
         "id": "9ecad209b7bc4cefb0bf327f48fe84f7",
         "kind": "organization",
         "label": "EstRiver",
-        "linking_info": [],
+        "linking_info": [
+          {
+            "source": "ai",
+            "summary": "EstRiver è un'organizzazione che ha ospitato il festival '2084' a Milano, in collaborazione con la Scuola di scrittura Belleville."
+          }
+        ],
         "score": null
       },
       {
         "id": "d02829e379b04cf49288f622100ccfec",
         "kind": "organization",
         "label": "Scuola di scrittura Belleville",
-        "linking_info": [],
+        "linking_info": [
+          {
+            "source": "ai",
+            "summary": "La Scuola di scrittura Belleville è un'organizzazione che ha collaborato con EstRiver per ospitare il festival '2084' a Milano, invitando scrittori di insicuro successo e accertata abilità."
+          }
+        ],
         "score": null
       },
       {
@@ -10283,14 +10538,24 @@
         "id": "fc6ced715a5c434eb7682b6b8d372f34",
         "kind": "person",
         "label": "Romulus Rusan",
-        "linking_info": [],
+        "linking_info": [
+          {
+            "source": "ai",
+            "summary": "Romulus Rusan era il marito della poetessa romena Ana Blandiana e un giornalista e scrittore. È morto nel dicembre del 2016."
+          }
+        ],
         "score": null
       },
       {
         "id": "164a8c96b0594a47a7a4fff556324ae9",
         "kind": "person",
         "label": "Bruno Mazzoni",
-        "linking_info": [],
+        "linking_info": [
+          {
+            "source": "ai",
+            "summary": "Bruno Mazzoni è il traduttore della raccolta di versi di Ana Blandiana intitolata Variazioni su un tema dato."
+          }
+        ],
         "score": null
       },
       {
@@ -10422,7 +10687,12 @@
         "id": "a176cab9c74c45af80edcf5d517b6818",
         "kind": "person",
         "label": "Federico Bertoni",
-        "linking_info": [],
+        "linking_info": [
+          {
+            "source": "ai",
+            "summary": "Federico Bertoni è un critico e teorico della letteratura che ha scritto un saggio sul Romanzo per La Nuova Italia nel 1998."
+          }
+        ],
         "score": null
       },
       {
@@ -10444,14 +10714,24 @@
         "id": "914ece9ccbcc4b7eb5c4f7731a1efa07",
         "kind": "person",
         "label": "Mauro Barindi",
-        "linking_info": [],
+        "linking_info": [
+          {
+            "source": "ai",
+            "summary": "Mauro Barindi è un traduttore che ha tradotto con perizia e empatia l'opera di Matei Vișniec, tra cui Venditore di incipit per romanzi e Sindrome da panico nella Città dei Lumi."
+          }
+        ],
         "score": null
       },
       {
         "id": "a183a3a6199a42e793bff1d4948253d7",
         "kind": "person",
         "label": "Guy Courtois",
-        "linking_info": [],
+        "linking_info": [
+          {
+            "source": "ai",
+            "summary": "Guy Courtois è un personaggio misterioso che rappresenta un'agenzia che fornisce servizi discreti e fondamentali alla letteratura mondiale, offrendo a scrittori le prime frasi personalizzate per tirar fuori il massimo potenziale creativo."
+          }
+        ],
         "score": null
       },
       {
@@ -10642,14 +10922,24 @@
         "id": "08095427102840ad840d274a3d11faf1",
         "kind": "person",
         "label": "M.",
-        "linking_info": [],
+        "linking_info": [
+          {
+            "source": "ai",
+            "summary": "M. è un giovane scrittore in cerca di ispirazione che si rivolge all'agenzia rappresentata da Guy Courtois per ottenere una prima frase personalizzata per il suo romanzo."
+          }
+        ],
         "score": null
       },
       {
         "id": "fe29acaca664498a99642f948611730e",
         "kind": "person",
         "label": "signorina Ri",
-        "linking_info": [],
+        "linking_info": [
+          {
+            "source": "ai",
+            "summary": "La signorina Ri è un personaggio enigmatico che compare nella storia d'amore con M. e anche nella raccolta poetica di Matei Vișniec, Vi se pare cumva nedreaptă dispariția dumneavoastră?."
+          }
+        ],
         "score": null
       },
       {
@@ -10803,7 +11093,12 @@
         "id": "6d2b22cca18f470da2fa561cfe585d58",
         "kind": "person",
         "label": "Andrea Ceccherelli",
-        "linking_info": [],
+        "linking_info": [
+          {
+            "source": "ai",
+            "summary": "Andrea Ceccherelli è il curatore dell'antologia Il gatto nell'erba bagnata di Kornel Filipowicz, pubblicata da Marietti."
+          }
+        ],
         "score": null
       },
       {
@@ -11124,7 +11419,12 @@
         "id": "8af5ccc4250d432e868e65a0c8231e2a",
         "kind": "person",
         "label": "Carla Riccardi",
-        "linking_info": [],
+        "linking_info": [
+          {
+            "source": "ai",
+            "summary": "Carla Riccardi è la curatrice della seconda e definitiva redazione della Storia della Colonna Infame, che ha introdotto e commentato l'opera di Alessandro Manzoni."
+          }
+        ],
         "score": null
       },
       {
@@ -11176,7 +11476,12 @@
         "id": "bcec27eee17d48a3800ca3379f63687f",
         "kind": "person",
         "label": "Giulia Raboni",
-        "linking_info": [],
+        "linking_info": [
+          {
+            "source": "ai",
+            "summary": "Giulia Raboni è un'autrice che ha scritto un profilo di Alessandro Manzoni nel volume collettaneo Manzoni, a cura di Paola Italia."
+          }
+        ],
         "score": null
       },
       {
@@ -11395,14 +11700,24 @@
         "id": "610143877b7940a6ae35f632293aaa8d",
         "kind": "organization",
         "label": "Centro Nazionale di Studi Manzoniani",
-        "linking_info": [],
+        "linking_info": [
+          {
+            "source": "ai",
+            "summary": "Il Centro Nazionale di Studi Manzoniani è un'organizzazione che si occupa di studiare e promuovere l'opera di Alessandro Manzoni, e ha pubblicato l'edizione critica della Storia della Colonna Infame a cura di Carla Riccardi."
+          }
+        ],
         "score": null
       },
       {
         "id": "be11325603d547f39076029e0d3673d9",
         "kind": "organization",
         "label": "Ronzani Editore",
-        "linking_info": [],
+        "linking_info": [
+          {
+            "source": "ai",
+            "summary": "Ronzani Editore è una casa editrice che ha pubblicato una recente edizione della Storia della Colonna Infame, con le illustrazioni di Francesco Gonin e un saggio di Salvatore Silvano Nigro."
+          }
+        ],
         "score": null
       },
       {
@@ -11524,7 +11839,12 @@
         "id": "d3f7bf9723ec44dbb532e95044fe5e87",
         "kind": "person",
         "label": "Eva Fréjaville",
-        "linking_info": [],
+        "linking_info": [
+          {
+            "source": "ai",
+            "summary": "Eva Fréjaville è una scrittrice francese che risiedeva a La Habana, donna di buona cultura, accattivante e di grande personalità."
+          }
+        ],
         "score": null
       },
       {
@@ -12004,7 +12324,12 @@
         "id": "20953065d07d481ea6d847b59913c009",
         "kind": "person",
         "label": "Rinaldo Rossello",
-        "linking_info": [],
+        "linking_info": [
+          {
+            "source": "ai",
+            "summary": "Rinaldo Rossello è un artista che ha lavorato con la ceramica ad Albissola Marina, ed è stato incluso in una mostra con opere di Wifredo Lam e altri artisti."
+          }
+        ],
         "score": null
       },
       {
@@ -13084,7 +13409,12 @@
         "id": "c25c5691faa24473b4a68ca7e17d83cf",
         "kind": "person",
         "label": "Roberto Ammatuna",
-        "linking_info": [],
+        "linking_info": [
+          {
+            "source": "ai",
+            "summary": "Roberto Ammatuna è il sindaco di Pozzallo. Ha espresso perplessità riguardo ai grandi centri di trattenimento per migranti e ha sottolineato l'importanza di una politica di integrazione. Ha anche criticato le misure del governo in materia di immigrazione, definendole incostituzionali."
+          }
+        ],
         "score": null
       },
       {
@@ -13390,7 +13720,12 @@
         "id": "a8e82d83fa184d26bbc6eea5615421b9",
         "kind": "person",
         "label": "Giulia Bassi",
-        "linking_info": [],
+        "linking_info": [
+          {
+            "source": "ai",
+            "summary": "Giulia Bassi è l'autrice di una ricerca straordinaria su Natalia Ginzburg, intitolata «Con assoluta sincerità» Il lavoro editoriale di Natalia Ginzburg (1943-1952), pubblicata da Firenze University Press e USiena press."
+          }
+        ],
         "score": null
       },
       {
@@ -13439,7 +13774,12 @@
         "id": "c597f04f1c09463cafdbb98e23cbf760",
         "kind": "organization",
         "label": "USiena press",
-        "linking_info": [],
+        "linking_info": [
+          {
+            "source": "ai",
+            "summary": "USiena press è una casa editrice che ha pubblicato la ricerca di Giulia Bassi su Natalia Ginzburg, intitolata «Con assoluta sincerità» Il lavoro editoriale di Natalia Ginzburg (1943-1952)."
+          }
+        ],
         "score": null
       },
       {
@@ -13880,7 +14220,12 @@
         "id": "c5ee378bf8a84fdb8326af3bd4623b36",
         "kind": "person",
         "label": "Suzanne Roger",
-        "linking_info": [],
+        "linking_info": [
+          {
+            "source": "ai",
+            "summary": "Suzanne Roger è un'artista che ha lavorato con Daniel-Henry Kahnweiler e ha partecipato alle 'dimanches' di Boulogne. Era sposata con André Beaudin e ha avuto un ruolo importante nella sua vita e nella sua arte."
+          }
+        ],
         "score": null
       },
       {
@@ -14037,7 +14382,12 @@
         "id": "3c514aa8361e4741a4d5eccf325018fe",
         "kind": "person",
         "label": "Elie Lascaux",
-        "linking_info": [],
+        "linking_info": [
+          {
+            "source": "ai",
+            "summary": "Elie Lascaux è un artista che ha lavorato con Daniel-Henry Kahnweiler e ha partecipato alle 'dimanches' di Boulogne. Era un amico intimo di Kahnweiler e ha ospitato il mercante ebreo in esilio interno durante la guerra."
+          }
+        ],
         "score": null
       },
       {
@@ -14059,21 +14409,36 @@
         "id": "5ebbaec533aa49c4b50d2cc85177adb9",
         "kind": "person",
         "label": "Gaston-Louis Roux",
-        "linking_info": [],
+        "linking_info": [
+          {
+            "source": "ai",
+            "summary": "Gaston-Louis Roux è un artista che ha lavorato con Daniel-Henry Kahnweiler e ha esposto le sue opere nella sua galleria nel 1927."
+          }
+        ],
         "score": null
       },
       {
         "id": "e7203f2014b947279cd0b603427cfb34",
         "kind": "person",
         "label": "Élie Lascaux",
-        "linking_info": [],
+        "linking_info": [
+          {
+            "source": "ai",
+            "summary": "Élie Lascaux è un artista che ha lavorato con Daniel-Henry Kahnweiler e ha partecipato alle 'dimanches' di Boulogne. Era un amico intimo di Kahnweiler e ha ospitato il mercante ebreo in esilio interno durante la guerra."
+          }
+        ],
         "score": null
       },
       {
         "id": "d05850df1ca0430db1999a6ea9b25a99",
         "kind": "person",
         "label": "Lucie Godon",
-        "linking_info": [],
+        "linking_info": [
+          {
+            "source": "ai",
+            "summary": "Lucie Godon è la moglie di Daniel-Henry Kahnweiler e ha avuto un ruolo importante nella sua vita e nella sua galleria."
+          }
+        ],
         "score": null
       },
       {
@@ -14200,7 +14565,12 @@
         "id": "3af71690d95747dcbab49da0b0cb76ac",
         "kind": "person",
         "label": "Roland Tual",
-        "linking_info": [],
+        "linking_info": [
+          {
+            "source": "ai",
+            "summary": "Roland Tual è un amico di Daniel-Henry Kahnweiler e ha partecipato alle 'dimanches' di Boulogne."
+          }
+        ],
         "score": null
       },
       {
@@ -14297,7 +14667,12 @@
         "id": "ff4f390d3edb4b0aaf97e26c87a00f2c",
         "kind": "person",
         "label": "Patrick Gilles-Persin",
-        "linking_info": [],
+        "linking_info": [
+          {
+            "source": "ai",
+            "summary": "Patrick Gilles-Persin è un curatore e assistente di Daniel-Henry Kahnweiler, che ha organizzato la retrospettiva di André Beaudin a Belfort nel 1999."
+          }
+        ],
         "score": null
       },
       {
@@ -14607,7 +14982,12 @@
         "id": "fa1b63fa9f8a4714b87f7d7e8d7fc035",
         "kind": "organization",
         "label": "Galerie Percier",
-        "linking_info": [],
+        "linking_info": [
+          {
+            "source": "ai",
+            "summary": "La Galerie Percier è una galleria d'arte che ha esposto le opere di André Beaudin prima che questi entrasse a far parte della scuderia di Daniel-Henry Kahnweiler."
+          }
+        ],
         "score": null
       },
       {
@@ -14661,7 +15041,12 @@
         "id": "b70a2f9d4c124629a411aeaa7fcac161",
         "kind": "person",
         "label": "Marie Blanchard",
-        "linking_info": [],
+        "linking_info": [
+          {
+            "source": "ai",
+            "summary": "Marie Blanchard è un'artista che è stata definita da Daniel-Henry Kahnweiler come una 'copista' di Juan Gris, a differenza di André Beaudin che è considerato un artista originale."
+          }
+        ],
         "score": null
       }
     ],
@@ -15192,7 +15577,12 @@
         "id": "047aa3113e574b059429ce00a3c9c38b",
         "kind": "person",
         "label": "Luisa Avellini",
-        "linking_info": [],
+        "linking_info": [
+          {
+            "source": "ai",
+            "summary": "Luisa Avellini è una studiosa che ha lavorato all'edizione critica del Sorcio nel violino di Bruno Barilli e ha allestito un quadro sinottico in appendice all'edizione."
+          }
+        ],
         "score": null
       },
       {
@@ -15259,7 +15649,12 @@
         "id": "6edc80fca15f475e8e61695312079d96",
         "kind": "person",
         "label": "Alessandro Zignani",
-        "linking_info": [],
+        "linking_info": [
+          {
+            "source": "ai",
+            "summary": "Alessandro Zignani è un critico che ha analizzato il complicato rapporto di Bruno Barilli con la musica nella postfazione al libro Il paese del melodramma."
+          }
+        ],
         "score": null
       },
       {
@@ -15465,14 +15860,24 @@
         "id": "8fc3e35fb17048a28a457d3a81ab0d60",
         "kind": "organization",
         "label": "Edizioni Quodlibet",
-        "linking_info": [],
+        "linking_info": [
+          {
+            "source": "ai",
+            "summary": "Le Edizioni Quodlibet hanno riproposto il libro Parigi di Bruno Barilli, curato da Antonio Castronuovo e corredato dei disegni di Milena Pavlovic Barilli."
+          }
+        ],
         "score": null
       },
       {
         "id": "f2ddc896e8544d90b0b551765581d4a6",
         "kind": "organization",
         "label": "R. Carabba",
-        "linking_info": [],
+        "linking_info": [
+          {
+            "source": "ai",
+            "summary": "R. Carabba è una casa editrice che ha pubblicato il libro Parigi di Bruno Barilli nel 1938, anche se la data di stampa originale risale al 1934."
+          }
+        ],
         "score": null
       },
       {
@@ -15509,14 +15914,24 @@
         "id": "480ead30187b456282e60ffafb8c9f9a",
         "kind": "organization",
         "label": "Manzoni Editore",
-        "linking_info": [],
+        "linking_info": [
+          {
+            "source": "ai",
+            "summary": "Manzoni Editore ha riproposto il libro Il paese del melodramma di Bruno Barilli, contestualmente a Parigi, con l'ausilio di alcune fotografie d'epoca."
+          }
+        ],
         "score": null
       },
       {
         "id": "0d76d52378c941ce9ebd1d51877b3249",
         "kind": "organization",
         "label": "Bottega di Poesia",
-        "linking_info": [],
+        "linking_info": [
+          {
+            "source": "ai",
+            "summary": "La Bottega di Poesia è una casa editrice che ha pubblicato il libro Il sorcio nel violino di Bruno Barilli nel 1926."
+          }
+        ],
         "score": null
       },
       {
@@ -15789,6 +16204,10 @@
               "east": -91.947321,
               "west": -91.987076
             }
+          },
+          {
+            "source": "ai",
+            "summary": "L'Inghilterra è descritta come un paese con un forte attaccamento alla natura e al paesaggio, che rappresenta insieme ciò che cambia e ciò che non può cambiare."
           }
         ],
         "score": null
@@ -16286,7 +16705,12 @@
         "id": "87e5696f508f424ba47bf08f381dbf4a",
         "kind": "person",
         "label": "Francesca Antinucci",
-        "linking_info": [],
+        "linking_info": [
+          {
+            "source": "ai",
+            "summary": "Francesca Antinucci è la moglie di Khaled El Qaisi, studente italo-palestinese arrestato in Israele. Ha espresso sollievo per la scarcerazione del marito, ma ha sottolineato che non ci sono certezze su un prossimo rientro di Khaled in Italia."
+          }
+        ],
         "score": null
       },
       {
@@ -16323,7 +16747,12 @@
         "id": "996cdee9286940fc98cbc2c380e73f7e",
         "kind": "person",
         "label": "Riccardo Noury",
-        "linking_info": [],
+        "linking_info": [
+          {
+            "source": "ai",
+            "summary": "Riccardo Noury è un rappresentante di Amnesty International, che ha espresso ottimismo per la decisione di scarcerare Khaled El Qaisi, ma ha anche sottolineato la necessità di continuare a fare pressioni affinché le indagini si concludano presto e bene."
+          }
+        ],
         "score": null
       },
       {
@@ -16573,7 +17002,12 @@
         "id": "43906b4873954ae4aefeb22c4a739b0e",
         "kind": "person",
         "label": "Renate Schroeder",
-        "linking_info": [],
+        "linking_info": [
+          {
+            "source": "ai",
+            "summary": "Renate Schroeder è la direttrice della Federazione europea dei giornalisti (EFJ)."
+          }
+        ],
         "score": null
       },
       {
@@ -16595,7 +17029,12 @@
         "id": "ece1ab32a6de4408a09f165bf95d40b3",
         "kind": "person",
         "label": "Emina Veljović",
-        "linking_info": [],
+        "linking_info": [
+          {
+            "source": "ai",
+            "summary": "Emina Veljović è la direttrice dell'Aarhus Centre di Sarajevo."
+          }
+        ],
         "score": null
       },
       {
@@ -16649,7 +17088,12 @@
         "id": "d8de0b895c4a4ad7877ce0f6eeac7dfe",
         "kind": "organization",
         "label": "Heinrich Böll Stiftung Paris",
-        "linking_info": [],
+        "linking_info": [
+          {
+            "source": "ai",
+            "summary": "Heinrich Böll Stiftung Paris è un'organizzazione che ha collaborato con Osservatorio Balcani Caucaso Transeuropa per organizzare la conferenza 'Media-Democracy Nexus in the European Space'."
+          }
+        ],
         "score": null
       },
       {
@@ -16701,7 +17145,12 @@
         "id": "49ab6f4dbd184bceae257b88a9296771",
         "kind": "organization",
         "label": "Aarhus Centre",
-        "linking_info": [],
+        "linking_info": [
+          {
+            "source": "ai",
+            "summary": "L'Aarhus Centre di Sarajevo è un'organizzazione diretta da Emina Veljović."
+          }
+        ],
         "score": null
       },
       {
@@ -16738,7 +17187,12 @@
         "id": "cff4632bb1674b6cabbcc9f45487d12e",
         "kind": "organization",
         "label": "Free Press Unlimited",
-        "linking_info": [],
+        "linking_info": [
+          {
+            "source": "ai",
+            "summary": "Free Press Unlimited è uno dei sei partner europei del progetto Media Freedom Rapid Response."
+          }
+        ],
         "score": null
       },
       {
@@ -17174,7 +17628,12 @@
         "id": "4556f06f7da34af08147295890356ddc",
         "kind": "organization",
         "label": "Milano antifascista, antirazzista, meticcia e solidale",
-        "linking_info": [],
+        "linking_info": [
+          {
+            "source": "ai",
+            "summary": "È una rete che ha organizzato un corteo per dire stop alla guerra e al razzismo. La manifestazione ha visto la partecipazione di migliaia di persone che hanno sfilato per le vie cittadine per chiedere la fine di tutte le guerre e del massacro in corso in Medio Oriente."
+          }
+        ],
         "score": null
       }
     ],
@@ -17514,14 +17973,24 @@
         "id": "2d245e4e927a4ecca6f13d214e7aa6a3",
         "kind": "person",
         "label": "Marah Bakir",
-        "linking_info": [],
+        "linking_info": [
+          {
+            "source": "ai",
+            "summary": "Marah Bakir è la rappresentante delle detenute nella sezione femminile della prigione di Damoun, che è stata privata della sua presenza a causa del trasferimento nel carcere di Jalameh prison."
+          }
+        ],
         "score": null
       },
       {
         "id": "cb7811b1a1094d738311bf3723db07ec",
         "kind": "person",
         "label": "Tala Nasir",
-        "linking_info": [],
+        "linking_info": [
+          {
+            "source": "ai",
+            "summary": "Tala Nasir lavora per l'ong palestinese per i prigionieri politici Addameer e fornisce informazioni sugli arresti e le condizioni dei detenuti palestinesi."
+          }
+        ],
         "score": null
       }
     ],
@@ -17611,7 +18080,12 @@
         "id": "62f58e85ea9a4503ae2c1ba905c168df",
         "kind": "person",
         "label": "Cecilia Guera",
-        "linking_info": [],
+        "linking_info": [
+          {
+            "source": "ai",
+            "summary": "Cecilia Guera è una politica del Partito Democratico (Pd) che ha commentato la correzione della legge di Bilancio."
+          }
+        ],
         "score": null
       },
       {
@@ -17735,21 +18209,36 @@
         "id": "1da47a0ba25e48ca96a1cfc50022c01b",
         "kind": "person",
         "label": "Massimo Bolognesi",
-        "linking_info": [],
+        "linking_info": [
+          {
+            "source": "ai",
+            "summary": "Massimo Bolognesi è il presidente di Panda Imola e ha espresso critiche sull'autodromo Enzo e Dino Ferrari di Imola."
+          }
+        ],
         "score": null
       },
       {
         "id": "be6151e8d8d14ad2ac98225e545b39f0",
         "kind": "organization",
         "label": "Panda Imola",
-        "linking_info": [],
+        "linking_info": [
+          {
+            "source": "ai",
+            "summary": "Panda Imola è un'organizzazione che si occupa di questioni ambientali e ha criticato l'autodromo Enzo e Dino Ferrari di Imola per la sua gestione e impatto ambientale."
+          }
+        ],
         "score": null
       },
       {
         "id": "5bb65f9428fb44608350eec5755c7d36",
         "kind": "organization",
         "label": "Con.Ami",
-        "linking_info": [],
+        "linking_info": [
+          {
+            "source": "ai",
+            "summary": "Con.Ami è un consorzio di 23 comuni che gestisce l'autodromo Enzo e Dino Ferrari di Imola insieme a Formula Imola."
+          }
+        ],
         "score": null
       },
       {
@@ -17786,14 +18275,24 @@
         "id": "b5cbd4aaff1a48648a94ede2256c1fe7",
         "kind": "organization",
         "label": "Legambiente Medicina Imola",
-        "linking_info": [],
+        "linking_info": [
+          {
+            "source": "ai",
+            "summary": "Legambiente Medicina Imola è un'organizzazione ambientalista che ha criticato l'autodromo Enzo e Dino Ferrari di Imola per l'inquinamento acustico e dell'aria che provoca."
+          }
+        ],
         "score": null
       },
       {
         "id": "e205e8095a4d4eb6ba9f36f6fe938f18",
         "kind": "organization",
         "label": "Bologna For Climate Justice",
-        "linking_info": [],
+        "linking_info": [
+          {
+            "source": "ai",
+            "summary": "Bologna For Climate Justice è un coordinamento che si occupa di questioni ambientali e ha criticato l'investimento di miliardi di euro in opere di cemento e asfalto in Emilia-Romagna."
+          }
+        ],
         "score": null
       },
       {
@@ -18169,7 +18668,12 @@
         "id": "df7782b357a344e291934f924e5e013b",
         "kind": "organization",
         "label": "Movimento studenti palestinesi",
-        "linking_info": [],
+        "linking_info": [
+          {
+            "source": "ai",
+            "summary": "Il Movimento studenti palestinesi è un'organizzazione che ha partecipato alla manifestazione di Roma contro il regime di apartheid e ha chiesto che Netanyahu venga portato davanti alla Corte penale internazionale."
+          }
+        ],
         "score": null
       },
       {
@@ -18800,7 +19304,12 @@
         "id": "a08d96e5a11b467c8e336f865c752f9e",
         "kind": "person",
         "label": "Serena Sorrentino",
-        "linking_info": [],
+        "linking_info": [
+          {
+            "source": "ai",
+            "summary": "Serena Sorrentino è la segretaria generale della Fp Cgil. Ha espresso forti critiche nei confronti del governo Meloni per le scelte relative ai contratti dei dipendenti pubblici e alle pensioni future."
+          }
+        ],
         "score": null
       },
       {
@@ -19211,7 +19720,12 @@
         "id": "f02520c4e66f4c1da2aa6bc8a4375535",
         "kind": "person",
         "label": "Ibrahim Hooper",
-        "linking_info": [],
+        "linking_info": [
+          {
+            "source": "ai",
+            "summary": "Ibrahim Hooper è il portavoce del Council on American-Islamic Relations. Ha affermato che l'obiettivo principale in questo momento è un cessate il fuoco, poiché senza di esso non si possono intraprendere azioni umanitarie, fornire aiuti o curare i feriti."
+          }
+        ],
         "score": null
       },
       {
@@ -19536,7 +20050,12 @@
         "id": "d089d75e65c74e1ca7e0a666d71015b4",
         "kind": "person",
         "label": "Francesco Clementi",
-        "linking_info": [],
+        "linking_info": [
+          {
+            "source": "ai",
+            "summary": "Francesco Clementi è un costituzionalista che ha commentato la possibilità di dimissioni del Capo dello Stato dopo l'eventuale sì al referendum."
+          }
+        ],
         "score": null
       },
       {
@@ -19924,14 +20443,24 @@
         "id": "ddf000481bc9415b9a6e3dae9b91c91e",
         "kind": "organization",
         "label": "Sinistra di fede",
-        "linking_info": [],
+        "linking_info": [
+          {
+            "source": "ai",
+            "summary": "Il gruppo della cosiddetta “Sinistra di fede” è un movimento trasversale che promuove l’uguaglianza e la fine dell’occupazione partendo da una prospettiva ebraico religiosa."
+          }
+        ],
         "score": null
       },
       {
         "id": "8194c9d935d24895a88abcd2a5f40521",
         "kind": "organization",
         "label": "Collettivo mizrahi democratico",
-        "linking_info": [],
+        "linking_info": [
+          {
+            "source": "ai",
+            "summary": "Il “Collettivo mizrahi democratico” si identifica negli ebrei provenienti dai paesi arabi e rivendica a gran voce il riscatto degli ostaggi come espressione di un’etica imprescindibile."
+          }
+        ],
         "score": null
       }
     ],
@@ -20365,7 +20894,12 @@
         "id": "8e88868f7db445faaa155f0a3a74cd59",
         "kind": "person",
         "label": "Juliette Touma",
-        "linking_info": [],
+        "linking_info": [
+          {
+            "source": "ai",
+            "summary": "Juliette Touma è la portavoce dell'Agenzia delle Nazioni Unite per i rifugiati palestinesi (Unrwa). Ha confermato che tra le vittime nella scuola Al Fakhoura ci sono bambini."
+          }
+        ],
         "score": null
       },
       {
@@ -20387,7 +20921,12 @@
         "id": "e2061e5533e440ccabf5b805666c0057",
         "kind": "person",
         "label": "Tanya Haj-Hassan",
-        "linking_info": [],
+        "linking_info": [
+          {
+            "source": "ai",
+            "summary": "La dottoressa Tanya Haj-Hassan di Medici senza frontiere ha commentato che la valanga di sofferenze umane a Gaza non ha precedenti nella storia recente."
+          }
+        ],
         "score": null
       },
       {
@@ -21578,7 +22117,12 @@
         "id": "581ea9db22ac4aa8a1a354b90b6e96dd",
         "kind": "person",
         "label": "Luz Emilia Ulario Zavala",
-        "linking_info": [],
+        "linking_info": [
+          {
+            "source": "ai",
+            "summary": "Luz Emilia Ulario Zavala è la sindaca indigena di Santa Lucía Utatlán. Ha definito la mobilitazione come una rivoluzione «con le verghe, non con le pallottole»."
+          }
+        ],
         "score": null
       },
       {
@@ -21632,7 +22176,12 @@
         "id": "7a9fc1d246da40d59d56b34886ce7ae9",
         "kind": "person",
         "label": "Stephanie Rodríguez",
-        "linking_info": [],
+        "linking_info": [
+          {
+            "source": "ai",
+            "summary": "Stephanie Rodríguez è un'avvocatessa esperta di difesa dei diritti umani. Ritiene che la sospensione del partito Semilla sia un «cumulo di illegalità» e un «colpo di stato»."
+          }
+        ],
         "score": null
       },
       {
@@ -21654,28 +22203,48 @@
         "id": "7d5fc5158811431f8132942ede3cbfaa",
         "kind": "person",
         "label": "Rafael Curruchiche",
-        "linking_info": [],
+        "linking_info": [
+          {
+            "source": "ai",
+            "summary": "Rafael Curruchiche è il procuratore speciale contro l'Impunità che ha firmato l'istanza di sospensione del partito Semilla."
+          }
+        ],
         "score": null
       },
       {
         "id": "cbbf001ce320404c9c44650b6ed99160",
         "kind": "person",
         "label": "Édgar Ortiz",
-        "linking_info": [],
+        "linking_info": [
+          {
+            "source": "ai",
+            "summary": "Édgar Ortiz è un costituzionalista. Ha spiegato che la decisione del Tribunale supremo elettorale è impugnabile e che il partito Semilla non è stato cancellato, ma solo congelato."
+          }
+        ],
         "score": null
       },
       {
         "id": "2b791f56c36d40fdb9ee1d3fa59f0198",
         "kind": "person",
         "label": "Abelino Chub",
-        "linking_info": [],
+        "linking_info": [
+          {
+            "source": "ai",
+            "summary": "Abelino Chub è un difensore della comunità di Q'eqchi'. Ha affermato che la crisi è causata dal governo."
+          }
+        ],
         "score": null
       },
       {
         "id": "00af34c2458945728ae491996b9374d2",
         "kind": "organization",
         "label": "Tribunale supremo elettorale",
-        "linking_info": [],
+        "linking_info": [
+          {
+            "source": "ai",
+            "summary": "Il Tribunale supremo elettorale ha deciso di chiudere il periodo elettorale e di sospendere la personalità giuridica del partito Semilla."
+          }
+        ],
         "score": null
       },
       {
@@ -21968,7 +22537,12 @@
         "id": "e33dd9dbf5474f31ad88616b5f90224f",
         "kind": "organization",
         "label": "Seix Barral",
-        "linking_info": [],
+        "linking_info": [
+          {
+            "source": "ai",
+            "summary": "Seix Barral è una casa editrice che ha pubblicato il libro 'Interior' di Martín Caparrós, un'opera di 700 pagine che esplora l'identità argentina."
+          }
+        ],
         "score": null
       },
       {
@@ -22340,14 +22914,24 @@
         "id": "6a3a3fce8e8e4476b604f697f74a65a4",
         "kind": "person",
         "label": "Sara D'Ascenzo",
-        "linking_info": [],
+        "linking_info": [
+          {
+            "source": "ai",
+            "summary": "Sara D'Ascenzo è la giornalista che ha scritto l'autobiografia di Marina Cicogna, intitolata Ancora spero - Una storia di vita e di cinema."
+          }
+        ],
         "score": null
       },
       {
         "id": "9b190bedd62b447a9c236cf1771c6001",
         "kind": "person",
         "label": "Annamaria Volpi di Misurata",
-        "linking_info": [],
+        "linking_info": [
+          {
+            "source": "ai",
+            "summary": "Annamaria Volpi di Misurata era la madre di Marina Cicogna, nata da genitori entrambi nobili."
+          }
+        ],
         "score": null
       },
       {
@@ -22369,7 +22953,12 @@
         "id": "ad2c6f5da9ca490b92a9ccdec3e3244f",
         "kind": "person",
         "label": "Benedetta Gardona",
-        "linking_info": [],
+        "linking_info": [
+          {
+            "source": "ai",
+            "summary": "Benedetta Gardona è stata la compagna di Marina Cicogna per oltre trent'anni, assistendola fino alla fine della sua vita."
+          }
+        ],
         "score": null
       },
       {
@@ -22734,14 +23323,24 @@
         "id": "8b27e08b454346558c47cb58bb6fb9c5",
         "kind": "person",
         "label": "Liliane Murekatete",
-        "linking_info": [],
+        "linking_info": [
+          {
+            "source": "ai",
+            "summary": "Liliane Murekatete è la moglie di Aboubakar Soumahoro e risulta coinvolta in un'inchiesta sulla gestione finanziaria di alcune cooperative sociali."
+          }
+        ],
         "score": null
       },
       {
         "id": "2e946c36d3274cd28191f7d2dbaa59b3",
         "kind": "person",
         "label": "Marie Therese Mukamitsindo",
-        "linking_info": [],
+        "linking_info": [
+          {
+            "source": "ai",
+            "summary": "Marie Therese Mukamitsindo è la suocera di Aboubakar Soumahoro e risulta coinvolta in un'inchiesta sulla gestione finanziaria di alcune cooperative sociali."
+          }
+        ],
         "score": null
       },
       {
@@ -22840,7 +23439,12 @@
         "id": "2f6fbd2ac08c4e949f5f4191d9d1868f",
         "kind": "organization",
         "label": "Lega Braccianti",
-        "linking_info": [],
+        "linking_info": [
+          {
+            "source": "ai",
+            "summary": "La Lega Braccianti è un sindacato fondato da Aboubakar Soumahoro, che in passato è stato accusato di aver utilizzato fondi del sindacato a fini elettorali, ma l'accusa è stata smentita."
+          }
+        ],
         "score": null
       },
       {
@@ -22877,7 +23481,12 @@
         "id": "8a85c781427f47b09768ad1b83ef7139",
         "kind": "organization",
         "label": "commissione elettorale della Camera",
-        "linking_info": [],
+        "linking_info": [
+          {
+            "source": "ai",
+            "summary": "La commissione elettorale della Camera è l'organo parlamentare competente che dovrà esaminare la richiesta di decadenza di Aboubakar Soumahoro e ricevere la documentazione per fare luce sulla vicenda."
+          }
+        ],
         "score": null
       },
       {
@@ -23483,7 +24092,12 @@
         "id": "95c53ae151af4083823c6dcb12992f84",
         "kind": "person",
         "label": "Giovanni Carli Ballola",
-        "linking_info": [],
+        "linking_info": [
+          {
+            "source": "ai",
+            "summary": "Giovanni Carli Ballola era un musicologo, storico della musica, musicografo, critico, compositore, revisore e librettista. Era un uomo di fede e si definiva erede della piccola nobiltà milanese di fine Ottocento, con un «progressismo liberale» e un «cattolicesimo sociale»."
+          }
+        ],
         "score": null
       },
       {
@@ -23520,7 +24134,12 @@
         "id": "a04fb06f3f0c4e00854116cd23cdb9cf",
         "kind": "person",
         "label": "Roberto Parenti",
-        "linking_info": [],
+        "linking_info": [
+          {
+            "source": "ai",
+            "summary": "Roberto Parenti è stato coautore di Giovanni Carli Ballola nella stesura di una monografia su Mozart, pubblicata per la prima volta nel 1990."
+          }
+        ],
         "score": null
       },
       {
@@ -23912,7 +24531,12 @@
         "id": "336227dac4c84077b160dbbe2b09f0e7",
         "kind": "person",
         "label": "Cécile Schramme",
-        "linking_info": [],
+        "linking_info": [
+          {
+            "source": "ai",
+            "summary": "Cécile Schramme era la fidanzata di Antonin Artaud, che utilizzava un bastone di san Patrizio per evitare il contatto fisico tra loro."
+          }
+        ],
         "score": null
       },
       {
@@ -23964,7 +24588,12 @@
         "id": "8c58c8d69a514b598084734f1bd427c9",
         "kind": "person",
         "label": "Madame Sacco",
-        "linking_info": [],
+        "linking_info": [
+          {
+            "source": "ai",
+            "summary": "Madame Sacco era una medium amica di Éluard e Breton, con cui Artaud aveva avuto rapporti, come descritto nella lettera alla veggente."
+          }
+        ],
         "score": null
       },
       {
@@ -24076,28 +24705,48 @@
         "id": "2b2655244380445cb5db513acc538ffa",
         "kind": "person",
         "label": "Antonia Tadini",
-        "linking_info": [],
+        "linking_info": [
+          {
+            "source": "ai",
+            "summary": "Antonia Tadini ha curato la traduzione di Artaud le Mômo. Ci-gît insieme a Emilio Tadini."
+          }
+        ],
         "score": null
       },
       {
         "id": "333e52b5d4224e78ba9f6e47c57e7eaa",
         "kind": "person",
         "label": "Giorgia Bongiorno",
-        "linking_info": [],
+        "linking_info": [
+          {
+            "source": "ai",
+            "summary": "Giorgia Bongiorno ha curato la nuova edizione di L'arte e la morte di Antonin Artaud e ha anche curato la ristampa di Artaud le Mômo. Ci-gît."
+          }
+        ],
         "score": null
       },
       {
         "id": "27bfc52d0be14ae0afec3f8fcfb7d2d4",
         "kind": "person",
         "label": "Maia Giacobbe Borelli",
-        "linking_info": [],
+        "linking_info": [
+          {
+            "source": "ai",
+            "summary": "Maia Giacobbe Borelli ha curato la nuova edizione di L'arte e la morte di Antonin Artaud insieme a Giorgia Bongiorno."
+          }
+        ],
         "score": null
       },
       {
         "id": "59690b55c6954bbabe2415b2b9790924",
         "kind": "person",
         "label": "Pasko Simone",
-        "linking_info": [],
+        "linking_info": [
+          {
+            "source": "ai",
+            "summary": "Pasko Simone aveva curato una precedente traduzione di L'arte e la morte di Antonin Artaud nel 2003."
+          }
+        ],
         "score": null
       },
       {
@@ -24119,7 +24768,12 @@
         "id": "883a1d7ad16e4197a7f89b90b23328e6",
         "kind": "person",
         "label": "Gaston Ferdière",
-        "linking_info": [],
+        "linking_info": [
+          {
+            "source": "ai",
+            "summary": "Gaston Ferdière era il dottore che aveva somministrato ad Artaud l'elettrochoc durante la sua permanenza in manicomio."
+          }
+        ],
         "score": null
       },
       {
@@ -24963,7 +25617,12 @@
         "id": "8b0beaa834aa452fbce116829ff9d79d",
         "kind": "person",
         "label": "Stefania Rossini",
-        "linking_info": [],
+        "linking_info": [
+          {
+            "source": "ai",
+            "summary": "Stefania Rossini è una giornalista e figlia di Lanfranco Pace. È stata una delle sue compagne in passato."
+          }
+        ],
         "score": null
       },
       {
@@ -25320,7 +25979,12 @@
         "id": "b13287fb5220401295ab98c3f43e9384",
         "kind": "person",
         "label": "Daniela Fink",
-        "linking_info": [],
+        "linking_info": [
+          {
+            "source": "ai",
+            "summary": "Daniela Fink è la traduttrice dell'edizione italiana del saggio di Peter Brooks, L'immaginazione melodrammatica, pubblicata a Parma nel 1985."
+          }
+        ],
         "score": null
       },
       {
@@ -25703,7 +26367,12 @@
         "id": "c64f5e48909f4533b8679620dcffb7f5",
         "kind": "person",
         "label": "Daniela Simoni",
-        "linking_info": [],
+        "linking_info": [
+          {
+            "source": "ai",
+            "summary": "Daniela Simoni è la curatrice della mostra intitolata a Oreste Bogliardi e gli amici del Milione, insieme con Franco Tagliapietra, Stefano Bracalente e Arianna Ghilardotti. Ha anche scritto il referto biografico di Bogliardi."
+          }
+        ],
         "score": null
       },
       {
@@ -25725,14 +26394,24 @@
         "id": "b8dc9e234b7f43339becedd512f36fe1",
         "kind": "person",
         "label": "Stefano Bracalente",
-        "linking_info": [],
+        "linking_info": [
+          {
+            "source": "ai",
+            "summary": "Stefano Bracalente è uno dei curatori della mostra intitolata a Oreste Bogliardi e gli amici del Milione, insieme con Daniela Simoni, Franco Tagliapietra e Arianna Ghilardotti. Ha anche scritto un catalogo sulla mostra."
+          }
+        ],
         "score": null
       },
       {
         "id": "c2ddd6e5915e462882f0fd9cb8a79d1b",
         "kind": "person",
         "label": "Arianna Ghilardotti",
-        "linking_info": [],
+        "linking_info": [
+          {
+            "source": "ai",
+            "summary": "Arianna Ghilardotti è una delle curatrici della mostra intitolata a Oreste Bogliardi e gli amici del Milione, insieme con Daniela Simoni, Franco Tagliapietra e Stefano Bracalente. Ha anche scritto il referto biografico di Bogliardi."
+          }
+        ],
         "score": null
       },
       {
@@ -25874,7 +26553,12 @@
         "id": "1c23ff432d3a4894be8235d21550e704",
         "kind": "person",
         "label": "Nello Ponente",
-        "linking_info": [],
+        "linking_info": [
+          {
+            "source": "ai",
+            "summary": "Nello Ponente è il curatore della mostra retrospettiva Aspetti del primo astrattismo italiano, che ha incluso alcune opere di Oreste Bogliardi."
+          }
+        ],
         "score": null
       },
       {
@@ -26064,7 +26748,12 @@
         "id": "30ed71da00dd443e90cdf4232da771a6",
         "kind": "organization",
         "label": "Giometti&Antonello",
-        "linking_info": [],
+        "linking_info": [
+          {
+            "source": "ai",
+            "summary": "Giometti&Antonello è un'organizzazione che ha riproposto nel 2016 il manifesto dell'astrattismo di Carlo Belli, intitolato Kn."
+          }
+        ],
         "score": null
       },
       {
@@ -26352,7 +27041,12 @@
         "id": "30562a30c46e442b9c97b3761e601215",
         "kind": "person",
         "label": "Leonella Cecchi Pieraccini",
-        "linking_info": [],
+        "linking_info": [
+          {
+            "source": "ai",
+            "summary": "Leonella Cecchi Pieraccini è un'allieva di Fattori e moglie di Emilio Cecchi, a cui è dedicato il volume I viaggi la morte di Carlo Emilio Gadda."
+          }
+        ],
         "score": null
       },
       {
@@ -26449,7 +27143,12 @@
         "id": "999c7c4a42c2441da72cc7ed0eefcf7a",
         "kind": "person",
         "label": "Mariarosa Bricchi",
-        "linking_info": [],
+        "linking_info": [
+          {
+            "source": "ai",
+            "summary": "Mariarosa Bricchi è una linguista e storica della lingua che ha curato la nuova edizione in volume autonomo di I viaggi la morte di Carlo Emilio Gadda per la Biblioteca Adelphi."
+          }
+        ],
         "score": null
       },
       {
@@ -26501,7 +27200,12 @@
         "id": "5fbe99d7221147b28b47d58e5fe40b42",
         "kind": "person",
         "label": "Paolo Ambrosi",
-        "linking_info": [],
+        "linking_info": [
+          {
+            "source": "ai",
+            "summary": "Paolo Ambrosi è il cognato di Carlo Emilio Gadda, descritto in modo sarcastico nel saggio Come lavoro come un personaggio ridicolo e antipatico."
+          }
+        ],
         "score": null
       },
       {
@@ -26598,7 +27302,12 @@
         "id": "7580ef0fad9a4405a15abca5de83254f",
         "kind": "person",
         "label": "Ernesto Cacace",
-        "linking_info": [],
+        "linking_info": [
+          {
+            "source": "ai",
+            "summary": "Ernesto Cacace è un napoletano citato da Carlo Emilio Gadda nel saggio Emilio e Narcisso come autore di un articolo sulla Nipiologia."
+          }
+        ],
         "score": null
       },
       {
@@ -28207,7 +28916,12 @@
         "id": "17250455a27c4d32bc7b4c7afe4b96fa",
         "kind": "person",
         "label": "Helene Thompson",
-        "linking_info": [],
+        "linking_info": [
+          {
+            "source": "ai",
+            "summary": "Helene Thompson è una docente di Cambridge che ha commentato sulla vulnerabilità di Israele in materia energetica, sottolineando come lo Stato ebraico sia autosufficiente per il gas grazie ai giacimenti offshore di Leviathan, Tamar e Karish."
+          }
+        ],
         "score": null
       },
       {
@@ -28966,7 +29680,12 @@
         "id": "a9b5722044f6410a97d7cfc005707490",
         "kind": "organization",
         "label": "Osservatorio antisemitismo",
-        "linking_info": [],
+        "linking_info": [
+          {
+            "source": "ai",
+            "summary": "L'Osservatorio antisemitismo è un ente che monitora e denuncia gli episodi di antisemitismo in Italia. Secondo il direttore Gadi Luzzatto Voghera, l'osservatorio ha ricevuto oltre 70 segnalazioni di episodi antisemiti solo nelle ultime tre settimane."
+          }
+        ],
         "score": null
       }
     ],
@@ -29152,14 +29871,24 @@
         "id": "59312b58c40b40edab9f07f27e85d216",
         "kind": "person",
         "label": "Valentine Lomellini",
-        "linking_info": [],
+        "linking_info": [
+          {
+            "source": "ai",
+            "summary": "Valentine Lomellini è un autore che ha scritto un libro intitolato Il «lodo Moro»."
+          }
+        ],
         "score": null
       },
       {
         "id": "4bfa25621a82440483d136c2c39c3260",
         "kind": "person",
         "label": "Roberto Colozza",
-        "linking_info": [],
+        "linking_info": [
+          {
+            "source": "ai",
+            "summary": "Roberto Colozza è un autore che ha scritto un libro intitolato L’affaire 7 aprile."
+          }
+        ],
         "score": null
       },
       {
@@ -29211,7 +29940,12 @@
         "id": "48b446ed69014563908ec4ef683dfaff",
         "kind": "person",
         "label": "Riccardo Fenzi",
-        "linking_info": [],
+        "linking_info": [
+          {
+            "source": "ai",
+            "summary": "Riccardo Fenzi è uno studioso di Petrarca e uno dei cosiddetti «cognati rossi», che hanno fatto da collante tra il mondo universitario e quello dell’emarginazione."
+          }
+        ],
         "score": null
       },
       {
@@ -29293,7 +30027,12 @@
         "id": "0823a2f74a424343a296e2e51e8fa7e7",
         "kind": "person",
         "label": "Giunio Luzzatto",
-        "linking_info": [],
+        "linking_info": [
+          {
+            "source": "ai",
+            "summary": "Giunio Luzzatto è il padre di Sergio Luzzatto, professore all’Istituto di Fisica, e fu coinvolto come testimone in un processo contro il sostituto procuratore della Repubblica di Genova, Mario Sossi."
+          }
+        ],
         "score": null
       },
       {
@@ -29843,7 +30582,12 @@
         "id": "2b06fb0b9b494a38be8b8da143b7e19d",
         "kind": "person",
         "label": "Sergio Corrado",
-        "linking_info": [],
+        "linking_info": [
+          {
+            "source": "ai",
+            "summary": "Sergio Corrado è un docente di Letteratura tedesca dell'università L'Orientale di Napoli. È nato lo stesso anno in cui è stata inaugurata la sede del Goethe Institut di Napoli e ha imparato il tedesco proprio lì."
+          }
+        ],
         "score": null
       },
       {
@@ -30291,14 +31035,24 @@
         "id": "cb1f76594dc94eebb2f8304dd4857975",
         "kind": "organization",
         "label": "Associazione dei Germanisti italiani",
-        "linking_info": [],
+        "linking_info": [
+          {
+            "source": "ai",
+            "summary": "L'Associazione dei Germanisti italiani ha chiesto di fermare il piano di ridimensionamento del Goethe Institut di Napoli."
+          }
+        ],
         "score": null
       },
       {
         "id": "d8489cd6fa29478198ae5a9dcdc97ba7",
         "kind": "organization",
         "label": "Cineteca Altro",
-        "linking_info": [],
+        "linking_info": [
+          {
+            "source": "ai",
+            "summary": "La Cineteca Altro ha organizzato una retrospettiva sui registi di Weimar alla fine degli anni Settanta a Port'Alba, contribuendo a far appassionare Sergio Corrado alla Germania."
+          }
+        ],
         "score": null
       }
     ],
@@ -30924,7 +31678,12 @@
         "id": "369575c65d2b464aafa2e1a4913598e1",
         "kind": "person",
         "label": "Ambra Cascone",
-        "linking_info": [],
+        "linking_info": [
+          {
+            "source": "ai",
+            "summary": "Ambra Cascone è l'autrice del libro 'La città dei destini incrociati Arcangeli, Bassani, Bertolucci e Pasolini allievi bolognesi di Roberto Longhi', pubblicato da Ronzani editore."
+          }
+        ],
         "score": null
       },
       {
@@ -30961,14 +31720,24 @@
         "id": "e28566f9b8534d46b0a95974ec22bf53",
         "kind": "person",
         "label": "Dario Trento",
-        "linking_info": [],
+        "linking_info": [
+          {
+            "source": "ai",
+            "summary": "Dario Trento è uno studioso che ha condotto ricerche negli archivi d'ateneo, in particolare negli anni novanta, sulla figura di Roberto Longhi."
+          }
+        ],
         "score": null
       },
       {
         "id": "b280138d6db847e18dec692b94f9dd59",
         "kind": "person",
         "label": "Tina Longhi",
-        "linking_info": [],
+        "linking_info": [
+          {
+            "source": "ai",
+            "summary": "Tina Longhi ha curato la pubblicazione delle istantanee di Alberto Graziani per l'editore Nuova Alfa."
+          }
+        ],
         "score": null
       },
       {
@@ -31121,14 +31890,24 @@
         "id": "a4e2e53d5f7f4699afee19c497ac635d",
         "kind": "organization",
         "label": "Ronzani editore",
-        "linking_info": [],
+        "linking_info": [
+          {
+            "source": "ai",
+            "summary": "Ronzani editore è la casa editrice che ha pubblicato il libro 'La città dei destini incrociati Arcangeli, Bassani, Bertolucci e Pasolini allievi bolognesi di Roberto Longhi' di Ambra Cascone."
+          }
+        ],
         "score": null
       },
       {
         "id": "fcf0a319b1eb45208d8932aa77645d7b",
         "kind": "organization",
         "label": "Nuova Alfa",
-        "linking_info": [],
+        "linking_info": [
+          {
+            "source": "ai",
+            "summary": "Nuova Alfa è la casa editrice che ha pubblicato le istantanee di Alberto Graziani, curate da Tina Longhi."
+          }
+        ],
         "score": null
       },
       {
@@ -31466,14 +32245,24 @@
         "id": "0b4bfc886afe49ffbee4f51f547fc078",
         "kind": "person",
         "label": "Daniele Gigli",
-        "linking_info": [],
+        "linking_info": [
+          {
+            "source": "ai",
+            "summary": "Daniele Gigli è il curatore dell'edizione di Finché Dio ci vede di Emanuel Carnevali, pubblicata da Edizioni Ares."
+          }
+        ],
         "score": null
       },
       {
         "id": "2c88f45c13704c24b09d631d96683923",
         "kind": "person",
         "label": "Emilia Valenza",
-        "linking_info": [],
+        "linking_info": [
+          {
+            "source": "ai",
+            "summary": "Emilia Valenza è stata la moglie di Emanuel Carnevali, originaria del Piemonte e sposata nel 1917, ma il matrimonio è fallito."
+          }
+        ],
         "score": null
       },
       {
@@ -31985,21 +32774,36 @@
         "id": "70033745884546388bbe6869eaa1da9d",
         "kind": "person",
         "label": "Ena Marchi",
-        "linking_info": [],
+        "linking_info": [
+          {
+            "source": "ai",
+            "summary": "Ena Marchi è la traduttrice del libro L'arte del romanzo di Milan Kundera, pubblicato da Adelphi."
+          }
+        ],
         "score": null
       },
       {
         "id": "c18a99096bf84595aca3c6f09b23ff68",
         "kind": "organization",
         "label": "Unione degli scrittori cechi",
-        "linking_info": [],
+        "linking_info": [
+          {
+            "source": "ai",
+            "summary": "L'Unione degli scrittori cechi è un'organizzazione che ha ospitato Milan Kundera per una conferenza nel 1967."
+          }
+        ],
         "score": null
       },
       {
         "id": "5e8a2250489b4b0dbf4bf08d06fcf1c5",
         "kind": "person",
         "label": "Christian Salmon",
-        "linking_info": [],
+        "linking_info": [
+          {
+            "source": "ai",
+            "summary": "Christian Salmon è il giornalista che ha intervistato Milan Kundera nella prima parte dell'Arte del romanzo."
+          }
+        ],
         "score": null
       }
     ],
@@ -32486,7 +33290,12 @@
         "id": "ad42faf4169b40bf8b1659c87f70a21e",
         "kind": "person",
         "label": "Plutarco Gastélum",
-        "linking_info": [],
+        "linking_info": [
+          {
+            "source": "ai",
+            "summary": "Plutarco Gastélum è stato l'amore di Edward James e insieme hanno costruito Las Pozas a Xilitla, un paesaggio surrealista in Messico."
+          }
+        ],
         "score": null
       },
       {
@@ -32750,7 +33559,12 @@
         "id": "eaa1ed1fb57c453099998df4ba3aa53a",
         "kind": "organization",
         "label": "Fondazione Edward James",
-        "linking_info": [],
+        "linking_info": [
+          {
+            "source": "ai",
+            "summary": "La Fondazione Edward James possedeva Monkton House e l'ha messa in vendita nel 1987, tre anni dopo la morte del proprietario."
+          }
+        ],
         "score": null
       }
     ],
@@ -33113,7 +33927,12 @@
         "id": "91160f42218f40e8a7358be10cf1ce1c",
         "kind": "person",
         "label": "Mario Barenghi",
-        "linking_info": [],
+        "linking_info": [
+          {
+            "source": "ai",
+            "summary": "Mario Barenghi è il curatore della mostra Favoloso Calvino Il mondo come opera d'arte e ha anche firmato il catalogo Electa."
+          }
+        ],
         "score": null
       },
       {
@@ -33718,7 +34537,12 @@
         "id": "edd5cf5f4dfc4492b9159f924b85f76e",
         "kind": "person",
         "label": "Ben F.Tobin",
-        "linking_info": [],
+        "linking_info": [
+          {
+            "source": "ai",
+            "summary": "Ben F.Tobin è un autore che ha scritto l'opera 'Picturing Imperial Power' nel 1999."
+          }
+        ],
         "score": null
       },
       {
@@ -33740,7 +34564,12 @@
         "id": "591fad31b682487789400128af6b2063",
         "kind": "person",
         "label": "Federica Oddera",
-        "linking_info": [],
+        "linking_info": [
+          {
+            "source": "ai",
+            "summary": "Federica Oddera è la traduttrice dell'opera 'L'eterno rivale' di Jane Gardam."
+          }
+        ],
         "score": null
       },
       {
@@ -34011,7 +34840,12 @@
         "id": "3f4989b613a149449d50afe0ce95a4db",
         "kind": "person",
         "label": "Old Fitch",
-        "linking_info": [],
+        "linking_info": [
+          {
+            "source": "ai",
+            "summary": "Old Fitch è un personaggio letterario, un inglese nato in Malesia e sepolto nel Devon, protagonista del primo libro della trilogia di Jane Gardam."
+          }
+        ],
         "score": null
       },
       {
@@ -34419,14 +35253,24 @@
         "id": "96d0ebe76658488890a742f2437e6314",
         "kind": "organization",
         "label": "Transnational Social Strike Platform",
-        "linking_info": [],
+        "linking_info": [
+          {
+            "source": "ai",
+            "summary": "La Transnational Social Strike Platform è un'organizzazione transnazionale che si impegna a mantenere attivo il potenziale dello sciopero femminista e a opporsi alla guerra. Ha ospitato un meeting a Bologna con circa 200 attiviste e attivisti di 20 paesi."
+          }
+        ],
         "score": null
       },
       {
         "id": "78f6a61db9144ed5a7872fed7010bfc8",
         "kind": "organization",
         "label": "∫connessioni precarie",
-        "linking_info": [],
+        "linking_info": [
+          {
+            "source": "ai",
+            "summary": "∫connessioni precarie è un'organizzazione che ha ospitato il decimo meeting della Transnational Social Strike Platform a Bologna."
+          }
+        ],
         "score": null
       },
       {
@@ -34465,14 +35309,24 @@
         "id": "461df25adebd429c98ab001a23a47d5f",
         "kind": "organization",
         "label": "Coordinadora 8M",
-        "linking_info": [],
+        "linking_info": [
+          {
+            "source": "ai",
+            "summary": "La Coordinadora 8M è un'organizzazione femminista cilena che ha partecipato al meeting della Transnational Social Strike Platform e ha denunciato il ritorno del patriarcato."
+          }
+        ],
         "score": null
       },
       {
         "id": "633e21d623f54f93857928d49f92372c",
         "kind": "organization",
         "label": "Collecti.e.f 8 maars",
-        "linking_info": [],
+        "linking_info": [
+          {
+            "source": "ai",
+            "summary": "Collecti.e.f 8 maars è un'organizzazione femminista belga che ha partecipato al meeting della Transnational Social Strike Platform e ha denunciato il ritorno del patriarcato."
+          }
+        ],
         "score": null
       },
       {
@@ -34511,14 +35365,24 @@
         "id": "81e7166896c14b44afff7b12a0bdbcd7",
         "kind": "organization",
         "label": "Teritorio Doméstico",
-        "linking_info": [],
+        "linking_info": [
+          {
+            "source": "ai",
+            "summary": "Teritorio Doméstico è un'organizzazione femminista spagnola che ha partecipato al meeting della Transnational Social Strike Platform e ha denunciato il ritorno del patriarcato."
+          }
+        ],
         "score": null
       },
       {
         "id": "0ee0af225bb0451499ef86d252ee9e68",
         "kind": "organization",
         "label": "Kyrgsoc",
-        "linking_info": [],
+        "linking_info": [
+          {
+            "source": "ai",
+            "summary": "Kyrgsoc è un'organizzazione femminista kirghisa che ha partecipato al meeting della Transnational Social Strike Platform e ha denunciato il ritorno del patriarcato."
+          }
+        ],
         "score": null
       },
       {
@@ -34557,14 +35421,24 @@
         "id": "637b9ee465664abf922f1992a5d018ea",
         "kind": "organization",
         "label": "Feminist Antiwar Resistance",
-        "linking_info": [],
+        "linking_info": [
+          {
+            "source": "ai",
+            "summary": "La Feminist Antiwar Resistance è un'organizzazione femminista russa che ha partecipato al meeting della Transnational Social Strike Platform e ha denunciato il ritorno del patriarcato."
+          }
+        ],
         "score": null
       },
       {
         "id": "543d45d4c6394da4b86719b9888a2b8f",
         "kind": "organization",
         "label": "Assemblea donne del Coordinamento Migranti",
-        "linking_info": [],
+        "linking_info": [
+          {
+            "source": "ai",
+            "summary": "L'Assemblea donne del Coordinamento Migranti è un'organizzazione che si impegna a sostenere le lotte delle e dei migranti e ha partecipato al meeting della Transnational Social Strike Platform."
+          }
+        ],
         "score": null
       },
       {
@@ -34586,14 +35460,24 @@
         "id": "81fef7d821fd4e6bbab6c5f2808856e8",
         "kind": "organization",
         "label": "Ums Ganze!",
-        "linking_info": [],
+        "linking_info": [
+          {
+            "source": "ai",
+            "summary": "Ums Ganze! è un'organizzazione ecologista che ha partecipato al meeting della Transnational Social Strike Platform e ha denunciato la transizione verde come un programma contro lavoratrici e lavoratori."
+          }
+        ],
         "score": null
       },
       {
         "id": "bb503f584a9f4540953dffbf1d62b3b9",
         "kind": "organization",
         "label": "Anametrisi",
-        "linking_info": [],
+        "linking_info": [
+          {
+            "source": "ai",
+            "summary": "Anametrisi è un'organizzazione ecologista che ha partecipato al meeting della Transnational Social Strike Platform e ha denunciato la transizione verde come un programma contro lavoratrici e lavoratori."
+          }
+        ],
         "score": null
       },
       {
@@ -34615,14 +35499,24 @@
         "id": "649e83c32dae4282b287b4d34df71bb5",
         "kind": "organization",
         "label": "Climate Class Conflict-Italy",
-        "linking_info": [],
+        "linking_info": [
+          {
+            "source": "ai",
+            "summary": "Climate Class Conflict-Italy è un'organizzazione ecologista italiana che ha partecipato al meeting della Transnational Social Strike Platform e ha denunciato la transizione verde come un programma contro lavoratrici e lavoratori."
+          }
+        ],
         "score": null
       },
       {
         "id": "8b62a12ada6a436f92a3a0aeb9eb6472",
         "kind": "organization",
         "label": "Interventionistische Linke",
-        "linking_info": [],
+        "linking_info": [
+          {
+            "source": "ai",
+            "summary": "Interventionistische Linke è un'organizzazione tedesca che ha partecipato al meeting della Transnational Social Strike Platform e ha sottolineato l'importanza dell'organizzazione transnazionale delle lotte."
+          }
+        ],
         "score": null
       },
       {
@@ -34644,7 +35538,12 @@
         "id": "c990151bc57f41208463c63b1cfeede7",
         "kind": "organization",
         "label": "Allt åt alla",
-        "linking_info": [],
+        "linking_info": [
+          {
+            "source": "ai",
+            "summary": "Allt åt alla è un'organizzazione svedese che ha partecipato al meeting della Transnational Social Strike Platform e ha denunciato la transizione verde come un programma contro lavoratrici e lavoratori."
+          }
+        ],
         "score": null
       },
       {
@@ -34666,7 +35565,12 @@
         "id": "609f3b010f1440aba385d5e3b7bf60b5",
         "kind": "organization",
         "label": "Academy for Democratic Modernity",
-        "linking_info": [],
+        "linking_info": [
+          {
+            "source": "ai",
+            "summary": "L'Academy for Democratic Modernity è un'organizzazione curda che ha partecipato al meeting della Transnational Social Strike Platform e ha denunciato la transizione verde come un programma contro lavoratrici e lavoratori."
+          }
+        ],
         "score": null
       },
       {
@@ -34730,28 +35634,48 @@
         "id": "d47fc920e42e4209b911dbfc9c1eb955",
         "kind": "person",
         "label": "Yeheli Cialic Sofia Orr",
-        "linking_info": [],
+        "linking_info": [
+          {
+            "source": "ai",
+            "summary": "Yeheli Cialic Sofia Orr è un'attivista israeliana renitente alla leva che ha partecipato al meeting della Transnational Social Strike Platform e ha denunciato l'occupazione israeliana della Palestina."
+          }
+        ],
         "score": null
       },
       {
         "id": "a8c1840dcbf9406aa7d67835604529b9",
         "kind": "organization",
         "label": "Mesarvot",
-        "linking_info": [],
+        "linking_info": [
+          {
+            "source": "ai",
+            "summary": "Mesarvot è un'organizzazione israeliana che si impegna a sostenere le lotte contro l'occupazione israeliana della Palestina e ha partecipato al meeting della Transnational Social Strike Platform."
+          }
+        ],
         "score": null
       },
       {
         "id": "86c25e08a2224089874502824a2621f5",
         "kind": "person",
         "label": "Vadym Yakovlev",
-        "linking_info": [],
+        "linking_info": [
+          {
+            "source": "ai",
+            "summary": "Vadym Yakovlev è un attivista ucraino che ha disertato la guerra e ha partecipato al meeting della Transnational Social Strike Platform."
+          }
+        ],
         "score": null
       },
       {
         "id": "9578ac44d1a641cdb6cbe22a0d0634c0",
         "kind": "person",
         "label": "Lee Chun Fung",
-        "linking_info": [],
+        "linking_info": [
+          {
+            "source": "ai",
+            "summary": "Lee Chun Fung è un artista e attivista indipendente di Hong Kong che ha partecipato al meeting della Transnational Social Strike Platform e ha denunciato la repressione del governo cinese."
+          }
+        ],
         "score": null
       },
       {
@@ -34790,7 +35714,12 @@
         "id": "a09e0c73f9b84c10b1ba10bb06992225",
         "kind": "organization",
         "label": "Permanent Assembly Against the War",
-        "linking_info": [],
+        "linking_info": [
+          {
+            "source": "ai",
+            "summary": "La Permanent Assembly Against the War è un'organizzazione che si impegna a sostenere le lotte contro la guerra e ha partecipato al meeting della Transnational Social Strike Platform."
+          }
+        ],
         "score": null
       }
     ],
@@ -34909,7 +35838,12 @@
         "id": "6f8e7d6301dd493ba87941862974d726",
         "kind": "person",
         "label": "Andrea Barbi",
-        "linking_info": [],
+        "linking_info": [
+          {
+            "source": "ai",
+            "summary": "Andrea Barbi è il presentatore della serata finale della decima edizione del Premio. Indossa uno smoking e contribuisce a creare un'atmosfera sanremese."
+          }
+        ],
         "score": null
       },
       {
@@ -34946,14 +35880,24 @@
         "id": "9a43c833bee7440f9825ee970d0478a8",
         "kind": "person",
         "label": "Alberto",
-        "linking_info": [],
+        "linking_info": [
+          {
+            "source": "ai",
+            "summary": "Alberto è il figlio di Pierangelo Bertoli e direttore artistico del Premio assieme a Riccardo Bennini. Ha rivisitato i brani di suo padre con Neri Marcoré."
+          }
+        ],
         "score": null
       },
       {
         "id": "25965faf1c39469f97b020a462215e8e",
         "kind": "person",
         "label": "Riccardo Bennini",
-        "linking_info": [],
+        "linking_info": [
+          {
+            "source": "ai",
+            "summary": "Riccardo Bennini è il direttore artistico del Premio assieme ad Alberto, figlio di Pierangelo Bertoli."
+          }
+        ],
         "score": null
       },
       {
@@ -35082,21 +36026,36 @@
         "id": "f8cdd8f6f4784cc292e8131a4834352a",
         "kind": "person",
         "label": "Pier Sforza",
-        "linking_info": [],
+        "linking_info": [
+          {
+            "source": "ai",
+            "summary": "Pier Sforza è un cantante-pianista che si accompagna personalmente allo strumento."
+          }
+        ],
         "score": null
       },
       {
         "id": "905f82ec7a0a4c018dd6016dd5006e00",
         "kind": "person",
         "label": "Marco Sforza",
-        "linking_info": [],
+        "linking_info": [
+          {
+            "source": "ai",
+            "summary": "Marco Sforza è un cantante-pianista che si accompagna personalmente allo strumento."
+          }
+        ],
         "score": null
       },
       {
         "id": "2a23293fc1364831b4d685c90c73296c",
         "kind": "person",
         "label": "Emanuele Conte",
-        "linking_info": [],
+        "linking_info": [
+          {
+            "source": "ai",
+            "summary": "Emanuele Conte è un cantante che ha vinto il primo premio con la canzone Proiettile bambina. Ha ricevuto il premio anche come regalo di compleanno."
+          }
+        ],
         "score": null
       },
       {
@@ -35378,7 +36337,12 @@
         "id": "beb04f6d28014c0087a972eb394f778a",
         "kind": "person",
         "label": "Gabriele Guerra",
-        "linking_info": [],
+        "linking_info": [
+          {
+            "source": "ai",
+            "summary": "Gabriele Guerra è uno dei curatori del libro 'Un incontro mancato: Walter Benjamin e Antonio Gramsci'."
+          }
+        ],
         "score": null
       },
       {
@@ -35667,7 +36631,12 @@
         "id": "e06e6cfeb3fa491ea28ac5d1215e8869",
         "kind": "person",
         "label": "Razmig Keucheyan",
-        "linking_info": [],
+        "linking_info": [
+          {
+            "source": "ai",
+            "summary": "Razmig Keucheyan è un autore che mira a elaborare i confini di un nuovo «marxismo ecologico» utilizzando le teorie della democrazia deliberativa."
+          }
+        ],
         "score": null
       },
       {
@@ -35689,7 +36658,12 @@
         "id": "2367fe8d363745e58901fe55f2bb79d2",
         "kind": "person",
         "label": "Pietro Basso",
-        "linking_info": [],
+        "linking_info": [
+          {
+            "source": "ai",
+            "summary": "Pietro Basso è un autore che ha scritto un saggio sulle migrazioni, considerate soprattutto dal punto di vista della forza-lavoro necessaria per la produzione capitalistica."
+          }
+        ],
         "score": null
       },
       {
@@ -35935,7 +36909,12 @@
         "id": "4325585359e6426eb3dac8c5faea419d",
         "kind": "person",
         "label": "Alessia Polisini",
-        "linking_info": [],
+        "linking_info": [
+          {
+            "source": "ai",
+            "summary": "Alessia Polisini è un membro dell'esecutivo nazionale dell'Unione degli Studenti (Udu) e ha presentato il rapporto 'Università al verde' alla Camera."
+          }
+        ],
         "score": null
       },
       {
@@ -36002,14 +36981,24 @@
         "id": "415a8e3db6714b5ba7be7f351ac69014",
         "kind": "person",
         "label": "Camilla Piredda",
-        "linking_info": [],
+        "linking_info": [
+          {
+            "source": "ai",
+            "summary": "Camilla Piredda è la coordinatrice nazionale dell'Unione degli Studenti (Udu) e ha annunciato la mobilitazione nazionale sul diritto allo studio per il 17 novembre."
+          }
+        ],
         "score": null
       },
       {
         "id": "27f3102c6f9f4c278c8b782d0c3b9174",
         "kind": "person",
         "label": "Bianca Chiesa",
-        "linking_info": [],
+        "linking_info": [
+          {
+            "source": "ai",
+            "summary": "Bianca Chiesa è la coordinatrice nazionale dell'Unione degli Studenti e ha partecipato a un presidio sotto il Ministero dell'Istruzione per chiedere un modello di istruzione diverso."
+          }
+        ],
         "score": null
       },
       {
@@ -36443,14 +37432,24 @@
         "id": "846eb792e56748ca9869ef029c7a8f94",
         "kind": "person",
         "label": "Dmitri Rybolovov",
-        "linking_info": [],
+        "linking_info": [
+          {
+            "source": "ai",
+            "summary": "Dmitri Rybolovov è un miliardario russo, cliente dell'avvocato Dupont-Moretti, che è stato messo sotto accusa a Montecarlo."
+          }
+        ],
         "score": null
       },
       {
         "id": "47af8fd65e164c68a14b92cb31c96a0f",
         "kind": "person",
         "label": "Rémy Heitz",
-        "linking_info": [],
+        "linking_info": [
+          {
+            "source": "ai",
+            "summary": "Rémy Heitz è il Procuratore generale della Corte di Cassazione e presidente della Corte di Giustizia della Repubblica, in carica da poco."
+          }
+        ],
         "score": null
       },
       {
@@ -36472,14 +37471,24 @@
         "id": "7b68ef27f73548d789e4c3690973e198",
         "kind": "person",
         "label": "Nicole Beloubet",
-        "linking_info": [],
+        "linking_info": [
+          {
+            "source": "ai",
+            "summary": "Nicole Beloubet è l'ex ministra della Giustizia che ha preceduto l'imputato Dupont-Moretti e sarà chiamata a testimoniare al processo."
+          }
+        ],
         "score": null
       },
       {
         "id": "7f170b51f9754d06a5eddb392b4aed4d",
         "kind": "person",
         "label": "François Molins",
-        "linking_info": [],
+        "linking_info": [
+          {
+            "source": "ai",
+            "summary": "François Molins è l'ex Procuratore generale della Corte di Cassazione, che sarà chiamato a testimoniare al processo e che Dupont-Moretti accusa di ambiguità e invidia."
+          }
+        ],
         "score": null
       },
       {
@@ -36560,7 +37569,12 @@
         "id": "e0a3c841a779417aa1d795891a52000a",
         "kind": "organization",
         "label": "Corte di Giustizia della Repubblica",
-        "linking_info": [],
+        "linking_info": [
+          {
+            "source": "ai",
+            "summary": "La Corte di Giustizia della Repubblica è un tribunale speciale riservato ai ministri, composto da 3 magistrati togati e da 12 parlamentari, che giudicherà il caso di Dupont-Moretti."
+          }
+        ],
         "score": null
       },
       {
@@ -36819,42 +37833,72 @@
         "id": "91b646e2490946af8e4ce2b9dd87d309",
         "kind": "person",
         "label": "Cristiana Roveda",
-        "linking_info": [],
+        "linking_info": [
+          {
+            "source": "ai",
+            "summary": "Cristiana Roveda è un pubblico ministero che lavora insieme a Marcello Viola nella procura di Milano."
+          }
+        ],
         "score": null
       },
       {
         "id": "ced33794d49347d5a4edf84835f076a2",
         "kind": "person",
         "label": "Giancarla Serafini",
-        "linking_info": [],
+        "linking_info": [
+          {
+            "source": "ai",
+            "summary": "Giancarla Serafini è un pubblico ministero che lavora insieme a Marcello Viola nella procura di Milano."
+          }
+        ],
         "score": null
       },
       {
         "id": "724725bbb06a4cc6bc6575a6c83cc69a",
         "kind": "person",
         "label": "Patrik Clarke Dermot",
-        "linking_info": [],
+        "linking_info": [
+          {
+            "source": "ai",
+            "summary": "Patrik Clarke Dermot è una persona che ha rivestito cariche amministrative in Airbnb e che è stata indagata per la maxi-evasione."
+          }
+        ],
         "score": null
       },
       {
         "id": "4500b780857942f29bd5524168b20fe9",
         "kind": "person",
         "label": "Mary Hassel Aisilig",
-        "linking_info": [],
+        "linking_info": [
+          {
+            "source": "ai",
+            "summary": "Mary Hassel Aisilig è una persona che ha rivestito cariche amministrative in Airbnb e che è stata indagata per la maxi-evasione."
+          }
+        ],
         "score": null
       },
       {
         "id": "5735c4e98a614c599fbcf850f3057566",
         "kind": "person",
         "label": "Killian Francis Pattwell",
-        "linking_info": [],
+        "linking_info": [
+          {
+            "source": "ai",
+            "summary": "Killian Francis Pattwell è una persona che ha rivestito cariche amministrative in Airbnb e che è stata indagata per la maxi-evasione."
+          }
+        ],
         "score": null
       },
       {
         "id": "d20431a844f54d719739a3a7c38cfad1",
         "kind": "person",
         "label": "Angela Minerva",
-        "linking_info": [],
+        "linking_info": [
+          {
+            "source": "ai",
+            "summary": "Angela Minerva è un giudice che ha emesso un provvedimento cautelare contro Airbnb."
+          }
+        ],
         "score": null
       },
       {
@@ -36968,7 +38012,12 @@
         "id": "50447e3583804019b1d3410b9fbf6e83",
         "kind": "organization",
         "label": "Procura di Milano",
-        "linking_info": [],
+        "linking_info": [
+          {
+            "source": "ai",
+            "summary": "La Procura di Milano è un'istituzione giudiziaria che ha condotto un'indagine su Airbnb per maxi-evasione."
+          }
+        ],
         "score": null
       },
       {
@@ -36990,7 +38039,12 @@
         "id": "ec5b61f029774f859c54ca337cfb6ece",
         "kind": "organization",
         "label": "Associazione per il Turismo e l'Alloggio Professionale",
-        "linking_info": [],
+        "linking_info": [
+          {
+            "source": "ai",
+            "summary": "L'Associazione per il Turismo e l'Alloggio Professionale è un'organizzazione della lobby alberghiera francese che ha presentato un reclamo contro Airbnb."
+          }
+        ],
         "score": null
       }
     ],

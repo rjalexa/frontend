@@ -7,19 +7,25 @@ import {
   CardContent,
 } from "../../../components/ui/card";
 import { MapPin, User, Building } from "lucide-react";
-import { Article, Entity} from '@/lib/types';
-
+import { 
+  Article, 
+  Entity, 
+  EntityKind, 
+  WikipediaLinkingInfo, 
+  GeonamesLinkingInfo,
+  AILinkingInfo 
+} from '@/lib/types';
 
 interface EntitiesViewProps {
   article: Article;
 }
 
-export default function EntitiesView({ article }: EntitiesViewProps) {
-  const [selectedType, setSelectedType] = React.useState<
-    "all" | "person" | "location" | "organization"
-  >("all");
+type EntityTypeFilter = "all" | EntityKind;
 
-  const getIcon = (kind: Entity["kind"]) => {
+export default function EntitiesView({ article }: EntitiesViewProps) {
+  const [selectedType, setSelectedType] = React.useState<EntityTypeFilter>("all");
+
+  const getIcon = (kind: EntityKind) => {
     switch (kind) {
       case "location":
         return <MapPin className="w-5 h-5 text-blue-500" />;
@@ -27,19 +33,26 @@ export default function EntitiesView({ article }: EntitiesViewProps) {
         return <User className="w-5 h-5 text-green-500" />;
       case "organization":
         return <Building className="w-5 h-5 text-purple-500" />;
-      default:
-        return null;
     }
+  };
+
+  const isGeonamesInfo = (info: any): info is GeonamesLinkingInfo => {
+    return info?.source === "geonames";
+  };
+
+  const isWikipediaInfo = (info: any): info is WikipediaLinkingInfo => {
+    return info?.source === "wikipedia";
   };
 
   const hasLocationsWithCoordinates = (): boolean => {
     if (!article?.meta_data) return false;
 
     return article.meta_data.some(
-      (entity) =>
-        entity.kind === "location" &&
-        entity.linking_info?.[1]?.lat &&
-        entity.linking_info?.[1]?.lng
+      (entity) => {
+        if (entity.kind !== "location") return false;
+        const geonamesInfo = entity.linking_info?.find(isGeonamesInfo);
+        return !!(geonamesInfo?.lat && geonamesInfo?.lng);
+      }
     );
   };
 
@@ -52,7 +65,7 @@ export default function EntitiesView({ article }: EntitiesViewProps) {
         : article.meta_data.filter((entity) => entity.kind === selectedType);
 
     return entities.sort((a, b) => {
-      const typePriority = {
+      const typePriority: Record<EntityKind, number> = {
         location: 1,
         person: 2,
         organization: 3,
@@ -66,6 +79,80 @@ export default function EntitiesView({ article }: EntitiesViewProps) {
 
       return priorityDiff;
     });
+  };
+
+  const renderLocationCard = (entity: Entity) => {
+    const geonamesInfo = entity.linking_info?.find(isGeonamesInfo);
+    const wikipediaInfo = entity.linking_info?.find(isWikipediaInfo);
+
+    return (
+      <>
+        <CardHeader className="flex flex-row items-center gap-2">
+          <MapPin className="w-5 h-5 text-blue-500" />
+          <CardTitle className="text-lg">
+            {geonamesInfo?.lat && geonamesInfo?.lng ? (
+              <a
+                href={`/map/${article.id}?lat=${geonamesInfo.lat}&lng=${geonamesInfo.lng}${
+                  geonamesInfo.bbox
+                    ? `&north=${geonamesInfo.bbox.north}&south=${geonamesInfo.bbox.south}&east=${geonamesInfo.bbox.east}&west=${geonamesInfo.bbox.west}`
+                    : ""
+                }&name=${encodeURIComponent(entity.label)}`}
+                className="text-blue-600 hover:text-blue-800"
+              >
+                {entity.label}
+              </a>
+            ) : (
+              <span className="text-gray-900">{entity.label}</span>
+            )}
+          </CardTitle>
+        </CardHeader>
+        <CardContent>
+          {wikipediaInfo && (
+            <p className="text-gray-600 text-sm">
+              {wikipediaInfo.summary.split(".")[0]}.
+            </p>
+          )}
+        </CardContent>
+      </>
+    );
+  };
+
+  const renderDefaultCard = (entity: Entity) => {
+    const wikipediaInfo = entity.linking_info?.find(isWikipediaInfo);
+    const aiInfo = entity.linking_info?.find((info): info is AILinkingInfo => info.source === 'ai');
+
+    return (
+      <>
+        <CardHeader className="flex flex-row items-center gap-2">
+          {getIcon(entity.kind)}
+          <CardTitle className="text-lg text-gray-900">
+            {entity.label}
+          </CardTitle>
+        </CardHeader>
+        <CardContent className="space-y-2">
+          {entity.summary && (
+            <p className="text-gray-700">{entity.summary}</p>
+          )}
+          {(entity.kind === "person" || entity.kind === "organization") && (
+            <>
+              {wikipediaInfo?.summary && (
+                <p className="text-gray-600 text-sm">
+                  {wikipediaInfo.summary.split(".")[0]}.
+                </p>
+              )}
+              {aiInfo?.summary && (
+                <div className="text-gray-600 text-sm">
+                  <p className="flex items-center gap-1">
+                    <img src="/mema.svg" alt="MeMa" className="w-8 h-3" />
+                    <span className="italic">{aiInfo.summary}</span>
+                  </p>
+                </div>
+              )}
+            </>
+          )}
+        </CardContent>
+      </>
+    );
   };
 
   return (
@@ -137,58 +224,10 @@ export default function EntitiesView({ article }: EntitiesViewProps) {
                   </div>
                 )}
                 <Card className="hover:shadow-lg transition-shadow bg-white border-gray-200">
-                  {entity.kind === "location" && entity.linking_info?.[1] ? (
-                    <>
-                      <CardHeader className="flex flex-row items-center gap-2">
-                        <MapPin className="w-5 h-5 text-blue-500" />
-                        <CardTitle className="text-lg">
-                          {entity.linking_info[1].lat &&
-                          entity.linking_info[1].lng ? (
-                            <a
-                              href={`/map/${article.id}?lat=${
-                                entity.linking_info[1].lat
-                              }&lng=${entity.linking_info[1].lng}${
-                                entity.linking_info[1].bbox
-                                  ? `&north=${entity.linking_info[1].bbox.north}&south=${entity.linking_info[1].bbox.south}&east=${entity.linking_info[1].bbox.east}&west=${entity.linking_info[1].bbox.west}`
-                                  : ""
-                              }&name=${encodeURIComponent(entity.label)}`}
-                              className="text-blue-600 hover:text-blue-800"
-                            >
-                              {entity.label}
-                            </a>
-                          ) : (
-                            <span className="text-gray-900">{entity.label}</span>
-                          )}
-                        </CardTitle>
-                      </CardHeader>
-                      <CardContent>
-                        <p className="text-gray-600 text-sm">
-                          {entity.linking_info[0].summary.split(".")[0]}.
-                        </p>
-                      </CardContent>
-                    </>
-                  ) : (
-                    <>
-                      <CardHeader className="flex flex-row items-center gap-2">
-                        {getIcon(entity.kind)}
-                        <CardTitle className="text-lg text-gray-900">
-                          {entity.label}
-                        </CardTitle>
-                      </CardHeader>
-                      <CardContent>
-                        {entity.summary && (
-                          <p className="text-gray-700 mb-2">{entity.summary}</p>
-                        )}
-                        {(entity.kind === "person" ||
-                          entity.kind === "organization") &&
-                          entity.linking_info?.[0]?.summary && (
-                            <p className="text-gray-600 text-sm mt-1">
-                              {entity.linking_info[0].summary.split(".")[0]}.
-                            </p>
-                          )}
-                      </CardContent>
-                    </>
-                  )}
+                  {entity.kind === "location" 
+                    ? renderLocationCard(entity)
+                    : renderDefaultCard(entity)
+                  }
                 </Card>
               </React.Fragment>
             );
