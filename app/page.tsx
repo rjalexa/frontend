@@ -1,8 +1,7 @@
-// frontend/app/page.tsx
 "use client";
 import React, { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { ArrowUpDown, Menu } from "lucide-react";
+import { ArrowUpDown } from "lucide-react";
 import Header from '@/components/Header';
 import { HighlightsPanel } from '@/components/highlights/HighlightsPanel';
 
@@ -11,8 +10,12 @@ interface Article {
   headline: string;
   date_created: string;
   author: string;
-  datePublished: string; // Added for highlights
-  slug: string; // Added for highlights
+  datePublished: string;
+  slug: string;
+  highlights?: Array<{
+    highlight_text: string;
+    highlight_sequence_number: number;
+  }>;
   meta_data?: Array<{
     id: string;
     kind: "person" | "location" | "organization";
@@ -45,7 +48,6 @@ export default function Home() {
   const [highlightsOpen, setHighlightsOpen] = useState(false);
   const [selectedArticle, setSelectedArticle] = useState<Article | null>(null);
 
-  // Handle hydration
   useEffect(() => {
     setMounted(true);
   }, []);
@@ -93,7 +95,6 @@ export default function Home() {
   const handleCloseHighlights = () => {
     setHighlightsOpen(false);
     setSelectedArticle(null);
-    // Force a re-render of the page
     setTimeout(() => {
       document.body.style.pointerEvents = "auto";
       document.body.style.overflow = "auto";
@@ -116,46 +117,14 @@ export default function Home() {
     return direction * aValue.localeCompare(bValue);
   });
 
-  // Don't render anything until after hydration
   if (!mounted) return null;
-
   if (error) return <div className="p-4 text-red-600">Error: {error}</div>;
   if (loading) return <div className="p-4 text-gray-900">Loading...</div>;
 
   return (
     <div className="bg-white min-h-screen">
-      {/* Header */}
-      <div className="w-full">
-        {/* Header container */}
-        <div className="max-w-6xl mx-auto px-4 py-6">
-          <div className="flex justify-between items-center">
-            {/* Menu button on the left */}
-            <button className="p-2 hover:bg-gray-100 rounded-lg">
-              <Menu className="h-6 w-6 text-gray-700" />
-            </button>
-  
-            {/* Logo in the center */}
-            <div className="flex flex-col items-center">
-              <img src="/manifesto_logo.svg" alt="il manifesto" className="h-8" />
-            </div>
-  
-            {/* User icon on the right */}
-            <button className="p-2 hover:bg-gray-100 rounded-lg">
-              <svg className="h-6 w-6 text-gray-700" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-              </svg>
-            </button>
-          </div>
-        </div>
-        
-        {/* Bottom border */}
-        <div className="w-full border-b border-gray-200" />
-        
-        {/* Red bar */}
-        <div className="w-full h-2 bg-red-600" />
-      </div>
-  
-      {/* Main content */}
+      <Header />
+      
       <div className="p-4">
         <div className="max-w-6xl mx-auto">
           <h1 className="text-2xl font-bold mb-4 text-gray-800">Articoli selezionati</h1>
@@ -234,8 +203,7 @@ export default function Home() {
             isOpen={highlightsOpen}
             onClose={handleCloseHighlights}
             articleTitle={selectedArticle.headline}
-            datePublished={selectedArticle.datePublished}
-            slug={selectedArticle.slug}
+            highlights={selectedArticle.highlights || []}
           />
         )}
       </div>

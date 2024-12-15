@@ -1,13 +1,35 @@
+"use client";
 import { Menu } from "lucide-react";
+import { useEffect } from "react";
 
 export default function Header() {
+  useEffect(() => {
+    console.log("Header component mounted");
+  }, []);
+
+  const handleMenuClick = (e: React.MouseEvent<HTMLButtonElement>) => {
+    console.log("Menu button clicked");
+    e.preventDefault();
+    try {
+      window.open('https://dev.isagog.com/memastats', '_blank', 'noopener,noreferrer');
+      console.log("Window.open called");
+    } catch (error) {
+      console.error("Error opening window:", error);
+    }
+  };
+
   return (
     <div className="w-full">
       {/* Header container */}
       <div className="max-w-6xl mx-auto px-4 py-6">
         <div className="flex justify-between items-center">
           {/* Menu button on the left */}
-          <button className="p-2 hover:bg-gray-100 rounded-lg">
+          <button 
+            type="button"
+            onClick={handleMenuClick}
+            className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
+            aria-label="Open Menu"
+          >
             <Menu className="h-6 w-6 text-gray-700" />
           </button>
 
