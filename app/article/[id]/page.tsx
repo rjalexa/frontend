@@ -12,7 +12,6 @@ import {
   Globe,
 } from "lucide-react";
 import { useRouter } from "next/navigation";
-import EntitiesView from "./EntitiesView";
 import Header from "@/components/Header";
 import ArticleContent from "@/components/article/ArticleContent";
 import type { Article, SortField, SortDirection } from "@/lib/types";
@@ -25,7 +24,6 @@ export default function ArticlePage({
   const router = useRouter();
   const [article, setArticle] = useState<Article | null>(null);
   const [loading, setLoading] = useState(true);
-  const [activeView, setActiveView] = useState<"article" | "entities">("article");
   const [allArticles, setAllArticles] = useState<Article[]>([]);
   const [currentIndex, setCurrentIndex] = useState<number>(-1);
 
@@ -46,6 +44,9 @@ export default function ArticlePage({
   );
   const [topicsOpen, setTopicsOpen] = useState(() => 
     localStorage.getItem("topicsOpen") === "true"
+  );
+  const [entitiesOpen, setEntitiesOpen] = useState(() => 
+    localStorage.getItem("entitiesOpen") === "true"
   );
 
   // Separate desired and actual map states
@@ -69,6 +70,10 @@ export default function ArticlePage({
   useEffect(() => {
     localStorage.setItem("topicsOpen", String(topicsOpen));
   }, [topicsOpen]);
+
+  useEffect(() => {
+    localStorage.setItem("entitiesOpen", String(entitiesOpen));
+  }, [entitiesOpen]);
 
   useEffect(() => {
     localStorage.setItem("desiredMapState", String(desiredMapState));
@@ -125,17 +130,17 @@ export default function ArticlePage({
         if (highlightsOpen) setHighlightsOpen(false);
         else if (summaryOpen) setSummaryOpen(false);
         else if (topicsOpen) setTopicsOpen(false);
+        else if (entitiesOpen) setEntitiesOpen(false);
         else if (mapOpen) {
           setMapOpen(false);
           setDesiredMapState(false);
         }
-        else if (activeView === "entities") setActiveView("article");
       }
     };
 
     window.addEventListener("keydown", handleEscKey);
     return () => window.removeEventListener("keydown", handleEscKey);
-  }, [highlightsOpen, summaryOpen, topicsOpen, mapOpen, activeView]);
+  }, [highlightsOpen, summaryOpen, topicsOpen, entitiesOpen, mapOpen]);
 
   if (loading) return <div className="p-4 text-gray-900">Loading...</div>;
   if (!article) return <div className="p-4 text-gray-900">Article not found</div>;
@@ -144,6 +149,7 @@ export default function ArticlePage({
   const handleHighlightsToggle = () => setHighlightsOpen(!highlightsOpen);
   const handleSummaryToggle = () => setSummaryOpen(!summaryOpen);
   const handleTopicsToggle = () => setTopicsOpen(!topicsOpen);
+  const handleEntitiesToggle = () => setEntitiesOpen(!entitiesOpen);
   const handleMapToggle = () => {
     const newState = !desiredMapState;
     setDesiredMapState(newState);
@@ -189,9 +195,9 @@ export default function ArticlePage({
             <img src="/mema.svg" alt="MeMa Logo" className="w-16 h-6" />
             <div className="flex items-center gap-4">
               <button
-                onClick={() => setActiveView(activeView === "entities" ? "article" : "entities")}
+                onClick={handleEntitiesToggle}
                 className={`px-6 py-2 rounded-full transition-colors flex items-center gap-2 ${
-                  activeView === "entities"
+                  entitiesOpen
                     ? "bg-blue-600 text-white"
                     : "bg-gray-100 text-gray-800 hover:bg-gray-200"
                 }`}
@@ -254,21 +260,19 @@ export default function ArticlePage({
 
           {/* Main content */}
           <div className="relative mt-6">
-            {activeView === "entities" ? (
-              <EntitiesView article={article} />
-            ) : (
-              <ArticleContent
-                article={article}
-                summaryOpen={summaryOpen}
-                setSummaryOpen={setSummaryOpen}
-                highlightsOpen={highlightsOpen}
-                setHighlightsOpen={setHighlightsOpen}
-                topicsOpen={topicsOpen}
-                setTopicsOpen={setTopicsOpen}
-                mapOpen={mapOpen}
-                setMapOpen={setMapOpen}
-              />
-            )}
+            <ArticleContent
+              article={article}
+              summaryOpen={summaryOpen}
+              setSummaryOpen={setSummaryOpen}
+              highlightsOpen={highlightsOpen}
+              setHighlightsOpen={setHighlightsOpen}
+              topicsOpen={topicsOpen}
+              setTopicsOpen={setTopicsOpen}
+              mapOpen={mapOpen}
+              setMapOpen={setMapOpen}
+              entitiesOpen={entitiesOpen}
+              setEntitiesOpen={setEntitiesOpen}
+            />
           </div>
         </div>
       </main>

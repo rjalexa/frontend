@@ -50,7 +50,7 @@ export interface AILinkingInfo {
 // Union type for all linking info types
 export type LinkingInfo = WikipediaLinkingInfo | GeonamesLinkingInfo | AILinkingInfo;
 
-// Article interface
+// Article interface with all properties
 export interface Article {
   id: string;
   title: string;
@@ -58,7 +58,22 @@ export interface Article {
   date_created: string;
   source: string;
   author?: string;
-  meta_data?: Entity[];  // List of all entities (if any)
+  meta_data?: Entity[];
+  // Panel-specific properties
+  articleTag?: string;
+  topics?: string;
+  tags?: string;
+  mema_topics?: string[];
+  mema_summary?: string;
+  highlights?: Array<{
+    highlight_text: string;
+    highlight_sequence_number: number;
+  }>;
+  // Additional UI-specific properties
+  headline?: string;     // Used in article display
+  articleKicker?: string; // Used for the subtitle/kicker
+  articleBody?: string;  // Used for the main content
+  datePublished?: string; // Used for display date
 }
 
 // Helper type to enforce one linking info per source
@@ -99,7 +114,7 @@ export interface EntityKindCounts {
   organization: number;
 }
 
-// Component props
+// Component props interfaces
 export interface ArticleContentProps {
   article: Article;
   summaryOpen: boolean;
@@ -110,6 +125,8 @@ export interface ArticleContentProps {
   setTopicsOpen: (open: boolean) => void;
   mapOpen: boolean;
   setMapOpen: (open: boolean) => void;
+  entitiesOpen: boolean;
+  setEntitiesOpen: (open: boolean) => void;
 }
 
 export interface EntitiesViewProps {

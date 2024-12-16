@@ -1,7 +1,8 @@
 // components/article/panels/TopicsPanel.tsx
 import React from 'react';
 import { Hash } from "lucide-react";
-import type { BasePanelProps, Article } from './types';
+import { BasePanelProps } from './types';
+import type { Article } from '@/lib/types';
 
 interface TopicsPanelProps extends BasePanelProps {
   article: Article;

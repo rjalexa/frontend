@@ -1,29 +1,20 @@
-"use client";
+// components/entities/EntitiesPanel.tsx
 import React from "react";
-import {
-  Card,
-  CardHeader,
-  CardTitle,
-  CardContent,
-} from "../../../components/ui/card";
-import { MapPin, User, Building } from "lucide-react";
-import { 
-  Article, 
-  Entity, 
-  EntityKind, 
-  WikipediaLinkingInfo, 
-  GeonamesLinkingInfo,
-  AILinkingInfo 
-} from '@/lib/types';
+import { Microscope, MapPin, User, Building } from "lucide-react";
+import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
+import { Article, Entity, EntityKind, WikipediaLinkingInfo, GeonamesLinkingInfo, AILinkingInfo } from '@/lib/types';
+import type { BasePanelProps } from '../article/panels/types';
 
-interface EntitiesViewProps {
+interface EntitiesPanelProps extends BasePanelProps {
   article: Article;
 }
 
 type EntityTypeFilter = "all" | EntityKind;
 
-export default function EntitiesView({ article }: EntitiesViewProps) {
+export function EntitiesPanel({ isOpen, onClose, article }: EntitiesPanelProps) {
   const [selectedType, setSelectedType] = React.useState<EntityTypeFilter>("all");
+
+  if (!isOpen) return null;
 
   const getIcon = (kind: EntityKind) => {
     switch (kind) {
@@ -60,11 +51,9 @@ export default function EntitiesView({ article }: EntitiesViewProps) {
       };
 
       const priorityDiff = typePriority[a.kind] - typePriority[b.kind];
-
       if (priorityDiff === 0) {
         return a.label.localeCompare(b.label, "en", { sensitivity: "base" });
       }
-
       return priorityDiff;
     });
   };
@@ -75,7 +64,7 @@ export default function EntitiesView({ article }: EntitiesViewProps) {
 
     return (
       <>
-        <CardHeader className="flex flex-row items-center gap-2">
+        <CardHeader className="flex flex-row items-center gap-2 p-3">
           <MapPin className="w-5 h-5 text-blue-500" />
           <CardTitle className="text-lg">
             {geonamesInfo?.lat && geonamesInfo?.lng ? (
@@ -94,7 +83,7 @@ export default function EntitiesView({ article }: EntitiesViewProps) {
             )}
           </CardTitle>
         </CardHeader>
-        <CardContent>
+        <CardContent className="pt-0 px-3 pb-3">
           {wikipediaInfo && (
             <p className="text-gray-600 text-sm">
               {wikipediaInfo.summary.split(".")[0]}.
@@ -111,15 +100,15 @@ export default function EntitiesView({ article }: EntitiesViewProps) {
 
     return (
       <>
-        <CardHeader className="flex flex-row items-center gap-2">
+        <CardHeader className="flex flex-row items-center gap-2 p-3">
           {getIcon(entity.kind)}
           <CardTitle className="text-lg text-gray-900">
             {entity.label}
           </CardTitle>
         </CardHeader>
-        <CardContent className="space-y-2">
+        <CardContent className="space-y-2 pt-0 px-3 pb-3">
           {entity.summary && (
-            <p className="text-gray-700">{entity.summary}</p>
+            <p className="text-gray-700 text-sm">{entity.summary}</p>
           )}
           {(entity.kind === "person" || entity.kind === "organization") && (
             <>
@@ -144,9 +133,17 @@ export default function EntitiesView({ article }: EntitiesViewProps) {
   };
 
   return (
-    <div>
-      <div className="flex justify-between items-center mb-4">
-        <div className="flex flex-wrap gap-2">
+    <div className="mb-8 border rounded-lg shadow-sm bg-white">
+      <div className="flex items-center justify-between w-full p-4 border-b">
+        <div className="flex items-center gap-2 text-blue-700 bg-blue-100 px-4 py-2 rounded-md">
+          <Microscope className="w-4 h-4" />
+          <span>Entità e dettagli</span>
+        </div>
+        <img src="/mema.svg" alt="MeMa Logo" className="w-16 h-6 ml-6" />
+      </div>
+      
+      <div className="p-4">
+        <div className="flex flex-wrap gap-2 mb-4">
           <button
             onClick={() => setSelectedType("all")}
             className={`px-4 py-2 rounded transition-colors ${
@@ -188,27 +185,27 @@ export default function EntitiesView({ article }: EntitiesViewProps) {
             <Building className="w-4 h-4" /> Organizations
           </button>
         </div>
-      </div>
 
-      {article.meta_data ? (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-          {filterEntities().map((entity) => (
-            <Card 
-              key={entity.id} 
-              className="hover:shadow-lg transition-shadow bg-white border-gray-200"
-            >
-              {entity.kind === "location" 
-                ? renderLocationCard(entity)
-                : renderDefaultCard(entity)
-              }
-            </Card>
-          ))}
-        </div>
-      ) : (
-        <div className="text-gray-700">
-          No entity data available for this article
-        </div>
-      )}
+        {article.meta_data ? (
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+            {filterEntities().map((entity) => (
+              <Card 
+                key={entity.id} 
+                className="hover:shadow-lg transition-shadow bg-white border-gray-200"
+              >
+                {entity.kind === "location" 
+                  ? renderLocationCard(entity)
+                  : renderDefaultCard(entity)
+                }
+              </Card>
+            ))}
+          </div>
+        ) : (
+          <div className="text-gray-700">
+            No entity data available for this article
+          </div>
+        )}
+      </div>
     </div>
   );
 }
