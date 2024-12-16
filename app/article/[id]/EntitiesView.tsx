@@ -44,18 +44,6 @@ export default function EntitiesView({ article }: EntitiesViewProps) {
     return info?.source === "wikipedia";
   };
 
-  const hasLocationsWithCoordinates = (): boolean => {
-    if (!article?.meta_data) return false;
-
-    return article.meta_data.some(
-      (entity) => {
-        if (entity.kind !== "location") return false;
-        const geonamesInfo = entity.linking_info?.find(isGeonamesInfo);
-        return !!(geonamesInfo?.lat && geonamesInfo?.lng);
-      }
-    );
-  };
-
   const filterEntities = (): Entity[] => {
     if (!article?.meta_data) return [];
 
@@ -204,34 +192,17 @@ export default function EntitiesView({ article }: EntitiesViewProps) {
 
       {article.meta_data ? (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-          {filterEntities().map((entity, index, array) => {
-            const isLastLocation =
-              index > 0 &&
-              entity.kind !== "location" &&
-              array[index - 1]?.kind === "location";
-
-            return (
-              <React.Fragment key={entity.id}>
-                {isLastLocation && hasLocationsWithCoordinates() && (
-                  <div className="col-span-full flex justify-center mb-4">
-                    <a
-                      href={`/map/${article.id}?mode=all`}
-                      className="px-6 py-3 rounded bg-blue-100 text-blue-700 hover:bg-blue-200 flex items-center gap-2 transition-colors"
-                    >
-                      <MapPin className="w-5 h-5" />
-                      Mostra la mappa
-                    </a>
-                  </div>
-                )}
-                <Card className="hover:shadow-lg transition-shadow bg-white border-gray-200">
-                  {entity.kind === "location" 
-                    ? renderLocationCard(entity)
-                    : renderDefaultCard(entity)
-                  }
-                </Card>
-              </React.Fragment>
-            );
-          })}
+          {filterEntities().map((entity) => (
+            <Card 
+              key={entity.id} 
+              className="hover:shadow-lg transition-shadow bg-white border-gray-200"
+            >
+              {entity.kind === "location" 
+                ? renderLocationCard(entity)
+                : renderDefaultCard(entity)
+              }
+            </Card>
+          ))}
         </div>
       ) : (
         <div className="text-gray-700">
