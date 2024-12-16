@@ -28,30 +28,30 @@ export default function ArticlePage({
   const [currentIndex, setCurrentIndex] = useState<number>(-1);
 
   // Sort states
-  const [sortField, setSortField] = useState<SortField>(() => 
-    (localStorage.getItem("sortField") as SortField) || "date_created"
+  const [sortField, setSortField] = useState<SortField>(
+    () => (localStorage.getItem("sortField") as SortField) || "date_created"
   );
-  const [sortDirection, setSortDirection] = useState<SortDirection>(() => 
-    (localStorage.getItem("sortDirection") as SortDirection) || "desc"
+  const [sortDirection, setSortDirection] = useState<SortDirection>(
+    () => (localStorage.getItem("sortDirection") as SortDirection) || "desc"
   );
 
   // Panel states
-  const [highlightsOpen, setHighlightsOpen] = useState(() => 
-    localStorage.getItem("highlightsOpen") === "true"
+  const [highlightsOpen, setHighlightsOpen] = useState(
+    () => localStorage.getItem("highlightsOpen") === "true"
   );
-  const [summaryOpen, setSummaryOpen] = useState(() => 
-    localStorage.getItem("summaryOpen") === "true"
+  const [summaryOpen, setSummaryOpen] = useState(
+    () => localStorage.getItem("summaryOpen") === "true"
   );
-  const [topicsOpen, setTopicsOpen] = useState(() => 
-    localStorage.getItem("topicsOpen") === "true"
+  const [topicsOpen, setTopicsOpen] = useState(
+    () => localStorage.getItem("topicsOpen") === "true"
   );
-  const [entitiesOpen, setEntitiesOpen] = useState(() => 
-    localStorage.getItem("entitiesOpen") === "true"
+  const [entitiesOpen, setEntitiesOpen] = useState(
+    () => localStorage.getItem("entitiesOpen") === "true"
   );
 
   // Separate desired and actual map states
-  const [desiredMapState, setDesiredMapState] = useState(() => 
-    localStorage.getItem("desiredMapState") === "true"
+  const [desiredMapState, setDesiredMapState] = useState(
+    () => localStorage.getItem("desiredMapState") === "true"
   );
   const [mapOpen, setMapOpen] = useState(false);
 
@@ -89,7 +89,11 @@ export default function ArticlePage({
         articles = [...articles].sort((a, b) => {
           const direction = sortDirection === "asc" ? 1 : -1;
           if (sortField === "date_created") {
-            return direction * (new Date(a.date_created).getTime() - new Date(b.date_created).getTime());
+            return (
+              direction *
+              (new Date(a.date_created).getTime() -
+                new Date(b.date_created).getTime())
+            );
           }
           const aValue = (a[sortField] || "").toLowerCase();
           const bValue = (b[sortField] || "").toLowerCase();
@@ -112,7 +116,9 @@ export default function ArticlePage({
   // Handle map visibility based on article locations
   useEffect(() => {
     if (article) {
-      const hasLocations = article.meta_data?.some(entity => entity.kind === "location");
+      const hasLocations = article.meta_data?.some(
+        (entity) => entity.kind === "location"
+      );
       setMapOpen(hasLocations ? desiredMapState : false);
     }
   }, [article, desiredMapState]);
@@ -143,7 +149,8 @@ export default function ArticlePage({
   }, [highlightsOpen, summaryOpen, topicsOpen, entitiesOpen, mapOpen]);
 
   if (loading) return <div className="p-4 text-gray-900">Loading...</div>;
-  if (!article) return <div className="p-4 text-gray-900">Article not found</div>;
+  if (!article)
+    return <div className="p-4 text-gray-900">Article not found</div>;
 
   // Panel toggle handlers
   const handleHighlightsToggle = () => setHighlightsOpen(!highlightsOpen);
@@ -164,7 +171,11 @@ export default function ArticlePage({
           {/* Navigation buttons */}
           <div className="flex items-center gap-4 mb-6">
             <button
-              onClick={() => router.push(`/?sortField=${sortField}&sortDirection=${sortDirection}`)}
+              onClick={() =>
+                router.push(
+                  `/?sortField=${sortField}&sortDirection=${sortDirection}`
+                )
+              }
               className="flex items-center gap-2 text-blue-600 hover:text-blue-800"
             >
               <ArrowLeft className="w-4 h-4" /> Lista articoli
@@ -183,29 +194,19 @@ export default function ArticlePage({
               onClick={() => navigateToArticle(currentIndex + 1)}
               disabled={currentIndex >= allArticles.length - 1}
               className={`flex items-center gap-2 text-blue-600 hover:text-blue-800 ${
-                currentIndex >= allArticles.length - 1 ? "opacity-50 cursor-not-allowed" : ""
+                currentIndex >= allArticles.length - 1
+                  ? "opacity-50 cursor-not-allowed"
+                  : ""
               }`}
             >
               <ArrowDown className="w-4 h-4" /> Successivo
             </button>
           </div>
 
-          {/* MeMa logo and controls */}
+          {/* MeMa logo and button controls */}
           <div className="flex items-center gap-4 mb-8">
             <img src="/mema.svg" alt="MeMa Logo" className="w-16 h-6" />
             <div className="flex items-center gap-4">
-              <button
-                onClick={handleEntitiesToggle}
-                className={`px-6 py-2 rounded-full transition-colors flex items-center gap-2 ${
-                  entitiesOpen
-                    ? "bg-blue-600 text-white"
-                    : "bg-gray-100 text-gray-800 hover:bg-gray-200"
-                }`}
-              >
-                <Microscope className="w-4 h-4" />
-                Entità e dettagli
-              </button>
-
               <button
                 onClick={handleTopicsToggle}
                 className={`px-6 py-2 rounded-full transition-colors flex items-center gap-2 ${
@@ -242,7 +243,9 @@ export default function ArticlePage({
                 Punti salienti
               </button>
 
-              {article.meta_data?.some(entity => entity.kind === "location") && (
+              {article.meta_data?.some(
+                (entity) => entity.kind === "location"
+              ) && (
                 <button
                   onClick={handleMapToggle}
                   className={`px-6 py-2 rounded-full transition-colors flex items-center gap-2 ${
@@ -255,6 +258,18 @@ export default function ArticlePage({
                   Mappa
                 </button>
               )}
+
+              <button
+                onClick={handleEntitiesToggle}
+                className={`px-6 py-2 rounded-full transition-colors flex items-center gap-2 ${
+                  entitiesOpen
+                    ? "bg-blue-600 text-white"
+                    : "bg-gray-100 text-gray-800 hover:bg-gray-200"
+                }`}
+              >
+                <Microscope className="w-4 h-4" />
+                Entità e dettagli
+              </button>
             </div>
           </div>
 
