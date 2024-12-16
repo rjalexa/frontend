@@ -1,4 +1,3 @@
-// components/entities/EntitiesPanel.tsx
 import React from "react";
 import { Microscope, MapPin, User, Building } from "lucide-react";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
@@ -10,6 +9,34 @@ interface EntitiesPanelProps extends BasePanelProps {
 }
 
 type EntityTypeFilter = "all" | EntityKind;
+
+const getTruncatedSummary = (summary: string): string => {
+  // Short summaries return as-is
+  if (summary.length <= 100) return summary;
+  
+  // Common abbreviations to avoid truncating at
+  const commonAbbreviations = /(?:[A-Z]\.|Dr\.|Mr\.|Mrs\.|Ms\.|Dott\.|lett\.|Prof\.|Sen\.|On\.|Dep\.|Jr\.|Sr\.|Ph\.D\.|U\.S\.A\.|U\.S\.|D\.C\.|St\.|Ave\.|Ing\.|Arch\.|Avv\.|Rag\.|Geom\.|Cap\.|Col\.|Gen\.|Comm\.|Cav\.|S\.E\.|S\.p\.A\.|S\.r\.l\.|v\.le|p\.zza|sig\.|sig\.ra|n\.|Co\.|Inc\.|Ltd\.|LLC|Corp\.|N\.V\.|B\.V\.|GmbH|S\.A\.|A\.G\.|plc\.|etc\.|es\.|art\.|vol\.|ed\.|pag\.|fig\.|tab\.|Soc\.|Az\.|Dir\.|Amm\.|Ind\.|Int\.|Spa|srl|snc|sas)/g;
+  
+  
+  // Split on periods but preserve them
+  const parts = summary.split(/(?<=\.)/);
+  
+  let result = '';
+  let currentPart = '';
+  
+  for (const part of parts) {
+    currentPart += part;
+    
+    // If we're past minimum length and this part doesn't end with an abbreviation
+    if (currentPart.length >= 100 && !commonAbbreviations.test(part.trim())) {
+      result = currentPart;
+      break;
+    }
+  }
+  
+  // If we couldn't find a good truncation point, return full summary
+  return result || summary;
+}
 
 export function EntitiesPanel({ isOpen, onClose, article }: EntitiesPanelProps) {
   const [selectedType, setSelectedType] = React.useState<EntityTypeFilter>("all");
@@ -86,7 +113,7 @@ export function EntitiesPanel({ isOpen, onClose, article }: EntitiesPanelProps) 
         <CardContent className="pt-0 px-3 pb-3">
           {wikipediaInfo && (
             <p className="text-gray-600 text-sm">
-              {wikipediaInfo.summary.split(".")[0]}.
+              {getTruncatedSummary(wikipediaInfo.summary)}
             </p>
           )}
         </CardContent>
@@ -114,7 +141,7 @@ export function EntitiesPanel({ isOpen, onClose, article }: EntitiesPanelProps) 
             <>
               {wikipediaInfo?.summary && (
                 <p className="text-gray-600 text-sm">
-                  {wikipediaInfo.summary.split(".")[0]}.
+                  {getTruncatedSummary(wikipediaInfo.summary)}
                 </p>
               )}
               {aiInfo?.summary && (

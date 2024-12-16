@@ -8,7 +8,7 @@ interface TopicsPanelProps extends BasePanelProps {
   article: Article;
 }
 
-export const TopicsPanel = ({ isOpen, onClose, article }: TopicsPanelProps) => {
+export default function TopicsPanel({ isOpen, onClose, article }: TopicsPanelProps) {
   if (!isOpen) return null;
 
   const manifestoTopics = [article.articleTag, article.topics, article.tags]
@@ -53,4 +53,4 @@ export const TopicsPanel = ({ isOpen, onClose, article }: TopicsPanelProps) => {
       </div>
     </div>
   );
-};
+}

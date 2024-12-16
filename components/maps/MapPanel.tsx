@@ -1,7 +1,7 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Globe } from 'lucide-react';
-import type { Map as LeafletMap, MapOptions, TileLayer, LeafletEvent } from 'leaflet';
-import type { Article } from '@/lib/types';
+import type { Map as LeafletMap, MapOptions, TileLayer } from 'leaflet';
+import type { Article, Entity, EntityKind, WikipediaLinkingInfo, GeonamesLinkingInfo } from '@/lib/types';
 import 'leaflet/dist/leaflet.css';
 
 interface MapPanelProps {
@@ -17,26 +17,16 @@ const MapPanel: React.FC<MapPanelProps> = ({
 }) => {
   const mapRef = useRef<HTMLDivElement>(null);
   const mapInstanceRef = useRef<LeafletMap | null>(null);
-  const layersRef = useRef<{streets?: TileLayer, satellite?: TileLayer}>({});
+  const [isMapReady, setIsMapReady] = useState(false);
   
   useEffect(() => {
+    if (!isOpen || !mapRef.current) return;
+
     const loadLeaflet = async () => {
-      const leafletModule = await import('leaflet');
-      return leafletModule;
-    };
-
-    if (!isOpen || !mapRef.current) {
-      if (mapInstanceRef.current) {
-        mapInstanceRef.current.remove();
-        mapInstanceRef.current = null;
-      }
-      return;
-    }
-    
-    const initMap = async () => {
       try {
-        const L = await loadLeaflet();
+        const L = (await import('leaflet')).default;
 
+        // Set default icon paths
         delete (L.Icon.Default.prototype as any)._getIconUrl;
         L.Icon.Default.mergeOptions({
           iconRetinaUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon-2x.png',
@@ -44,26 +34,22 @@ const MapPanel: React.FC<MapPanelProps> = ({
           shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-shadow.png',
         });
 
-        const options: MapOptions = {
-          zoomControl: true,
-          scrollWheelZoom: true,
-          preferCanvas: true
-        };
-
-        if (mapRef.current === null) return;
-
+        // Clean up existing map instance
         if (mapInstanceRef.current) {
           mapInstanceRef.current.remove();
           mapInstanceRef.current = null;
         }
 
-        mapRef.current.style.height = '400px';
-        mapRef.current.style.width = '100%';
+        // Create new map instance
+        const map = L.map(mapRef.current, {
+          zoomControl: true,
+          scrollWheelZoom: true,
+          preferCanvas: true
+        });
 
-        const newMap = L.map(mapRef.current, options);
-        mapInstanceRef.current = newMap;
+        mapInstanceRef.current = map;
 
-        // Create both tile layers
+        // Create tile layers
         const streetsLayer = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
           attribution: '© OpenStreetMap contributors'
         });
@@ -72,16 +58,10 @@ const MapPanel: React.FC<MapPanelProps> = ({
           attribution: '© ESRI'
         });
 
-        // Store layers for later use
-        layersRef.current = {
-          streets: streetsLayer,
-          satellite: satelliteLayer
-        };
-
         // Add streets layer by default
-        streetsLayer.addTo(newMap);
+        streetsLayer.addTo(map);
 
-        // Add layer control button
+        // Add layer control
         const LayerControl = L.Control.extend({
           options: {
             position: 'topright'
@@ -106,12 +86,12 @@ const MapPanel: React.FC<MapPanelProps> = ({
             L.DomEvent.on(button, 'click', function(e: Event) {
               L.DomEvent.preventDefault(e);
               if (isStreets) {
-                newMap.removeLayer(streetsLayer);
-                satelliteLayer.addTo(newMap);
+                map.removeLayer(streetsLayer);
+                satelliteLayer.addTo(map);
                 button.innerHTML = '🛰️';
               } else {
-                newMap.removeLayer(satelliteLayer);
-                streetsLayer.addTo(newMap);
+                map.removeLayer(satelliteLayer);
+                streetsLayer.addTo(map);
                 button.innerHTML = '🗺️';
               }
               isStreets = !isStreets;
@@ -121,21 +101,41 @@ const MapPanel: React.FC<MapPanelProps> = ({
           }
         });
 
-        newMap.addControl(new LayerControl());
+        map.addControl(new LayerControl());
 
+        // Type guards for linking info
+        const isGeonamesInfo = (info: any): info is GeonamesLinkingInfo => {
+          return info?.source === "geonames";
+        };
+
+        const isWikipediaInfo = (info: any): info is WikipediaLinkingInfo => {
+          return info?.source === "wikipedia";
+        };
+
+        // Extract locations data
         const locations = article.meta_data
-          ?.filter(entity => 
-            entity.kind === 'location' && 
-            entity.linking_info?.[1]?.lat && 
-            entity.linking_info?.[1]?.lng
-          )
-          .map(entity => ({
-            label: entity.label,
-            lat: entity.linking_info![1].lat!,
-            lng: entity.linking_info![1].lng!,
-            summary: entity.linking_info![0]?.summary
-          })) || [];
+          ?.filter(entity => {
+            const geonamesInfo = entity.linking_info?.find(isGeonamesInfo);
+            return entity.kind === 'location' && geonamesInfo?.lat !== undefined && geonamesInfo?.lng !== undefined;
+          })
+          .map(entity => {
+            const geonamesInfo = entity.linking_info?.find(isGeonamesInfo);
+            const wikipediaInfo = entity.linking_info?.find(isWikipediaInfo);
+            
+            if (!geonamesInfo) {
+              return null;
+            }
 
+            return {
+              label: entity.label,
+              lat: geonamesInfo.lat,
+              lng: geonamesInfo.lng,
+              summary: wikipediaInfo?.summary
+            };
+          })
+          .filter((location): location is NonNullable<typeof location> => location !== null) || [];
+
+        // Add markers and set bounds
         if (locations.length > 0) {
           const bounds = L.latLngBounds(locations.map(loc => [loc.lat, loc.lng]));
           
@@ -145,57 +145,57 @@ const MapPanel: React.FC<MapPanelProps> = ({
                 <strong>${location.label}</strong>
                 ${location.summary ? `<br/><br/>${location.summary.split('.')[0]}.` : ''}
               `)
-              .addTo(newMap);
+              .addTo(map);
           });
 
-          newMap.fitBounds(bounds, { padding: [50, 50] });
+          map.fitBounds(bounds, { padding: [50, 50] });
         } else {
-          newMap.setView([0, 0], 2);
+          map.setView([0, 0], 2);
         }
 
-        setTimeout(() => {
-          if (mapInstanceRef.current) {
-            mapInstanceRef.current.invalidateSize();
-          }
-        }, 100);
-
+        // Mark map as ready and trigger a resize
+        setIsMapReady(true);
+        map.invalidateSize();
       } catch (error) {
         console.error('Error initializing map:', error);
       }
     };
 
-    initMap();
+    loadLeaflet();
 
     return () => {
       if (mapInstanceRef.current) {
         mapInstanceRef.current.remove();
         mapInstanceRef.current = null;
       }
+      setIsMapReady(false);
     };
   }, [isOpen, article]);
+
+  // Effect to handle map resize when ready
+  useEffect(() => {
+    if (isMapReady && mapInstanceRef.current) {
+      mapInstanceRef.current.invalidateSize();
+    }
+  }, [isMapReady]);
 
   if (!isOpen) return null;
 
   return (
-    <div className="bg-gray-50 rounded-lg p-6 mb-8 relative transform transition-all duration-300 ease-in-out">
-      <button
-        onClick={onClose}
-        className="absolute top-4 right-4 text-gray-500 hover:text-gray-700"
-      >
-        ×
-      </button>
-      <div className="flex items-start gap-4">
-        <img src="/mema.svg" alt="MeMa Logo" className="w-16 h-6" />
-        <div className="flex-1">
-          <h3 className="text-lg font-semibold mb-4">Location Map</h3>
-          <div className="flex justify-center">
-            <div 
-              ref={mapRef} 
-              style={{ height: '400px', width: '100%', maxWidth: '800px' }}
-              className="rounded-lg overflow-hidden shadow-inner bg-gray-100" 
-            />
-          </div>
+    <div className="mb-8 border rounded-lg shadow-sm bg-white">
+      <div className="flex items-center justify-between w-full p-4 border-b">
+        <div className="flex items-center gap-2 text-blue-700 bg-blue-100 px-4 py-2 rounded-md">
+          <Globe className="w-4 h-4" />
+          <span>Mappa</span>
         </div>
+        <img src="/mema.svg" alt="MeMa Logo" className="w-16 h-6 ml-6" />
+      </div>
+      <div className="p-4">
+        <div 
+          ref={mapRef} 
+          style={{ height: '400px' }}
+          className="w-full rounded-lg overflow-hidden shadow-inner bg-gray-100" 
+        />
       </div>
     </div>
   );

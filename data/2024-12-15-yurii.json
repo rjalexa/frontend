@@ -624,28 +624,48 @@
         "kind": "person",
         "label": "Roberta Cerini Baj",
         "score": null,
-        "linking_info": []
+        "linking_info": [
+          {
+            "source": "ai",
+            "summary": "Roberta Cerini Baj è la curatrice della nuova enciclopedia Electa Baj A-Z, insieme a Chiara Gatti."
+          }
+        ]
       },
       {
         "id": "1eaf735515ff48c4aff280c1e6f00dee",
         "kind": "person",
         "label": "Chiara Gatti",
         "score": null,
-        "linking_info": []
+        "linking_info": [
+          {
+            "source": "ai",
+            "summary": "Chiara Gatti è la co-curatrice della nuova enciclopedia Electa Baj A-Z, insieme a Roberta Cerini Baj, e ha fornito spiegazioni sull'opera di Baj."
+          }
+        ]
       },
       {
         "id": "8294467b1edc42389d3629e6248c0d9d",
         "kind": "person",
         "label": "Klein",
         "score": null,
-        "linking_info": []
+        "linking_info": [
+          {
+            "source": "ai",
+            "summary": "Klein è un artista che ha firmato il manifesto Contro lo stile nel 1957, insieme a Baj e altri."
+          }
+        ]
       },
       {
         "id": "d366948bde7e40b083f62ba0cfa00386",
         "kind": "person",
         "label": "Chiara Portesine",
         "score": null,
-        "linking_info": []
+        "linking_info": [
+          {
+            "source": "ai",
+            "summary": "Chiara Portesine ha scritto in Baj A-Z che l'omaggio di Baj a Picasso è un'auto-Recherche."
+          }
+        ]
       }
     ],
     "mema_summary": null,
@@ -1001,28 +1021,48 @@
         "kind": "person",
         "label": "Alessandra Pezza",
         "score": null,
-        "linking_info": []
+        "linking_info": [
+          {
+            "source": "ai",
+            "summary": "Alessandra Pezza è la traduttrice del romanzo L'età dell'oro di Wang Xiaobo."
+          }
+        ]
       },
       {
         "id": "bc21f4fcc1f04fb8a33d17f1a578117b",
         "kind": "person",
         "label": "Patrizia Liberati",
         "score": null,
-        "linking_info": []
+        "linking_info": [
+          {
+            "source": "ai",
+            "summary": "Patrizia Liberati è la curatrice dell'edizione italiana del romanzo L'età dell'oro di Wang Xiaobo."
+          }
+        ]
       },
       {
         "id": "615465e31eaa403183817471fab4646f",
         "kind": "organization",
         "label": "Partito",
         "score": null,
-        "linking_info": []
+        "linking_info": [
+          {
+            "source": "ai",
+            "summary": "Il Partito è menzionato come l'organizzazione politica che esercita un controllo sulla società cinese durante la Rivoluzione culturale."
+          }
+        ]
       },
       {
         "id": "da2f5eb882ab444b8d83ab1b7a8938d4",
         "kind": "organization",
         "label": "Istituto pechinese",
         "score": null,
-        "linking_info": []
+        "linking_info": [
+          {
+            "source": "ai",
+            "summary": "L'Istituto pechinese è un luogo dove Wang Er lavora come assistente universitario e dove si svolgono alcune delle vicende del romanzo."
+          }
+        ]
       }
     ],
     "mema_summary": null,
@@ -1288,14 +1328,24 @@
         "kind": "organization",
         "label": "L’Orma",
         "score": null,
-        "linking_info": []
+        "linking_info": [
+          {
+            "source": "ai",
+            "summary": "L'Orma è una casa editrice che ha pubblicato opere di Frédéric Pajak, tra cui 'Manifesto incerto' e 'Nietzsche al piano'."
+          }
+        ]
       },
       {
         "id": "7c60a2849152439483dfe56ab107c046",
         "kind": "person",
         "label": "Nicolò Petruzzella",
         "score": null,
-        "linking_info": []
+        "linking_info": [
+          {
+            "source": "ai",
+            "summary": "Nicolò Petruzzella è il traduttore dell'opera 'Nietzsche al piano' di Frédéric Pajak."
+          }
+        ]
       },
       {
         "id": "2658316",
@@ -2316,28 +2366,48 @@
         "kind": "organization",
         "label": "L’Erma",
         "score": null,
-        "linking_info": []
+        "linking_info": [
+          {
+            "source": "ai",
+            "summary": "L'Erma di Bretschneider è una casa editrice che ha pubblicato gli Scritti scelti di storiografia italiana e tedesca sul Mondo Antico tra XIX e XX secolo di Leandro Polverini, a cura di Arnaldo Marcone."
+          }
+        ]
       },
       {
         "id": "55dd8423d6d5489da4121d5c65765048",
         "kind": "organization",
         "label": "Ricciardi",
         "score": null,
-        "linking_info": []
+        "linking_info": [
+          {
+            "source": "ai",
+            "summary": "Ricciardi è una casa editrice che ha pubblicato Lo studio dell'antichità classica nell'Ottocento di Piero Treves nel 1962."
+          }
+        ]
       },
       {
         "id": "3e6241d3995a40abad79b0f6d72a1bbe",
         "kind": "organization",
         "label": "Quaderni di storia",
         "score": null,
-        "linking_info": []
+        "linking_info": [
+          {
+            "source": "ai",
+            "summary": "Quaderni di storia è una rivista fondata da Luciano Canfora che ha avviato un dibattito sugli studi classici e il fascismo negli anni settanta."
+          }
+        ]
       },
       {
         "id": "4f755965025b443f93b7799bfeb467a8",
         "kind": "organization",
         "label": "Alias-D",
         "score": null,
-        "linking_info": []
+        "linking_info": [
+          {
+            "source": "ai",
+            "summary": "Alias-D è una rivista che ha pubblicato una recensione del carteggio tra De Sanctis e Momigliano, curato da Leandro Polverini, nel marzo 2023."
+          }
+        ]
       },
       {
         "id": "radio-londra",
@@ -2891,77 +2961,132 @@
         "kind": "person",
         "label": "Paolo Briganti",
         "score": null,
-        "linking_info": []
+        "linking_info": [
+          {
+            "source": "ai",
+            "summary": "Paolo Briganti è un curatore editoriale che ha lavorato con Andrea Briganti per l'edizione critica di Casa d'altri di Silvio D'Arzo per Diabasis nel 2002."
+          }
+        ]
       },
       {
         "id": "1e3b6d501d41404db16cb131416e2d79",
         "kind": "person",
         "label": "Andrea Briganti",
         "score": null,
-        "linking_info": []
+        "linking_info": [
+          {
+            "source": "ai",
+            "summary": "Andrea Briganti è un curatore editoriale che ha lavorato con Paolo Briganti per l'edizione critica di Casa d'altri di Silvio D'Arzo per Diabasis nel 2002."
+          }
+        ]
       },
       {
         "id": "2d209abcb38e4a6d95fe54028e1d5528",
         "kind": "person",
         "label": "Stefano Costanzi",
         "score": null,
-        "linking_info": []
+        "linking_info": [
+          {
+            "source": "ai",
+            "summary": "Stefano Costanzi è un curatore editoriale che ha lavorato all'edizione critica di Casa d'altri di Silvio D'Arzo per Aragno nel 2002."
+          }
+        ]
       },
       {
         "id": "0b166e2b08f04c1ca5655e3f8b6682f6",
         "kind": "person",
         "label": "Ivan Tassi",
         "score": null,
-        "linking_info": []
+        "linking_info": [
+          {
+            "source": "ai",
+            "summary": "Ivan Tassi è un curatore editoriale che ha lavorato all'edizione critica di Casa d'altri di Silvio D'Arzo per Diabasis nel 2010."
+          }
+        ]
       },
       {
         "id": "4ea56095cdd84ba894ee251e128b629a",
         "kind": "person",
         "label": "Rodolfo Macchioni Jodi",
         "score": null,
-        "linking_info": []
+        "linking_info": [
+          {
+            "source": "ai",
+            "summary": "Rodolfo Macchioni Jodi è stato un letterato e docente universitario che ha curato l'antologia Nostro lunedì. Racconti Poesie Saggi di Silvio D'Arzo nel 1960 e ha ereditato i manoscritti di D'Arzo alla morte di sua madre Rosalinda nel 1964."
+          }
+        ]
       },
       {
         "id": "82f9229164ae4ea49af6e3cf13ccbbbd",
         "kind": "person",
         "label": "Anna Luce Lenzi",
         "score": null,
-        "linking_info": []
+        "linking_info": [
+          {
+            "source": "ai",
+            "summary": "Anna Luce Lenzi è una studiosa che ha scritto il volume Silvio D'Arzo. Una vita letteraria nel 1977 con la prefazione di Fiorenzo Forti."
+          }
+        ]
       },
       {
         "id": "29b35113d6a2494c81dbb29649256dea",
         "kind": "person",
         "label": "Fiorenzo Forti",
         "score": null,
-        "linking_info": []
+        "linking_info": [
+          {
+            "source": "ai",
+            "summary": "Fiorenzo Forti è uno studioso che ha scritto la prefazione del volume Silvio D'Arzo. Una vita letteraria di Anna Luce Lenzi nel 1977."
+          }
+        ]
       },
       {
         "id": "addc9309c20046e8a02c8e889895eac6",
         "kind": "person",
         "label": "Giannino Degani",
         "score": null,
-        "linking_info": []
+        "linking_info": [
+          {
+            "source": "ai",
+            "summary": "Giannino Degani è stato un avvocato e un amico di Ezio Comparoni, che ha lasciato un cospicuo lascito di documenti al Fondo D'Arzo-Macchioni Jodi."
+          }
+        ]
       },
       {
         "id": "03f6e621930647f1a13aa7e9d3b3a378",
         "kind": "person",
         "label": "Alberto Ferraboschi",
         "score": null,
-        "linking_info": []
+        "linking_info": [
+          {
+            "source": "ai",
+            "summary": "Alberto Ferraboschi è un curatore editoriale che ha lavorato alla monografia Silvio D'Arzo ritrovato per le Edizioni Biblioteca Panizzi nel 2018."
+          }
+        ]
       },
       {
         "id": "b8f2869af7bb432791d673541f54b099",
         "kind": "person",
         "label": "Maurizio Festanti",
         "score": null,
-        "linking_info": []
+        "linking_info": [
+          {
+            "source": "ai",
+            "summary": "Maurizio Festanti è un filologo e direttore della Biblioteca Panizzi che ha pubblicato il volume A Silvio D'Arzo Cento lettere inedite e anche più."
+          }
+        ]
       },
       {
         "id": "a47bf43aa445463e875c80b476984ea2",
         "kind": "person",
         "label": "Ada Gorini",
         "score": null,
-        "linking_info": []
+        "linking_info": [
+          {
+            "source": "ai",
+            "summary": "Ada Gorini è stata una pittrice con cui Silvio D'Arzo ebbe un rapporto molto tormentato."
+          }
+        ]
       },
       {
         "id": "paravia",
@@ -2983,21 +3108,36 @@
         "kind": "person",
         "label": "Louis Navarra",
         "score": null,
-        "linking_info": []
+        "linking_info": [
+          {
+            "source": "ai",
+            "summary": "Louis Navarra è stato un agente letterario che ha avuto un rapporto epistolare con Silvio D'Arzo, al quale ha consigliato di scrivere libri-giocattolo per ragazzi e racconti che possano tradursi in script e soggetti cinematografici."
+          }
+        ]
       },
       {
         "id": "ca342d2de4bf439ca679ef7279114204",
         "kind": "person",
         "label": "Paolo Lagazzi",
         "score": null,
-        "linking_info": []
+        "linking_info": [
+          {
+            "source": "ai",
+            "summary": "Paolo Lagazzi è un darziano storico che ha curato l'edizione del romanzo di formazione Essi pensano ad altro di Silvio D'Arzo per Garzanti nel 1976."
+          }
+        ]
       },
       {
         "id": "ff12fec2a31a4a78bcb0b24409614884",
         "kind": "person",
         "label": "Arrigo Negri",
         "score": null,
-        "linking_info": []
+        "linking_info": [
+          {
+            "source": "ai",
+            "summary": "Arrigo Negri è stato un amico di Silvio D'Arzo che ha lasciato un volume di Galvano della Volpe alla Biblioteca Panizzi."
+          }
+        ]
       },
       {
         "id": "diabasis",
@@ -3019,7 +3159,12 @@
         "kind": "organization",
         "label": "Aragno",
         "score": null,
-        "linking_info": []
+        "linking_info": [
+          {
+            "source": "ai",
+            "summary": "Aragno è una casa editrice che ha pubblicato l'edizione critica di Casa d'altri di Silvio D'Arzo curata da Stefano Costanzi nel 2002."
+          }
+        ]
       }
     ],
     "mema_summary": null,
@@ -3859,35 +4004,60 @@
         "kind": "person",
         "label": "William A. Camfield",
         "score": null,
-        "linking_info": []
+        "linking_info": [
+          {
+            "source": "ai",
+            "summary": "William A. Camfield è uno specialista che ha analizzato la stagione dada di Suzanne Duchamp in una mostra alla Kunsthalle di Berna nel 1983."
+          }
+        ]
       },
       {
         "id": "db6093f875424861b858d52fd201d9cc",
         "kind": "person",
         "label": "Talia Kwartler",
         "score": null,
-        "linking_info": []
+        "linking_info": [
+          {
+            "source": "ai",
+            "summary": "Talia Kwartler è una giovane studiosa che ha scritto un libro su Suzanne Duchamp, Suzanne Duchamp par elle-même, in cui analizza la sua opera e la sua figura come artista."
+          }
+        ]
       },
       {
         "id": "ce29a35ed2dd4697828a05ebe1088a29",
         "kind": "person",
         "label": "Anne Tomiche",
         "score": null,
-        "linking_info": []
+        "linking_info": [
+          {
+            "source": "ai",
+            "summary": "Anne Tomiche è un'esperta che ha studiato l'opera di Suzanne Duchamp e ha collaborato con Talia Kwartler nella sua ricerca."
+          }
+        ]
       },
       {
         "id": "3c0f4d6902c64fac942bebda756bf9e1",
         "kind": "person",
         "label": "André Gibal",
         "score": null,
-        "linking_info": []
+        "linking_info": [
+          {
+            "source": "ai",
+            "summary": "André Gibal è uno dei primi biografi di Suzanne Duchamp, che ha scritto su di lei nel 1957."
+          }
+        ]
       },
       {
         "id": "73d6805748a14ee68d96a8e86b3341bb",
         "kind": "person",
         "label": "Rrose Sélavy",
         "score": null,
-        "linking_info": []
+        "linking_info": [
+          {
+            "source": "ai",
+            "summary": "Rrose Sélavy è un personaggio legato alla famiglia Duchamp, menzionato come sorella di Suzanne Duchamp."
+          }
+        ]
       },
       {
         "id": "society-of-independent-artists",
@@ -3954,42 +4124,72 @@
         "kind": "person",
         "label": "Germaine Everling",
         "score": null,
-        "linking_info": []
+        "linking_info": [
+          {
+            "source": "ai",
+            "summary": "Germaine Everling è un'artista che ha partecipato a una mostra condivisa con Suzanne Duchamp alla galleria Barbazanges-Hodebert nel 1925."
+          }
+        ]
       },
       {
         "id": "5a355aa720fc41b489bb39a377e57094",
         "kind": "person",
         "label": "Michel Corlin",
         "score": null,
-        "linking_info": []
+        "linking_info": [
+          {
+            "source": "ai",
+            "summary": "Michel Corlin è un artista che ha partecipato a una mostra condivisa con Suzanne Duchamp alla galleria Barbazanges-Hodebert nel 1925."
+          }
+        ]
       },
       {
         "id": "7d2cde77f5da4182956c96419873bad6",
         "kind": "person",
         "label": "Lorenzo Picabia",
         "score": null,
-        "linking_info": []
+        "linking_info": [
+          {
+            "source": "ai",
+            "summary": "Lorenzo Picabia è il figlio di Francis Picabia, che è stato ritratto da Suzanne Duchamp in un dipinto del 1928."
+          }
+        ]
       },
       {
         "id": "98f58e93eb774977a09c8b11fe0a8510",
         "kind": "person",
         "label": "Paulo Picasso",
         "score": null,
-        "linking_info": []
+        "linking_info": [
+          {
+            "source": "ai",
+            "summary": "Paulo Picasso è il figlio di Pablo Picasso, che è stato ritratto da Suzanne Duchamp in un dipinto del 1925."
+          }
+        ]
       },
       {
         "id": "3fb4748693054c3391369069e8067996",
         "kind": "person",
         "label": "René Zivy",
         "score": null,
-        "linking_info": []
+        "linking_info": [
+          {
+            "source": "ai",
+            "summary": "René Zivy è un critico d'arte che ha scritto su Suzanne Duchamp e ha presentato un suo ritratto di Lorenzo Picabia nel 1928."
+          }
+        ]
       },
       {
         "id": "d3fd976c65df4f4398f49e97e396df35",
         "kind": "person",
         "label": "Maximilien Gauthier",
         "score": null,
-        "linking_info": []
+        "linking_info": [
+          {
+            "source": "ai",
+            "summary": "Maximilien Gauthier è un critico d'arte che ha scritto su Suzanne Duchamp e ha apprezzato il suo ritratto di Lorenzo Picabia nel 1928."
+          }
+        ]
       },
       {
         "id": "5903510",
@@ -4028,28 +4228,48 @@
         "kind": "organization",
         "label": "Rose Fried",
         "score": null,
-        "linking_info": []
+        "linking_info": [
+          {
+            "source": "ai",
+            "summary": "Rose Fried è una galleria d'arte che ha ospitato una mostra di Suzanne Duchamp nel 1952."
+          }
+        ]
       },
       {
         "id": "b32beb45a5fb4ec387c1f12439d082a9",
         "kind": "organization",
         "label": "Galleria Barbazanges-Hodebert",
         "score": null,
-        "linking_info": []
+        "linking_info": [
+          {
+            "source": "ai",
+            "summary": "La Galleria Barbazanges-Hodebert è una galleria d'arte che ha ospitato una mostra di Suzanne Duchamp nel 1925."
+          }
+        ]
       },
       {
         "id": "c0370cb66a144849bc41189d0c8993d2",
         "kind": "organization",
         "label": "Fage éditions",
         "score": null,
-        "linking_info": []
+        "linking_info": [
+          {
+            "source": "ai",
+            "summary": "Fage éditions è una casa editrice che ha pubblicato il libro di Talia Kwartler su Suzanne Duchamp."
+          }
+        ]
       },
       {
         "id": "0bc1b7fa6d364a8ab91a0e7e6ac5b3af",
         "kind": "organization",
         "label": "Fondation-Giacometti-Institut",
         "score": null,
-        "linking_info": []
+        "linking_info": [
+          {
+            "source": "ai",
+            "summary": "La Fondation-Giacometti-Institut è un'istituzione culturale che ha collaborato con Talia Kwartler nella sua ricerca su Suzanne Duchamp."
+          }
+        ]
       }
     ],
     "mema_summary": null,
@@ -4185,35 +4405,60 @@
         "kind": "person",
         "label": "Giuseppe Frangi",
         "score": null,
-        "linking_info": []
+        "linking_info": [
+          {
+            "source": "ai",
+            "summary": "Guida l'associazione che gestisce la struttura di Casa Testori, il patrimonio di tele, l'archivio delle carte e organizza eventi."
+          }
+        ]
       },
       {
         "id": "5c651cabc23e40589a44f07642dcb31f",
         "kind": "person",
         "label": "Fulvio Chimento",
         "score": null,
-        "linking_info": []
+        "linking_info": [
+          {
+            "source": "ai",
+            "summary": "Curatore esterno del progetto di mostra «di poesia» a Casa Testori, insieme a Carlotta Minarelli."
+          }
+        ]
       },
       {
         "id": "3e90757fe3ac48bb95602456065487f6",
         "kind": "person",
         "label": "Carlotta Minarelli",
         "score": null,
-        "linking_info": []
+        "linking_info": [
+          {
+            "source": "ai",
+            "summary": "Curatrice esterna del progetto di mostra «di poesia» a Casa Testori, insieme a Fulvio Chimento."
+          }
+        ]
       },
       {
         "id": "1b0408442b304a0f86d18f2b3a425e45",
         "kind": "person",
         "label": "Giulia Cenci",
         "score": null,
-        "linking_info": []
+        "linking_info": [
+          {
+            "source": "ai",
+            "summary": "Artista che ha creato un'installazione per la mostra «di poesia» a Casa Testori, un'opera che rappresenta un monstrum anfibio."
+          }
+        ]
       },
       {
         "id": "eb95421a4908458ab2fdd2a3f968b9d8",
         "kind": "person",
         "label": "Valerio Nicolai",
         "score": null,
-        "linking_info": []
+        "linking_info": [
+          {
+            "source": "ai",
+            "summary": "Artista che ha collocato un letto nel vano a destra del portone principale di Casa Testori, simbolo di un'unione dolorosa."
+          }
+        ]
       }
     ],
     "mema_summary": null,
@@ -4355,14 +4600,24 @@
         "kind": "person",
         "label": "Gualtiero Lorini",
         "score": null,
-        "linking_info": []
+        "linking_info": [
+          {
+            "source": "ai",
+            "summary": "Gualtiero Lorini è il curatore dell'edizione italiana della Metafisica di Alexander Gottlieb Baumgarten."
+          }
+        ]
       },
       {
         "id": "d59f68def8d7448e8e328b7ac1bf1f1a",
         "kind": "person",
         "label": "Wolff",
         "score": null,
-        "linking_info": []
+        "linking_info": [
+          {
+            "source": "ai",
+            "summary": "Wolff è un autore i cui testi sono stati utilizzati da Baumgarten come base per la sua Metafisica e fa parte della Scuola dei Wolffiani."
+          }
+        ]
       }
     ],
     "mema_summary": null,
@@ -5363,7 +5618,12 @@
         "kind": "person",
         "label": "Paula Philippson",
         "score": null,
-        "linking_info": []
+        "linking_info": [
+          {
+            "source": "ai",
+            "summary": "Paula Philippson è un'eretica che ha pubblicato saggi sul mito con il titolo Origini e forme del mito greco nella Collana viola di Pavese e De Martino."
+          }
+        ]
       },
       {
         "id": "nova-express-rivista",
@@ -6039,21 +6299,36 @@
         "kind": "person",
         "label": "Francesca Cagianelli",
         "score": null,
-        "linking_info": []
+        "linking_info": [
+          {
+            "source": "ai",
+            "summary": "Francesca Cagianelli è la curatrice della Pinacoteca Comunale Carlo Servolini di Collesalvetti e ha curato la retrospettiva dedicata a Raul Dal Molin Ferenzona."
+          }
+        ]
       },
       {
         "id": "c6afffbd2af6436c8a32f02c4b04942a",
         "kind": "person",
         "label": "Emanuele Bardazzi",
         "score": null,
-        "linking_info": []
+        "linking_info": [
+          {
+            "source": "ai",
+            "summary": "Emanuele Bardazzi è uno studioso che da decenni studia e ricostruisce l'opera dell'artista simbolista Raul Dal Molin Ferenzona e ha collaborato con Francesca Cagianelli alla retrospettiva dedicata a Ferenzona."
+          }
+        ]
       },
       {
         "id": "d809e46e68eb4b7399715b3c3c75d494",
         "kind": "organization",
         "label": "Pinacoteca Comunale Carlo Servolini",
         "score": null,
-        "linking_info": []
+        "linking_info": [
+          {
+            "source": "ai",
+            "summary": "La Pinacoteca Comunale Carlo Servolini di Collesalvetti ha ospitato la retrospettiva dedicata a Raul Dal Molin Ferenzona, curata da Francesca Cagianelli e Emanuele Bardazzi."
+          }
+        ]
       },
       {
         "id": "umberto-prencipe",
@@ -6075,7 +6350,12 @@
         "kind": "organization",
         "label": "Bottega d'Arte",
         "score": null,
-        "linking_info": []
+        "linking_info": [
+          {
+            "source": "ai",
+            "summary": "La Bottega d'Arte è una galleria e casa editrice di Livorno che ha stretto un sodalizio con Raul Dal Molin Ferenzona e ha pubblicato il suo libro di poesie e incisioni AÔB enchiridion notturno."
+          }
+        ]
       },
       {
         "id": "charles-doudelet",
@@ -6157,7 +6437,12 @@
         "kind": "organization",
         "label": "Gruppo boemo Sursum",
         "score": null,
-        "linking_info": []
+        "linking_info": [
+          {
+            "source": "ai",
+            "summary": "Il Gruppo boemo Sursum è un gruppo di artisti che ha influenzato lo stile di Raul Dal Molin Ferenzona, in particolare nelle sue opere come Gaspard de la nuit."
+          }
+        ]
       }
     ],
     "mema_summary": null,
@@ -6446,14 +6731,24 @@
         "kind": "person",
         "label": "Gilles Tiberghien",
         "score": null,
-        "linking_info": []
+        "linking_info": [
+          {
+            "source": "ai",
+            "summary": "Gilles Tiberghien è uno studioso che ha scritto sulla natura psichica delle capanne, in linea con una tradizione nord-americana secolare."
+          }
+        ]
       },
       {
         "id": "79907e395e404f8b9e1176235a0ce107",
         "kind": "person",
         "label": "Michael Jakob",
         "score": null,
-        "linking_info": []
+        "linking_info": [
+          {
+            "source": "ai",
+            "summary": "Michael Jakob è un autore che ha scritto un saggio sulla capanna di Unabomber, analizzando come essa sia stata decontestualizzata e museificata nel corso degli anni."
+          }
+        ]
       }
     ],
     "mema_summary": null,
@@ -6755,14 +7050,24 @@
         "kind": "person",
         "label": "Paolo Simonetti",
         "score": null,
-        "linking_info": []
+        "linking_info": [
+          {
+            "source": "ai",
+            "summary": "Paolo Simonetti è un traduttore e critico letterario che ha lavorato sulla traduzione di opere di Tim O'Brien, tra cui 'America Fantastica'."
+          }
+        ]
       },
       {
         "id": "460496443fc1494bb2c885fba9fcf2d3",
         "kind": "person",
         "label": "Boyd Halverson",
         "score": null,
-        "linking_info": []
+        "linking_info": [
+          {
+            "source": "ai",
+            "summary": "Boyd Halverson è un ex giornalista in disgrazia che, dopo avere cercato senza successo di inventarsi una seconda vita come direttore di un negozio di abbigliamento, decide di rapinare una banca senza un preciso motivo."
+          }
+        ]
       }
     ],
     "mema_summary": null,
@@ -7584,14 +7889,24 @@
         "kind": "person",
         "label": "Chiara Cruciati",
         "score": null,
-        "linking_info": []
+        "linking_info": [
+          {
+            "source": "ai",
+            "summary": "Chiara Cruciati è la persona che ha raccolto la testimonianza di un palestinese detenuto nei Territori palestinesi occupati."
+          }
+        ]
       },
       {
         "id": "45ec64dd98a84040a5ea29efe1138fff",
         "kind": "person",
         "label": "Thayer Abu Assab",
         "score": null,
-        "linking_info": []
+        "linking_info": [
+          {
+            "source": "ai",
+            "summary": "Thayer Abu Assab era un detenuto palestinese che è stato ucciso a botte nel carcere dove era rinchiuso, all'età di quasi 40 anni, dopo 20 anni di detenzione."
+          }
+        ]
       }
     ],
     "mema_summary": null,
@@ -8021,7 +8336,12 @@
         "kind": "person",
         "label": "James Batsford",
         "score": null,
-        "linking_info": []
+        "linking_info": [
+          {
+            "source": "ai",
+            "summary": "James Batsford è il curatore del cofanetto Hear My Song: The Collection, 1966 – 1995 di Laura Nyro per Madfish."
+          }
+        ]
       },
       {
         "id": "leaving-on-a-jet-plane",
@@ -8043,7 +8363,12 @@
         "kind": "person",
         "label": "Artie Mogull",
         "score": null,
-        "linking_info": []
+        "linking_info": [
+          {
+            "source": "ai",
+            "summary": "Artie Mogull è stato il manager di Laura Nyro e l'A&R che ha ascoltato il provino della cantante nell'estate del 1966."
+          }
+        ]
       }
     ],
     "mema_summary": null,
@@ -8351,14 +8676,24 @@
         "kind": "person",
         "label": "Aaron Siri",
         "score": null,
-        "linking_info": []
+        "linking_info": [
+          {
+            "source": "ai",
+            "summary": "Aaron Siri è un avvocato e braccio destro di Robert F. Kennedy jr, che ha chiesto alla Food and Drug Administration di revocare l'autorizzazione al commercio dei vaccini contro la poliomielite e l'epatite B."
+          }
+        ]
       },
       {
         "id": "d000dd9a282e41238082e4db19a1988f",
         "kind": "organization",
         "label": "Rete di Azione per il Consenso Informato",
         "score": null,
-        "linking_info": []
+        "linking_info": [
+          {
+            "source": "ai",
+            "summary": "La Rete di Azione per il Consenso Informato è un'organizzazione che ha chiesto di ritirare dal mercato o di sospendere la distribuzione di diversi vaccini, tra cui quelli contro la poliomielite e l'epatite B."
+          }
+        ]
       },
       {
         "id": "dichiarazione-di-great-barrington",
@@ -8395,7 +8730,12 @@
         "kind": "organization",
         "label": "Commissione parlamentare d'inchiesta sulla pandemia",
         "score": null,
-        "linking_info": []
+        "linking_info": [
+          {
+            "source": "ai",
+            "summary": "La Commissione parlamentare d'inchiesta sulla pandemia è un'organizzazione che ha invitato Jay Bhattacharya, un medico indo-statunitense, a partecipare ad audizioni sulla pandemia."
+          }
+        ]
       }
     ],
     "mema_summary": null,
@@ -9195,49 +9535,84 @@
         "kind": "person",
         "label": "Manos Logothetis",
         "score": null,
-        "linking_info": []
+        "linking_info": [
+          {
+            "source": "ai",
+            "summary": "Manos Logothetis è il segretario generale per le Politiche migratorie e ha commentato la situazione dei siriani in cerca di protezione in Grecia."
+          }
+        ]
       },
       {
         "id": "012db0f86a914186977d7858e162a0f3",
         "kind": "person",
         "label": "Eleni Spathana",
         "score": null,
-        "linking_info": []
+        "linking_info": [
+          {
+            "source": "ai",
+            "summary": "Eleni Spathana è un'avvocata della ong greca Refugee support Aegean e ha espresso preoccupazione per la sospensione del processo di asilo per i siriani in Grecia."
+          }
+        ]
       },
       {
         "id": "66391d90b1b94309a2b73457c38c9c7a",
         "kind": "person",
         "label": "Apostolos Veizis",
         "score": null,
-        "linking_info": []
+        "linking_info": [
+          {
+            "source": "ai",
+            "summary": "Apostolos Veizis è il direttore esecutivo di Intersos Hellas e ha affermato che la sospensione del processo di asilo per i siriani in Grecia è un tentativo di mandare un messaggio a chi è dall'altra parte del Mediterraneo."
+          }
+        ]
       },
       {
         "id": "a82aca5357444bf9958cb7dfc2c28c7f",
         "kind": "person",
         "label": "Nader Halbouni",
         "score": null,
-        "linking_info": []
+        "linking_info": [
+          {
+            "source": "ai",
+            "summary": "Nader Halbouni è il presidente dell'Associazione dei siriani residenti in Grecia e ha stimato che i connazionali che vivono nel paese non sarebbero più di 7mila."
+          }
+        ]
       },
       {
         "id": "cfcd97bb476e4894ab1702630009cc6f",
         "kind": "person",
         "label": "Pavlos Marinakis",
         "score": null,
-        "linking_info": []
+        "linking_info": [
+          {
+            "source": "ai",
+            "summary": "Pavlos Marinakis è il portavoce del governo ellenico e ha auspicato per la Siria una 'normalità democratica' che 'apra ai profughi la strada per le loro case'."
+          }
+        ]
       },
       {
         "id": "6abff81d5f094e499657cfd63d02ccd5",
         "kind": "organization",
         "label": "Refugee support Aegean",
         "score": null,
-        "linking_info": []
+        "linking_info": [
+          {
+            "source": "ai",
+            "summary": "Refugee support Aegean è un'organizzazione non governativa greca che si occupa di supportare i rifugiati e ha espresso preoccupazione per la sospensione del processo di asilo per i siriani in Grecia."
+          }
+        ]
       },
       {
         "id": "96df060b7c9248dfbb592540e8a8bcc2",
         "kind": "organization",
         "label": "Associazione dei siriani residenti in Grecia",
         "score": null,
-        "linking_info": []
+        "linking_info": [
+          {
+            "source": "ai",
+            "summary": "L'Associazione dei siriani residenti in Grecia è un'organizzazione che rappresenta i siriani che vivono in Grecia e ha stimato che i connazionali che vivono nel paese non sarebbero più di 7mila."
+          }
+        ]
       }
     ],
     "mema_summary": null,
@@ -9563,14 +9938,24 @@
         "kind": "organization",
         "label": "Campagna 070",
         "score": null,
-        "linking_info": []
+        "linking_info": [
+          {
+            "source": "ai",
+            "summary": "La Campagna 070 è un'iniziativa che promuove la cooperazione internazionale allo sviluppo e ricorda al Governo i suoi impegni internazionali, in particolare per quanto riguarda la destinazione di fondi per lo sviluppo dei Paesi più poveri."
+          }
+        ]
       },
       {
         "id": "00e9d255fae7442c9bad821ca097499e",
         "kind": "organization",
         "label": "Coordinamento Italiano Ong Internazionali",
         "score": null,
-        "linking_info": []
+        "linking_info": [
+          {
+            "source": "ai",
+            "summary": "Il Coordinamento Italiano Ong Internazionali è un'organizzazione che si occupa di promuovere la cooperazione internazionale allo sviluppo e che sostiene le iniziative a favore dei finanziamenti per lo sviluppo dei Paesi più poveri."
+          }
+        ]
       }
     ],
     "mema_summary": null,
@@ -9718,7 +10103,12 @@
         "kind": "organization",
         "label": "forze identitarie",
         "score": null,
-        "linking_info": []
+        "linking_info": [
+          {
+            "source": "ai",
+            "summary": "Le forze identitarie sono un'organizzazione di estrema destra che ha promosso una sfilata a Brescia con striscioni contro la società multirazziale."
+          }
+        ]
       }
     ],
     "mema_summary": null,
@@ -10157,42 +10547,72 @@
         "kind": "person",
         "label": "Diab Al-Jar",
         "score": null,
-        "linking_info": []
+        "linking_info": [
+          {
+            "source": "ai",
+            "summary": "Il sindaco ucciso nel raid sulla sede del municipio di Deir al-Balah."
+          }
+        ]
       },
       {
         "id": "6fc92f1a00cb4a06b117c017dd074b3b",
         "kind": "person",
         "label": "Mohammed Ba’lusha",
         "score": null,
-        "linking_info": []
+        "linking_info": [
+          {
+            "source": "ai",
+            "summary": "Giornalista di al Jazeera ucciso a Gaza City."
+          }
+        ]
       },
       {
         "id": "027651fcbeb84a9d963b764cb5adbdd7",
         "kind": "person",
         "label": "Mohammed al-Qreinawi",
         "score": null,
-        "linking_info": []
+        "linking_info": [
+          {
+            "source": "ai",
+            "summary": "Giornalista ucciso a Bureij."
+          }
+        ]
       },
       {
         "id": "95e33be90d22490d94e1d34245c2b6e9",
         "kind": "person",
         "label": "Fadi Ali Al-Bayoumi",
         "score": null,
-        "linking_info": []
+        "linking_info": [
+          {
+            "source": "ai",
+            "summary": "Medico ucciso nel campo di al-Nuseirat insieme al figlio di due mesi."
+          }
+        ]
       },
       {
         "id": "e83fc33eb05d49df888f05ed8b1e97e8",
         "kind": "person",
         "label": "Yazid Ja’aysah",
         "score": null,
-        "linking_info": []
+        "linking_info": [
+          {
+            "source": "ai",
+            "summary": "Combattente della Jihad islami ucciso dall'Autorità nazionale palestinese a Jenin."
+          }
+        ]
       },
       {
         "id": "7979bf5d2b8041eab4c44996451684b6",
         "kind": "organization",
         "label": "Jihad islami",
         "score": null,
-        "linking_info": []
+        "linking_info": [
+          {
+            "source": "ai",
+            "summary": "Organizzazione alla quale apparteneva Yazid Ja’aysah, combattente ucciso dall'Autorità nazionale palestinese a Jenin."
+          }
+        ]
       }
     ],
     "mema_summary": null,
@@ -10869,42 +11289,72 @@
         "kind": "person",
         "label": "Gianna Fracassi",
         "score": null,
-        "linking_info": []
+        "linking_info": [
+          {
+            "source": "ai",
+            "summary": "Gianna Fracassi è la segretaria di Flc, che ha partecipato in modo vistoso e aderito coi comparti di Fiom, Flai. Ha lanciato il grido di battaglia 'No Pasaran!' durante la manifestazione."
+          }
+        ]
       },
       {
         "id": "37165066688d4c18bf1ea6395da24ba1",
         "kind": "person",
         "label": "Christopher Ceresi",
         "score": null,
-        "linking_info": []
+        "linking_info": [
+          {
+            "source": "ai",
+            "summary": "Christopher Ceresi è un rappresentante dei municipi sociali di Bologna, che ha definito la manifestazione come la prima vera grande manifestazione di opposizione al governo Meloni."
+          }
+        ]
       },
       {
         "id": "4768ce2b86474e8586039be953b631b1",
         "kind": "organization",
         "label": "Flai",
         "score": null,
-        "linking_info": []
+        "linking_info": [
+          {
+            "source": "ai",
+            "summary": "Flai è un'organizzazione sindacale che ha partecipato alla manifestazione insieme ad altri comparti come Fiom e Flc."
+          }
+        ]
       },
       {
         "id": "43181700d25b44348dd3082d56277ebe",
         "kind": "organization",
         "label": "Casale Garibaldi",
         "score": null,
-        "linking_info": []
+        "linking_info": [
+          {
+            "source": "ai",
+            "summary": "Casale Garibaldi è un centro sociale romano che ha partecipato alla manifestazione con lo striscione 'La vostra guerra è la nostra insicurezza'."
+          }
+        ]
       },
       {
         "id": "f1cd5a7feea742d8832925318d04a139",
         "kind": "organization",
         "label": "Acrobax",
         "score": null,
-        "linking_info": []
+        "linking_info": [
+          {
+            "source": "ai",
+            "summary": "Acrobax è un centro sociale romano che ha partecipato alla manifestazione con lo striscione 'La vostra guerra è la nostra insicurezza'."
+          }
+        ]
       },
       {
         "id": "11e6eff34ebb401d9fe8ac1c9b76d98e",
         "kind": "organization",
         "label": "Municipi sociali di Bologna",
         "score": null,
-        "linking_info": []
+        "linking_info": [
+          {
+            "source": "ai",
+            "summary": "I municipi sociali di Bologna sono un'organizzazione che ha partecipato alla manifestazione, rappresentata da Christopher Ceresi, che ha definito la manifestazione come la prima vera grande manifestazione di opposizione al governo Meloni."
+          }
+        ]
       }
     ],
     "mema_summary": null,
@@ -11342,21 +11792,36 @@
         "kind": "person",
         "label": "Jarka Kubsova",
         "score": null,
-        "linking_info": []
+        "linking_info": [
+          {
+            "source": "ai",
+            "summary": "Jarka Kubsova è un'autrice ceca che vive da tempo in Germania, autrice del romanzo La palude delle streghe."
+          }
+        ]
       },
       {
         "id": "d2fe1fa4f08546d1bb0b4881ddb3d146",
         "kind": "person",
         "label": "Britta Stoever",
         "score": null,
-        "linking_info": []
+        "linking_info": [
+          {
+            "source": "ai",
+            "summary": "Britta Stoever è la protagonista del romanzo La palude delle streghe di Jarka Kubsova, una geografa che si trasferisce con la famiglia in una zona residenziale periferica di Amburgo."
+          }
+        ]
       },
       {
         "id": "1aeff0130b01427e97765be105b92f36",
         "kind": "person",
         "label": "Abelke Bleken",
         "score": null,
-        "linking_info": []
+        "linking_info": [
+          {
+            "source": "ai",
+            "summary": "Abelke Bleken è un personaggio del romanzo La palude delle streghe di Jarka Kubsova, una giovane accusata di stregoneria nel 1500."
+          }
+        ]
       },
       {
         "id": "iida-turpeinen",
@@ -11423,7 +11888,12 @@
         "kind": "person",
         "label": "Van Jensen",
         "score": null,
-        "linking_info": []
+        "linking_info": [
+          {
+            "source": "ai",
+            "summary": "Van Jensen è uno scrittore statunitense, autore del romanzo Godfall, un esordio narrativo che gioca con i generi della fantascienza e dell'orrore."
+          }
+        ]
       },
       {
         "id": "4828731",
@@ -11477,35 +11947,60 @@
         "kind": "person",
         "label": "Giancarlo Carlotti",
         "score": null,
-        "linking_info": []
+        "linking_info": [
+          {
+            "source": "ai",
+            "summary": "Giancarlo Carlotti è un curatore e traduttore, autore della postfazione della raccolta Il Creatore delle Ombre e altri racconti macabri di Bram Stoker."
+          }
+        ]
       },
       {
         "id": "5e95b99649f444cdbc66c0b4450e5ceb",
         "kind": "person",
         "label": "Chiara Ujka",
         "score": null,
-        "linking_info": []
+        "linking_info": [
+          {
+            "source": "ai",
+            "summary": "Chiara Ujka è una traduttrice, autrice della traduzione del romanzo La palude delle streghe di Jarka Kubsova."
+          }
+        ]
       },
       {
         "id": "d52d20902be1463f88e8d185621916a2",
         "kind": "person",
         "label": "Nicola Rainò",
         "score": null,
-        "linking_info": []
+        "linking_info": [
+          {
+            "source": "ai",
+            "summary": "Nicola Rainò è un traduttore, autore della traduzione del romanzo L'ultima sirena di Iida Turpeinen."
+          }
+        ]
       },
       {
         "id": "37dc32ae28764d15ad36f9b4e1d58bbc",
         "kind": "person",
         "label": "Alessandra Osti",
         "score": null,
-        "linking_info": []
+        "linking_info": [
+          {
+            "source": "ai",
+            "summary": "Alessandra Osti è una traduttrice, autrice della traduzione del romanzo Godfall di Van Jensen."
+          }
+        ]
       },
       {
         "id": "8a23797184c847338182ff39e8a5a39b",
         "kind": "organization",
         "label": "Blu Atlantide",
         "score": null,
-        "linking_info": []
+        "linking_info": [
+          {
+            "source": "ai",
+            "summary": "Blu Atlantide è una casa editrice, editrice del romanzo Godfall di Van Jensen."
+          }
+        ]
       }
     ],
     "mema_summary": null,
@@ -11935,7 +12430,12 @@
         "kind": "organization",
         "label": "Härter Gmbh",
         "score": null,
-        "linking_info": []
+        "linking_info": [
+          {
+            "source": "ai",
+            "summary": "Härter Gmbh è un'azienda leader nella produzione di stampi per il settore dell'automotive, fondata nel 1964. L'amministratore delegato ha annunciato che l'impresa dovrà lasciare a casa gran parte dei 1.500 dipendenti."
+          }
+        ]
       }
     ],
     "mema_summary": null,
@@ -12517,7 +13017,12 @@
         "kind": "person",
         "label": "Zelesnky",
         "score": null,
-        "linking_info": []
+        "linking_info": [
+          {
+            "source": "ai",
+            "summary": "Zelesnky è il presidente dell'Ucraina che riceve armi per combattere l'escalation, ma questo non appassiona il popolo della destra."
+          }
+        ]
       }
     ],
     "mema_summary": null,
@@ -13322,21 +13827,36 @@
         "kind": "organization",
         "label": "Associazione nazionale canapa sativa Italia",
         "score": null,
-        "linking_info": []
+        "linking_info": [
+          {
+            "source": "ai",
+            "summary": "L'Associazione nazionale canapa sativa Italia è un'organizzazione che rappresenta la filiera della canapa industriale in Italia e si oppone al disegno di legge 'sicurezza' del governo Meloni."
+          }
+        ]
       },
       {
         "id": "6fe55a77d0854f6bb1ffdf811f5c0125",
         "kind": "person",
         "label": "Mattia Cusani",
         "score": null,
-        "linking_info": []
+        "linking_info": [
+          {
+            "source": "ai",
+            "summary": "Mattia Cusani è il rappresentante dell'Associazione nazionale canapa sativa Italia e ha partecipato alla manifestazione contro il disegno di legge 'sicurezza' del governo Meloni, sottolineando la contraddittorietà della legge e i rischi per le imprese italiane."
+          }
+        ]
       },
       {
         "id": "e573b9c3f5bb46a6bec0edaa0a53ea24",
         "kind": "person",
         "label": "Adelmo Cervi",
         "score": null,
-        "linking_info": []
+        "linking_info": [
+          {
+            "source": "ai",
+            "summary": "Adelmo Cervi è figlio di uno dei sette fratelli martiri della Resistenza e ha partecipato alla manifestazione contro il disegno di legge 'sicurezza' del governo Meloni, prendendo parola prima di Mattia Cusani."
+          }
+        ]
       }
     ],
     "mema_summary": null,
@@ -15739,28 +16259,48 @@
         "kind": "organization",
         "label": "rete delle società scientifiche",
         "score": null,
-        "linking_info": []
+        "linking_info": [
+          {
+            "source": "ai",
+            "summary": "La rete delle società scientifiche è un'organizzazione che rappresenta 122 società scientifiche italiane, che hanno sottoscritto un appello contro il ridimensionamento della ricerca a causa dei tagli governativi."
+          }
+        ]
       },
       {
         "id": "b2209cb2ec7e4ca78afd484da6496a68",
         "kind": "person",
         "label": "Mario Pianta",
         "score": null,
-        "linking_info": []
+        "linking_info": [
+          {
+            "source": "ai",
+            "summary": "Mario Pianta è un economista italiano, membro della Società italiana di Economia, che parteciperà all'incontro organizzato dalla rete delle società scientifiche per discutere dell'attacco all'università del governo Meloni."
+          }
+        ]
       },
       {
         "id": "2dd11cb3ea7442d9a1231355c64c3fc5",
         "kind": "person",
         "label": "Rocco Di Nicola",
         "score": null,
-        "linking_info": []
+        "linking_info": [
+          {
+            "source": "ai",
+            "summary": "Rocco Di Nicola è un membro del Gruppo 2003, che parteciperà all'incontro organizzato dalla rete delle società scientifiche per discutere dell'attacco all'università del governo Meloni."
+          }
+        ]
       },
       {
         "id": "27c65ac79a2f48109bf1a88ced68ca69",
         "kind": "person",
         "label": "Gianna Fracassi",
         "score": null,
-        "linking_info": []
+        "linking_info": [
+          {
+            "source": "ai",
+            "summary": "Gianna Fracassi è una rappresentante della Flc Cgil, che parteciperà all'incontro organizzato dalla rete delle società scientifiche per discutere dell'attacco all'università del governo Meloni."
+          }
+        ]
       },
       {
         "id": "list-of-classical-era-composers",
@@ -15782,14 +16322,24 @@
         "kind": "person",
         "label": "Orlando Paris",
         "score": null,
-        "linking_info": []
+        "linking_info": [
+          {
+            "source": "ai",
+            "summary": "Orlando Paris è un membro dell'Osservatorio precarietà, che parteciperà all'incontro organizzato dalla rete delle società scientifiche per discutere dell'attacco all'università del governo Meloni."
+          }
+        ]
       },
       {
         "id": "6b515b6608074971b340904be8906522",
         "kind": "person",
         "label": "Gianfranco Bocchinfuso",
         "score": null,
-        "linking_info": []
+        "linking_info": [
+          {
+            "source": "ai",
+            "summary": "Gianfranco Bocchinfuso è un membro della Rete 29 aprile, che parteciperà all'incontro organizzato dalla rete delle società scientifiche per discutere dell'attacco all'università del governo Meloni."
+          }
+        ]
       },
       {
         "id": "the-rose-for-italy",
@@ -15811,28 +16361,48 @@
         "kind": "organization",
         "label": "Osservatorio precarietà",
         "score": null,
-        "linking_info": []
+        "linking_info": [
+          {
+            "source": "ai",
+            "summary": "L'Osservatorio precarietà è un'organizzazione che si occupa di monitorare e analizzare la precarietà lavorativa nel settore universitario, rappresentata da Orlando Paris all'incontro organizzato dalla rete delle società scientifiche."
+          }
+        ]
       },
       {
         "id": "aae28f174a9c4d2ea4df1b056b1699f0",
         "kind": "organization",
         "label": "Rete 29 aprile",
         "score": null,
-        "linking_info": []
+        "linking_info": [
+          {
+            "source": "ai",
+            "summary": "La Rete 29 aprile è un'organizzazione che si occupa di difendere i diritti dei lavoratori precari nel settore universitario, rappresentata da Gianfranco Bocchinfuso all'incontro organizzato dalla rete delle società scientifiche."
+          }
+        ]
       },
       {
         "id": "e1def4bb06a1430d9b13870c2fd5246e",
         "kind": "organization",
         "label": "Roars",
         "score": null,
-        "linking_info": []
+        "linking_info": [
+          {
+            "source": "ai",
+            "summary": "Roars è un'organizzazione che si occupa di difendere i diritti dei ricercatori e dei lavoratori precari nel settore universitario, rappresentata da Alberto Baccini all'incontro organizzato dalla rete delle società scientifiche."
+          }
+        ]
       },
       {
         "id": "ea3faea6c5104859bf1f32a5f04af3a6",
         "kind": "organization",
         "label": "Gruppo 2003",
         "score": null,
-        "linking_info": []
+        "linking_info": [
+          {
+            "source": "ai",
+            "summary": "Il Gruppo 2003 è un'organizzazione che si occupa di difendere i diritti dei lavoratori precari nel settore universitario, rappresentata da Rocco Di Nicola all'incontro organizzato dalla rete delle società scientifiche."
+          }
+        ]
       }
     ],
     "mema_summary": null,

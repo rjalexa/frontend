@@ -10,15 +10,15 @@ interface Highlight {
 
 interface HighlightsPanelProps extends BasePanelProps {
   articleTitle: string;
-  highlights: Highlight[];  // Updated type to match the actual data structure
+  highlights: Highlight[];
 }
 
-export const HighlightsPanel = ({ 
+export default function HighlightsPanel({ 
   isOpen, 
   onClose, 
   articleTitle, 
   highlights 
-}: HighlightsPanelProps) => {
+}: HighlightsPanelProps) {
   if (!isOpen) return null;
 
   return (
@@ -52,4 +52,4 @@ export const HighlightsPanel = ({
       </div>
     </div>
   );
-};
+}

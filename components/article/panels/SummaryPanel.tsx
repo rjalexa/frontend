@@ -7,7 +7,7 @@ interface SummaryPanelProps extends BasePanelProps {
   summary: string | null;
 }
 
-export const SummaryPanel = ({ isOpen, onClose, summary }: SummaryPanelProps) => {
+export default function SummaryPanel({ isOpen, onClose, summary }: SummaryPanelProps) {
   if (!isOpen) return null;
 
   return (
@@ -33,4 +33,4 @@ export const SummaryPanel = ({ isOpen, onClose, summary }: SummaryPanelProps) =>
       </div>
     </div>
   );
-};
+}
