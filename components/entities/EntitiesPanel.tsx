@@ -1,8 +1,9 @@
+// components/entities/EntitiesPanel.tsx
 import React from "react";
 import { Microscope, MapPin, User, Building } from "lucide-react";
-import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
-import { Article, Entity, EntityKind, WikipediaLinkingInfo, GeonamesLinkingInfo, AILinkingInfo } from '@/lib/types';
+import type { Article, Entity, EntityKind } from '@/lib/types';
 import type { BasePanelProps } from '../article/panels/types';
+import EntityCard from './EntityCard';
 
 interface EntitiesPanelProps extends BasePanelProps {
   article: Article;
@@ -10,57 +11,10 @@ interface EntitiesPanelProps extends BasePanelProps {
 
 type EntityTypeFilter = "all" | EntityKind;
 
-const getTruncatedSummary = (summary: string): string => {
-  // Short summaries return as-is
-  if (summary.length <= 100) return summary;
-  
-  // Common abbreviations to avoid truncating at
-  const commonAbbreviations = /(?:[A-Z]\.|Dr\.|Mr\.|Mrs\.|Ms\.|Dott\.|lett\.|Prof\.|Sen\.|On\.|Dep\.|Jr\.|Sr\.|Ph\.D\.|U\.S\.A\.|U\.S\.|D\.C\.|St\.|Ave\.|Ing\.|Arch\.|Avv\.|Rag\.|Geom\.|Cap\.|Col\.|Gen\.|Comm\.|Cav\.|S\.E\.|S\.p\.A\.|S\.r\.l\.|v\.le|p\.zza|sig\.|sig\.ra|n\.|Co\.|Inc\.|Ltd\.|LLC|Corp\.|N\.V\.|B\.V\.|GmbH|S\.A\.|A\.G\.|plc\.|etc\.|es\.|art\.|vol\.|ed\.|pag\.|fig\.|tab\.|Soc\.|Az\.|Dir\.|Amm\.|Ind\.|Int\.|Spa|srl|snc|sas)/g;
-  
-  
-  // Split on periods but preserve them
-  const parts = summary.split(/(?<=\.)/);
-  
-  let result = '';
-  let currentPart = '';
-  
-  for (const part of parts) {
-    currentPart += part;
-    
-    // If we're past minimum length and this part doesn't end with an abbreviation
-    if (currentPart.length >= 100 && !commonAbbreviations.test(part.trim())) {
-      result = currentPart;
-      break;
-    }
-  }
-  
-  // If we couldn't find a good truncation point, return full summary
-  return result || summary;
-}
-
 export function EntitiesPanel({ isOpen, onClose, article }: EntitiesPanelProps) {
   const [selectedType, setSelectedType] = React.useState<EntityTypeFilter>("all");
 
   if (!isOpen) return null;
-
-  const getIcon = (kind: EntityKind) => {
-    switch (kind) {
-      case "location":
-        return <MapPin className="w-5 h-5 text-blue-500" />;
-      case "person":
-        return <User className="w-5 h-5 text-green-500" />;
-      case "organization":
-        return <Building className="w-5 h-5 text-purple-500" />;
-    }
-  };
-
-  const isGeonamesInfo = (info: any): info is GeonamesLinkingInfo => {
-    return info?.source === "geonames";
-  };
-
-  const isWikipediaInfo = (info: any): info is WikipediaLinkingInfo => {
-    return info?.source === "wikipedia";
-  };
 
   const filterEntities = (): Entity[] => {
     if (!article?.meta_data) return [];
@@ -83,80 +37,6 @@ export function EntitiesPanel({ isOpen, onClose, article }: EntitiesPanelProps) 
       }
       return priorityDiff;
     });
-  };
-
-  const renderLocationCard = (entity: Entity) => {
-    const geonamesInfo = entity.linking_info?.find(isGeonamesInfo);
-    const wikipediaInfo = entity.linking_info?.find(isWikipediaInfo);
-
-    return (
-      <>
-        <CardHeader className="flex flex-row items-center gap-2 p-3">
-          <MapPin className="w-5 h-5 text-blue-500" />
-          <CardTitle className="text-lg">
-            {geonamesInfo?.lat && geonamesInfo?.lng ? (
-              <a
-                href={`/map/${article.id}?lat=${geonamesInfo.lat}&lng=${geonamesInfo.lng}${
-                  geonamesInfo.bbox
-                    ? `&north=${geonamesInfo.bbox.north}&south=${geonamesInfo.bbox.south}&east=${geonamesInfo.bbox.east}&west=${geonamesInfo.bbox.west}`
-                    : ""
-                }&name=${encodeURIComponent(entity.label)}`}
-                className="text-blue-600 hover:text-blue-800"
-              >
-                {entity.label}
-              </a>
-            ) : (
-              <span className="text-gray-900">{entity.label}</span>
-            )}
-          </CardTitle>
-        </CardHeader>
-        <CardContent className="pt-0 px-3 pb-3">
-          {wikipediaInfo && (
-            <p className="text-gray-600 text-sm">
-              {getTruncatedSummary(wikipediaInfo.summary)}
-            </p>
-          )}
-        </CardContent>
-      </>
-    );
-  };
-
-  const renderDefaultCard = (entity: Entity) => {
-    const wikipediaInfo = entity.linking_info?.find(isWikipediaInfo);
-    const aiInfo = entity.linking_info?.find((info): info is AILinkingInfo => info.source === 'ai');
-
-    return (
-      <>
-        <CardHeader className="flex flex-row items-center gap-2 p-3">
-          {getIcon(entity.kind)}
-          <CardTitle className="text-lg text-gray-900">
-            {entity.label}
-          </CardTitle>
-        </CardHeader>
-        <CardContent className="space-y-2 pt-0 px-3 pb-3">
-          {entity.summary && (
-            <p className="text-gray-700 text-sm">{entity.summary}</p>
-          )}
-          {(entity.kind === "person" || entity.kind === "organization") && (
-            <>
-              {wikipediaInfo?.summary && (
-                <p className="text-gray-600 text-sm">
-                  {getTruncatedSummary(wikipediaInfo.summary)}
-                </p>
-              )}
-              {aiInfo?.summary && (
-                <div className="text-gray-600 text-sm">
-                  <p className="flex items-center gap-1">
-                    <img src="/mema.svg" alt="MeMa" className="w-8 h-3" />
-                    <span className="italic">{aiInfo.summary}</span>
-                  </p>
-                </div>
-              )}
-            </>
-          )}
-        </CardContent>
-      </>
-    );
   };
 
   return (
@@ -214,17 +94,9 @@ export function EntitiesPanel({ isOpen, onClose, article }: EntitiesPanelProps) 
         </div>
 
         {article.meta_data ? (
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
             {filterEntities().map((entity) => (
-              <Card 
-                key={entity.id} 
-                className="hover:shadow-lg transition-shadow bg-white border-gray-200"
-              >
-                {entity.kind === "location" 
-                  ? renderLocationCard(entity)
-                  : renderDefaultCard(entity)
-                }
-              </Card>
+              <EntityCard key={entity.id || entity.label} entity={entity} />
             ))}
           </div>
         ) : (
