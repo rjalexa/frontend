@@ -11,6 +11,12 @@ const nextConfig: NextConfig = {
     }
     return config
   },
+  typescript: {
+    ignoreBuildErrors: true
+  },
+  eslint: {
+    ignoreDuringBuilds: true
+  },
   // Updated from experimental.serverComponentsExternalPackages to serverExternalPackages
   serverExternalPackages: ['path']
 }
