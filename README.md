@@ -6,14 +6,13 @@ A Next.js application for viewing articles with their associated entities (peopl
 
 - Display articles from static JSON files
 - Show entities (people, locations, organizations) for each article
-- View article highlights (requires Weaviate connection)
+- View article highlights 
 - Interactive map view for locations
 
 ## Prerequisites
 
 - Node.js
 - pnpm
-- Weaviate instance running on localhost:8080
 
 ## Setup
 
@@ -50,10 +49,8 @@ Access the application at http://localhost:3000
 - React 18
 - Tailwind CSS
 - shadcn/ui components
-- Weaviate client (for highlights feature)
 
 ## Notes
 
-- The highlights feature requires a running Weaviate instance on localhost:8080
 - Article data should be placed in JSON files in the `/data` directory
-- Map functionality is available for entities with location data
+- Map functionality is available for articles/entities with location data
