@@ -1,22 +1,28 @@
-// components/Header.tsx
 "use client";
 import { Menu } from "lucide-react";
 import { useEffect } from "react";
 
-if (!process.env.NEXT_PUBLIC_MEMASTATS_URL) {
-  console.warn('NEXT_PUBLIC_MEMASTATS_URL environment variable is not set');
-}
+// Moving this outside the component to ensure it's evaluated at runtime
+const getMemaStatsUrl = () => {
+  const envUrl = window.__NEXT_DATA__?.props?.pageProps?.memaStatsUrl || 
+                 process.env.NEXT_PUBLIC_MEMASTATS_URL || 
+                 'http://localhost:8118';
+  console.log('MemaStats URL:', envUrl);  // Debug log
+  return envUrl;
+};
 
 export default function Header() {
   useEffect(() => {
     console.log("Header component mounted");
+    // Log the URL when component mounts for debugging
+    console.log("Current MemaStats URL:", getMemaStatsUrl());
   }, []);
 
   const handleMenuClick = (e: React.MouseEvent<HTMLButtonElement>) => {
     console.log("Menu button clicked");
     e.preventDefault();
     try {
-      const memaStatsUrl = process.env.NEXT_PUBLIC_MEMASTATS_URL || 'http://localhost:8118';
+      const memaStatsUrl = getMemaStatsUrl();
       window.open(memaStatsUrl, '_blank', 'noopener,noreferrer');
       console.log("Window.open called with URL:", memaStatsUrl);
     } catch (error) {
