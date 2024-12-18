@@ -138,13 +138,13 @@ export default function EntityCard({ entity }: EntityCardProps) {
             <div>
               <div
                 ref={contentRef}
-                className="text-gray-600 text-sm overflow-hidden transition-all duration-300 relative"
+                className="overflow-hidden transition-all duration-300 relative"
                 style={{
                   lineHeight: `${LINE_HEIGHT}rem`,
                   maxHeight: isExpanded ? "none" : `${MAX_HEIGHT}rem`,
                 }}
               >
-                {wikipediaInfo.summary}
+                <p className="text-gray-600 text-sm">{wikipediaInfo.summary}</p>
                 {!isExpanded && isOverflowing && (
                   <div className="absolute bottom-0 left-0 right-0 h-6 bg-gradient-to-t from-white to-transparent" />
                 )}
