@@ -26,6 +26,15 @@ interface Article {
 type SortField = "date_created" | "headline" | "author";
 type SortDirection = "asc" | "desc";
 
+// Mapping between display names and field names
+const columnMappings = {
+  "Titolo": "headline",
+  "Data": "date_created",
+  "Autore": "author"
+} as const;
+
+type DisplayName = keyof typeof columnMappings;
+
 export default function Home() {
   const router = useRouter();
   const [mounted, setMounted] = useState(false);
@@ -74,7 +83,8 @@ export default function Home() {
     }
   }, [mounted]);
 
-  const handleSort = (field: SortField) => {
+  const handleSort = (displayName: DisplayName) => {
+    const field = columnMappings[displayName] as SortField;
     if (field === sortField) {
       const newDirection = sortDirection === "asc" ? "desc" : "asc";
       setSortDirection(newDirection);
@@ -133,9 +143,9 @@ export default function Home() {
             <table className="w-full border-collapse">
               <thead>
                 <tr className="border-b bg-gray-50">
-                  <th className="py-2 px-4 text-left font-medium">
+                  <th className="py-2 px-4 text-left">
                     <button
-                      onClick={() => handleSort("headline")}
+                      onClick={() => handleSort("Titolo")}
                       className="flex items-center gap-1 hover:text-gray-600"
                     >
                       Titolo
@@ -144,7 +154,7 @@ export default function Home() {
                   </th>
                   <th className="py-2 px-4 text-left w-36">
                     <button
-                      onClick={() => handleSort("date_created")}
+                      onClick={() => handleSort("Data")}
                       className="flex items-center gap-1 hover:text-gray-600"
                     >
                       Data
@@ -153,7 +163,7 @@ export default function Home() {
                   </th>
                   <th className="py-2 px-4 text-left">
                     <button
-                      onClick={() => handleSort("author")}
+                      onClick={() => handleSort("Autore")}
                       className="flex items-center gap-1 hover:text-gray-600"
                     >
                       Autore
