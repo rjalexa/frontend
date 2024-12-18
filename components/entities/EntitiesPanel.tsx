@@ -69,7 +69,7 @@ export function EntitiesPanel({ isOpen, onClose, article }: EntitiesPanelProps) 
                 : "bg-gray-100 text-gray-800 hover:bg-gray-200"
             }`}
           >
-            <User className="w-4 h-4" /> People
+            <User className="w-4 h-4" /> Persone
           </button>
           <button
             onClick={() => setSelectedType("location")}
@@ -79,7 +79,7 @@ export function EntitiesPanel({ isOpen, onClose, article }: EntitiesPanelProps) 
                 : "bg-gray-100 text-gray-800 hover:bg-gray-200"
             }`}
           >
-            <MapPin className="w-4 h-4" /> Locations
+            <MapPin className="w-4 h-4" /> Luoghi
           </button>
           <button
             onClick={() => setSelectedType("organization")}
@@ -89,7 +89,7 @@ export function EntitiesPanel({ isOpen, onClose, article }: EntitiesPanelProps) 
                 : "bg-gray-100 text-gray-800 hover:bg-gray-200"
             }`}
           >
-            <Building className="w-4 h-4" /> Organizations
+            <Building className="w-4 h-4" /> Organizzazioni
           </button>
         </div>
 

@@ -138,7 +138,7 @@ export default function Home() {
                       onClick={() => handleSort("headline")}
                       className="flex items-center gap-1 hover:text-gray-600"
                     >
-                      Title
+                      Titolo
                       <ArrowUpDown className="h-4 w-4" />
                     </button>
                   </th>
@@ -147,7 +147,7 @@ export default function Home() {
                       onClick={() => handleSort("date_created")}
                       className="flex items-center gap-1 hover:text-gray-600"
                     >
-                      Date
+                      Data
                       <ArrowUpDown className="h-4 w-4" />
                     </button>
                   </th>
@@ -156,7 +156,7 @@ export default function Home() {
                       onClick={() => handleSort("author")}
                       className="flex items-center gap-1 hover:text-gray-600"
                     >
-                      Author
+                      Autore
                       <ArrowUpDown className="h-4 w-4" />
                     </button>
                   </th>
