@@ -86,9 +86,11 @@ export default function EntityCard({ entity }: EntityCardProps) {
           <p className="text-gray-700 text-xs">{entity.summary}</p>
         )}
         {(entity.kind === "person" || entity.kind === "organization") && (
-          <>
+          <div className="space-y-2">
             {wikipediaInfo?.summary && (
-              <p className="text-gray-600 text-sm">{wikipediaInfo.summary}</p>
+              <p className="text-gray-600 text-sm">
+                {wikipediaInfo.summary}
+              </p>
             )}
             {aiInfo?.summary && (
               <div className="text-gray-600 text-sm">
@@ -98,7 +100,7 @@ export default function EntityCard({ entity }: EntityCardProps) {
                 </p>
               </div>
             )}
-          </>
+          </div>
         )}
       </div>
     );
@@ -143,7 +145,9 @@ export default function EntityCard({ entity }: EntityCardProps) {
                 }}
               >
                 {wikipediaInfo.summary}
-                {!isExpanded && <div className="absolute bottom-0 left-0 right-0 h-6 bg-gradient-to-t from-white to-transparent" />}
+                {!isExpanded && isOverflowing && (
+                  <div className="absolute bottom-0 left-0 right-0 h-6 bg-gradient-to-t from-white to-transparent" />
+                )}
               </div>
 
               {isOverflowing && (
@@ -187,26 +191,26 @@ export default function EntityCard({ entity }: EntityCardProps) {
           }}
         >
           {renderContent()}
-          {!isExpanded && <div className="absolute bottom-0 left-0 right-0 h-6 bg-gradient-to-t from-white to-transparent" />}
+          {!isExpanded && isOverflowing && (
+            <div className="absolute bottom-0 left-0 right-0 h-6 bg-gradient-to-t from-white to-transparent" />
+          )}
         </div>
 
         {isOverflowing && (
-          <>
-            <button
-              className="w-full text-xs text-blue-600 hover:text-blue-800 flex items-center justify-center gap-0.5 pt-0.5"
-              onClick={() => setIsExpanded(!isExpanded)}
-            >
-              {isExpanded ? (
-                <>
-                  Show less <ChevronUp className="w-3 h-3" />
-                </>
-              ) : (
-                <>
-                  Show more <ChevronDown className="w-3 h-3" />
-                </>
-              )}
-            </button>
-          </>
+          <button
+            className="w-full text-xs text-blue-600 hover:text-blue-800 flex items-center justify-center gap-0.5 pt-0.5"
+            onClick={() => setIsExpanded(!isExpanded)}
+          >
+            {isExpanded ? (
+              <>
+                Show less <ChevronUp className="w-3 h-3" />
+              </>
+            ) : (
+              <>
+                Show more <ChevronDown className="w-3 h-3" />
+              </>
+            )}
+          </button>
         )}
       </CardContent>
     </Card>
