@@ -1,6 +1,11 @@
+// components/Header.tsx
 "use client";
 import { Menu } from "lucide-react";
 import { useEffect } from "react";
+
+if (!process.env.NEXT_PUBLIC_MEMASTATS_URL) {
+  console.warn('NEXT_PUBLIC_MEMASTATS_URL environment variable is not set');
+}
 
 export default function Header() {
   useEffect(() => {
@@ -11,8 +16,9 @@ export default function Header() {
     console.log("Menu button clicked");
     e.preventDefault();
     try {
-      window.open('https://dev.isagog.com/memastats', '_blank', 'noopener,noreferrer');
-      console.log("Window.open called");
+      const memaStatsUrl = process.env.NEXT_PUBLIC_MEMASTATS_URL || 'http://localhost:8118';
+      window.open(memaStatsUrl, '_blank', 'noopener,noreferrer');
+      console.log("Window.open called with URL:", memaStatsUrl);
     } catch (error) {
       console.error("Error opening window:", error);
     }
