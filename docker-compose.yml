@@ -1,8 +1,6 @@
 services:
   web:
     build: .
-    volumes:
-      - ./data:/app/data:ro
     ports:
       - "3333:3000"
     environment:
@@ -18,7 +16,6 @@ services:
       - .:/app
       - /app/node_modules
       - /app/.next
-      - ./data:/app/data:ro
     ports:
       - "3333:3000"
     environment:
