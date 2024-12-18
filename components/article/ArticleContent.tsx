@@ -1,10 +1,10 @@
 "use client";
 
-import React from 'react';
-import { HighlightsPanel, TopicsPanel, SummaryPanel } from './panels';
-import { EntitiesPanel } from '@/components/entities/EntitiesPanel';
-import MapPanel from '@/components/maps/MapPanel';
-import type { Article } from '@/lib/types';
+import React from "react";
+import { HighlightsPanel, TopicsPanel, SummaryPanel } from "./panels";
+import { EntitiesPanel } from "@/components/entities/EntitiesPanel";
+import MapPanel from "@/components/maps/MapPanel";
+import type { Article } from "@/lib/types";
 
 interface ArticleContentProps {
   article: Article;
@@ -52,7 +52,9 @@ const ArticleContent = ({
             <div className="font-bold">By {article.author}</div>
           )}
           <time dateTime={article.datePublished || article.date_created}>
-            {new Date(article.datePublished || article.date_created).toLocaleDateString("en-US", {
+            {new Date(
+              article.datePublished || article.date_created
+            ).toLocaleDateString("it-IT", {
               year: "numeric",
               month: "long",
               day: "numeric",

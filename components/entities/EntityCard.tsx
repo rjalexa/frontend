@@ -162,7 +162,7 @@ export default function EntityCard({ entity }: EntityCardProps) {
                       </>
                     ) : (
                       <>
-                        Show more <ChevronDown className="w-3 h-3" />
+                        Dettagli <ChevronDown className="w-3 h-3" />
                       </>
                     )}
                   </button>
@@ -207,7 +207,7 @@ export default function EntityCard({ entity }: EntityCardProps) {
               </>
             ) : (
               <>
-                Show more <ChevronDown className="w-3 h-3" />
+                Dettagli <ChevronDown className="w-3 h-3" />
               </>
             )}
           </button>
