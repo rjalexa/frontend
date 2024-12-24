@@ -1,6 +1,8 @@
+// app/layout.tsx
 import type { Metadata } from "next";
 import { Inter as FontSans } from "next/font/google"
 import { ThemeProvider } from "./providers/theme-provider";
+import { Suspense } from 'react';
 import "./globals.css";
 import { Playfair_Display } from 'next/font/google';
 
@@ -28,7 +30,15 @@ export default function RootLayout({
     <html lang="en" className={`${fontSans.variable}`}>
       <body className="antialiased">
         <ThemeProvider defaultTheme="light">
-          {children}
+          <Suspense fallback={
+            <div className="min-h-screen flex flex-col items-center justify-center">
+              <div className="animate-pulse text-blue-700 text-lg">
+                Loading MeMa...
+              </div>
+            </div>
+          }>
+            {children}
+          </Suspense>
         </ThemeProvider>
       </body>
     </html>
