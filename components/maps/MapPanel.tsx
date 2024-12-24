@@ -18,7 +18,7 @@ const MapPanel: React.FC<MapPanelProps> = ({
   const mapRef = useRef<HTMLDivElement>(null);
   const mapInstanceRef = useRef<LeafletMap | null>(null);
   const [isMapReady, setIsMapReady] = useState(false);
-  
+
   useEffect(() => {
     if (!isOpen || !mapRef.current) return;
 
@@ -40,12 +40,15 @@ const MapPanel: React.FC<MapPanelProps> = ({
           mapInstanceRef.current = null;
         }
 
+        // Ensure mapRef.current exists before creating map
+        if (!mapRef.current) return;
+
         // Create new map instance
         const map = L.map(mapRef.current, {
           zoomControl: true,
           scrollWheelZoom: true,
           preferCanvas: true
-        });
+        } as MapOptions);
 
         mapInstanceRef.current = map;
 
@@ -70,7 +73,7 @@ const MapPanel: React.FC<MapPanelProps> = ({
           onAdd: function() {
             const container = L.DomUtil.create('div', 'leaflet-bar leaflet-control');
             const button = L.DomUtil.create('a', '', container);
-            button.innerHTML = '🗺️';
+            button.innerHTML = '🗺️ ';
             button.title = 'Change Map Type';
             button.style.width = '30px';
             button.style.height = '30px';
@@ -82,17 +85,17 @@ const MapPanel: React.FC<MapPanelProps> = ({
             button.href = '#';
 
             let isStreets = true;
-            
+
             L.DomEvent.on(button, 'click', function(e: Event) {
               L.DomEvent.preventDefault(e);
               if (isStreets) {
                 map.removeLayer(streetsLayer);
                 satelliteLayer.addTo(map);
-                button.innerHTML = '🛰️';
+                button.innerHTML = '🛰️ ';
               } else {
                 map.removeLayer(satelliteLayer);
                 streetsLayer.addTo(map);
-                button.innerHTML = '🗺️';
+                button.innerHTML = '🗺️ ';
               }
               isStreets = !isStreets;
             });
@@ -121,7 +124,7 @@ const MapPanel: React.FC<MapPanelProps> = ({
           .map(entity => {
             const geonamesInfo = entity.linking_info?.find(isGeonamesInfo);
             const wikipediaInfo = entity.linking_info?.find(isWikipediaInfo);
-            
+
             if (!geonamesInfo) {
               return null;
             }
@@ -138,7 +141,7 @@ const MapPanel: React.FC<MapPanelProps> = ({
         // Add markers and set bounds
         if (locations.length > 0) {
           const bounds = L.latLngBounds(locations.map(loc => [loc.lat, loc.lng]));
-          
+
           locations.forEach(location => {
             L.marker([location.lat, location.lng])
               .bindPopup(`
@@ -191,10 +194,10 @@ const MapPanel: React.FC<MapPanelProps> = ({
         <img src="/mema.svg" alt="MeMa Logo" className="w-16 h-6 ml-6" />
       </div>
       <div className="p-4">
-        <div 
-          ref={mapRef} 
+        <div
+          ref={mapRef}
           style={{ height: '400px' }}
-          className="w-full rounded-lg overflow-hidden shadow-inner bg-gray-100" 
+          className="w-full rounded-lg overflow-hidden shadow-inner bg-gray-100"
         />
       </div>
     </div>

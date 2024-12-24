@@ -1,11 +1,6 @@
 import { NextResponse } from 'next/server';
-import weaviate from 'weaviate-ts-client';
-import type { WeaviateClient } from 'weaviate-ts-client';
-
-// Configuration constants
-const WEAVIATE_HOST = 'localhost';
-const WEAVIATE_PORT = '8080';
-const COLLECTION_NAME = 'Delta_highlights';
+import fs from 'fs';
+import path from 'path';
 
 const debugLog = (message: string, data?: any) => {
   console.log(`[Highlights Debug] ${message}`);
@@ -14,43 +9,15 @@ const debugLog = (message: string, data?: any) => {
   }
 };
 
-// Create Weaviate client with better error handling
-const getWeaviateClient = async (): Promise<WeaviateClient> => {
-  try {
-    debugLog('Creating Weaviate client');
-    
-    const client = weaviate.client({
-      scheme: 'http',
-      host: `${WEAVIATE_HOST}:${WEAVIATE_PORT}`
-    });
-
-    // Test the connection
-    debugLog('Testing connection');
-    await client.schema.getter().do();
-    debugLog('Connection test successful');
-
-    return client;
-  } catch (error) {
-    debugLog('Error initializing Weaviate client', {
-      error: error instanceof Error ? {
-        message: error.message,
-        stack: error.stack,
-        name: error.name
-      } : error
-    });
-    throw error;
-  }
-};
-
 export async function GET(request: Request) {
   debugLog('Starting highlights request');
-  
+
   try {
     const { searchParams } = new URL(request.url);
     const articleId = searchParams.get('articleId');
-    
+
     debugLog('Request parameters:', { articleId });
-    
+
     if (!articleId) {
       debugLog('No articleId provided');
       return NextResponse.json(
@@ -59,90 +26,20 @@ export async function GET(request: Request) {
       );
     }
 
-    debugLog('Initializing Weaviate client');
-    const client = await getWeaviateClient();
+    // Read from merged-ai.json
+    const dataPath = path.join(process.cwd(), 'data', 'merged-ai.json');
+    const jsonData = JSON.parse(fs.readFileSync(dataPath, 'utf8'));
 
-    // First, get the schema to see what fields are available
-    const schema = await client.schema.getter().do();
-    debugLog('Current schema:', schema);
-
-    const deltaHighlightsClass = schema.classes?.find(c => c.class === COLLECTION_NAME);
-    if (!deltaHighlightsClass) {
-      throw new Error(`Class ${COLLECTION_NAME} not found in schema`);
-    }
-
-    debugLog('Delta_highlights class schema:', deltaHighlightsClass);
-
-    // Looking for the article reference field
-    const propertyNames = deltaHighlightsClass.properties?.map(p => p.name);
-    debugLog('Available properties:', propertyNames);
-
-    debugLog('Building GraphQL query for article', { articleId });
-    const result = await client.graphql
-      .get()
-      .withClassName(COLLECTION_NAME)
-      .withFields(`
-        highlight_text 
-        highlight_sequence_number 
-        highlight_type 
-        highlight_article_author 
-        highlight_article_date
-        _additional {
-          id
-        }
-      `)
-      .withWhere({
-        operator: 'And',
-        operands: [
-          {
-            operator: 'Equal',
-            path: ['highlight_article_mema_id'],
-            valueString: articleId
-          },
-          {
-            operator: 'Equal',
-            path: ['highlight_type'],
-            valueString: 'LLM'
-          }
-        ]
-      })
-      .do();
-
-    debugLog('Weaviate query result:', result);
-
-    if (!result.data?.Get?.[COLLECTION_NAME]) {
-      return NextResponse.json({
-        highlights: [],
-        count: 0,
-        debug: {
-          timestamp: new Date().toISOString(),
-          articleId,
-          query: 'No highlights found'
-        }
-      });
-    }
-
-    // Deduplicate highlights based on sequence number
-    const uniqueHighlights = result.data.Get[COLLECTION_NAME].reduce((acc: any[], highlight: any) => {
-      const isDuplicate = acc.some(
-        (h) => h.highlight_sequence_number === highlight.highlight_sequence_number
-      );
-      if (!isDuplicate) {
-        acc.push(highlight);
-      }
-      return acc;
-    }, []);
-
-    // Sort highlights by sequence number
-    const sortedHighlights = uniqueHighlights.sort(
-      (a: any, b: any) => a.highlight_sequence_number - b.highlight_sequence_number
+    // Filter highlights for the requested article
+    const articleHighlights = jsonData.filter((item: any) => 
+      item.highlight_article_mema_id === articleId && 
+      item.highlight_type === 'LLM'
     );
 
-    debugLog('Processed highlights:', { 
-      original: result.data.Get[COLLECTION_NAME].length,
-      deduplicated: uniqueHighlights.length,
-      sorted: sortedHighlights.length
-    });
+    // Sort highlights by sequence number
+    const sortedHighlights = articleHighlights.sort(
+      (a: any, b: any) => a.highlight_sequence_number - b.highlight_sequence_number
+    );
 
     const highlights = sortedHighlights.map((highlight: any) => ({
       highlight_text: highlight.highlight_text,
@@ -173,33 +70,8 @@ export async function GET(request: Request) {
       } : error
     });
 
-    // Check if it's a connection error
-    if (error instanceof Error && 
-       (error.message.includes('ECONNREFUSED') || error.message.includes('Failed to fetch'))) {
-      return NextResponse.json(
-        { 
-          error: 'Database connection failed. Please try again later.',
-          fallback: true,
-          highlights: [],
-          count: 0,
-          debug: {
-            error: error.message,
-            timestamp: new Date().toISOString(),
-            type: 'connection_error'
-          }
-        },
-        { 
-          status: 200,
-          headers: {
-            'X-Service-Status': 'degraded',
-            'X-Error-Type': 'connection'
-          }
-        }
-      );
-    }
-
     return NextResponse.json(
-      { 
+      {
         error: 'An unexpected error occurred',
         fallback: true,
         highlights: [],
@@ -211,13 +83,7 @@ export async function GET(request: Request) {
           details: error instanceof Error ? error.stack : undefined
         }
       },
-      { 
-        status: 200,
-        headers: {
-          'X-Service-Status': 'degraded',
-          'X-Error-Type': 'unexpected'
-        }
-      }
+      { status: 500 }
     );
   }
 }
