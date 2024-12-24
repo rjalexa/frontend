@@ -1,25 +1,13 @@
-// app/layout.tsx
 import type { Metadata } from "next";
-import localFont from "next/font/local";
+import { Inter as FontSans } from "next/font/google"
 import { ThemeProvider } from "./providers/theme-provider";
 import "./globals.css";
 import { Playfair_Display } from 'next/font/google';
 
-const geistSans = localFont({
-  src: './fonts/GeistVF.woff',
-  variable: '--font-geist-sans',
-  display: 'swap',
-  preload: true,
-  fallback: ['system-ui', 'arial'],
-});
-
-const geistMono = localFont({
-  src: './fonts/GeistMonoVF.woff',
-  variable: '--font-geist-mono',
-  display: 'swap',
-  preload: true,
-  fallback: ['ui-monospace', 'monospace'],
-});
+const fontSans = FontSans({
+  subsets: ["latin"],
+  variable: "--font-sans",
+})
 
 const playfair = Playfair_Display({
   subsets: ['latin'],
@@ -37,7 +25,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={`${geistSans.variable} ${geistMono.variable}`}>
+    <html lang="en" className={`${fontSans.variable}`}>
       <body className="antialiased">
         <ThemeProvider defaultTheme="light">
           {children}
