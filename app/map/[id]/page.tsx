@@ -1,30 +1,6 @@
-'use client'
-import { type ReactNode } from 'react';
-import dynamic from 'next/dynamic';
+// app/map/[id]/page.tsx
+import DynamicMapWrapper from './components/DynamicMapWrapper'
 
-// Create a NoSSR wrapper component with proper typing
-const NoSSR = ({ children }: { children: ReactNode }) => <>{children}</>;
-
-// Define the props interface for the MapComponent
-interface MapComponentProps {
-  id: string;
-}
-
-// Create the client-side only Map component with proper typing
-const MapComponent = dynamic<MapComponentProps>(() => import('./MapComponent'), {
-  ssr: false,
-  loading: () => <div className="flex-1 bg-gray-100" />
-});
-
-// Main page component
-export default function MapPage({
-  params,
-}: {
-  params: { id: string }
-}) {
-  return (
-    <NoSSR>
-      <MapComponent id={params.id} />
-    </NoSSR>
-  );
+export default function MapPage() {
+  return <DynamicMapWrapper />
 }

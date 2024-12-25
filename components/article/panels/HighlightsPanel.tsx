@@ -1,5 +1,6 @@
 // components/article/panels/HighlightsPanel.tsx
 import React from 'react';
+import Image from 'next/image';
 import { Highlighter } from "lucide-react";
 import type { BasePanelProps } from './types';
 
@@ -9,15 +10,14 @@ interface Highlight {
 }
 
 interface HighlightsPanelProps extends BasePanelProps {
-  articleTitle: string;
   highlights: Highlight[];
+  articleTitle: string;  // Added this prop
 }
 
 export default function HighlightsPanel({ 
-  isOpen, 
-  onClose, 
-  articleTitle, 
-  highlights 
+  isOpen,
+  highlights,
+  articleTitle  // Added to destructuring
 }: HighlightsPanelProps) {
   if (!isOpen) return null;
 
@@ -28,10 +28,21 @@ export default function HighlightsPanel({
           <Highlighter className="w-4 h-4" />
           <span>Punti salienti</span>
         </div>
-        <img src="/mema.svg" alt="MeMa Logo" className="w-16 h-6 ml-6" />
+        <div className="relative w-16 h-6">
+          <Image 
+            src="/mema.svg" 
+            alt="MeMa Logo" 
+            fill
+            className="ml-6"
+            sizes="64px"
+          />
+        </div>
       </div>
       
       <div className="p-4">
+        {articleTitle && (
+          <h2 className="text-lg font-semibold mb-4">{articleTitle}</h2>
+        )}
         {highlights && highlights.length > 0 ? (
           <div className="space-y-4">
             <ul className="list-disc list-inside space-y-2">

@@ -1,5 +1,6 @@
 // components/article/panels/TopicsPanel.tsx
 import React from 'react';
+import Image from 'next/image';
 import { Hash } from "lucide-react";
 import { BasePanelProps } from './types';
 import type { Article } from '@/lib/types';
@@ -8,7 +9,7 @@ interface TopicsPanelProps extends BasePanelProps {
   article: Article;
 }
 
-export default function TopicsPanel({ isOpen, onClose, article }: TopicsPanelProps) {
+export default function TopicsPanel({ isOpen, article }: TopicsPanelProps) {
   if (!isOpen) return null;
 
   const manifestoTopics = [article.articleTag, article.topics, article.tags]
@@ -26,7 +27,13 @@ export default function TopicsPanel({ isOpen, onClose, article }: TopicsPanelPro
           <Hash className="w-4 h-4" />
           <span>Argomenti</span>
         </div>
-        <img src="/mema.svg" alt="MeMa Logo" className="w-16 h-6 ml-6" />
+        <Image
+          src="/mema.svg"
+          alt="MeMa Logo"
+          width={64}
+          height={24}
+          className="ml-6"
+        />
       </div>
       
       <div className="p-4 pb-2">

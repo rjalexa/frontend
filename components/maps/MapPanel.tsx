@@ -1,7 +1,9 @@
+// ./components/maps/MapPanel.tsx
 import React, { useEffect, useRef, useState } from 'react';
 import { Globe } from 'lucide-react';
-import type { Map as LeafletMap, MapOptions, TileLayer } from 'leaflet';
-import type { Article, Entity, EntityKind, WikipediaLinkingInfo, GeonamesLinkingInfo } from '@/lib/types';
+import type { Map as LeafletMap, MapOptions } from 'leaflet';
+import type { Article, WikipediaLinkingInfo, GeonamesLinkingInfo } from '@/lib/types';
+import Image from 'next/image';
 import 'leaflet/dist/leaflet.css';
 
 interface MapPanelProps {
@@ -10,8 +12,18 @@ interface MapPanelProps {
   article: Article;
 }
 
+type LocationData = {
+  label: string;
+  lat: number;
+  lng: number;
+  summary: string | undefined;
+}
+
+type LatLngTuple = [number, number];
+
 const MapPanel: React.FC<MapPanelProps> = ({
   isOpen,
+  /* eslint-disable-next-line @typescript-eslint/no-unused-vars */
   onClose,
   article
 }) => {
@@ -27,8 +39,16 @@ const MapPanel: React.FC<MapPanelProps> = ({
         const L = (await import('leaflet')).default;
 
         // Set default icon paths
-        delete (L.Icon.Default.prototype as any)._getIconUrl;
-        L.Icon.Default.mergeOptions({
+        const IconDefault = L.Icon.Default as unknown as {
+          prototype: { _getIconUrl?: string };
+          mergeOptions(options: Record<string, string>): void;
+        };
+        
+        if (IconDefault.prototype._getIconUrl) {
+          delete IconDefault.prototype._getIconUrl;
+        }
+
+        IconDefault.mergeOptions({
           iconRetinaUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon-2x.png',
           iconUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon.png',
           shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-shadow.png',
@@ -106,41 +126,37 @@ const MapPanel: React.FC<MapPanelProps> = ({
 
         map.addControl(new LayerControl());
 
-        // Type guards for linking info
-        const isGeonamesInfo = (info: any): info is GeonamesLinkingInfo => {
-          return info?.source === "geonames";
-        };
-
-        const isWikipediaInfo = (info: any): info is WikipediaLinkingInfo => {
-          return info?.source === "wikipedia";
-        };
-
         // Extract locations data
         const locations = article.meta_data
           ?.filter(entity => {
-            const geonamesInfo = entity.linking_info?.find(isGeonamesInfo);
-            return entity.kind === 'location' && geonamesInfo?.lat !== undefined && geonamesInfo?.lng !== undefined;
+            const geoInfo = entity.linking_info?.find(
+              (info): info is GeonamesLinkingInfo => info.source === 'geonames'
+            );
+            return entity.kind === 'location' && geoInfo?.lat !== undefined && geoInfo?.lng !== undefined;
           })
           .map(entity => {
-            const geonamesInfo = entity.linking_info?.find(isGeonamesInfo);
-            const wikipediaInfo = entity.linking_info?.find(isWikipediaInfo);
+            const geoInfo = entity.linking_info?.find(
+              (info): info is GeonamesLinkingInfo => info.source === 'geonames'
+            );
+            const wikiInfo = entity.linking_info?.find(
+              (info): info is WikipediaLinkingInfo => info.source === 'wikipedia'
+            );
 
-            if (!geonamesInfo) {
-              return null;
-            }
+            if (!geoInfo) return null;
 
-            return {
+            const location: LocationData = {
               label: entity.label,
-              lat: geonamesInfo.lat,
-              lng: geonamesInfo.lng,
-              summary: wikipediaInfo?.summary
+              lat: geoInfo.lat,
+              lng: geoInfo.lng,
+              summary: wikiInfo?.summary
             };
+            return location;
           })
-          .filter((location): location is NonNullable<typeof location> => location !== null) || [];
+          .filter((loc): loc is LocationData => loc !== null) || [];
 
         // Add markers and set bounds
         if (locations.length > 0) {
-          const bounds = L.latLngBounds(locations.map(loc => [loc.lat, loc.lng]));
+          const bounds = L.latLngBounds(locations.map(loc => [loc.lat, loc.lng] as LatLngTuple));
 
           locations.forEach(location => {
             L.marker([location.lat, location.lng])
@@ -191,7 +207,13 @@ const MapPanel: React.FC<MapPanelProps> = ({
           <Globe className="w-4 h-4" />
           <span>Mappa</span>
         </div>
-        <img src="/mema.svg" alt="MeMa Logo" className="w-16 h-6 ml-6" />
+        <Image 
+          src="/mema.svg" 
+          alt="MeMa Logo" 
+          width={64}
+          height={24}
+          className="ml-6" 
+        />
       </div>
       <div className="p-4">
         <div

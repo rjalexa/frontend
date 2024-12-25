@@ -1,6 +1,7 @@
 // components/entities/EntitiesPanel.tsx
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { Microscope, MapPin, User, Building } from "lucide-react";
+import Image from "next/image";
 import type { Article, Entity, EntityKind } from '@/lib/types';
 import type { BasePanelProps } from '../article/panels/types';
 import EntityCard from './EntityCard';
@@ -12,7 +13,21 @@ interface EntitiesPanelProps extends BasePanelProps {
 type EntityTypeFilter = "all" | EntityKind;
 
 export function EntitiesPanel({ isOpen, onClose, article }: EntitiesPanelProps) {
-  const [selectedType, setSelectedType] = React.useState<EntityTypeFilter>("all");
+  const [selectedType, setSelectedType] = useState<EntityTypeFilter>("all");
+
+  // Handle escape key press
+  useEffect(() => {
+    const handleEscKey = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        onClose();
+      }
+    };
+
+    if (isOpen) {
+      window.addEventListener('keydown', handleEscKey);
+      return () => window.removeEventListener('keydown', handleEscKey);
+    }
+  }, [isOpen, onClose]);
 
   if (!isOpen) return null;
 
@@ -46,7 +61,22 @@ export function EntitiesPanel({ isOpen, onClose, article }: EntitiesPanelProps) 
           <Microscope className="w-4 h-4" />
           <span>Entità e dettagli</span>
         </div>
-        <img src="/mema.svg" alt="MeMa Logo" className="w-16 h-6 ml-6" />
+        <div className="flex items-center gap-4">
+          <button
+            onClick={onClose}
+            className="text-gray-500 hover:text-gray-700"
+            aria-label="Close panel"
+          >
+            ✕
+          </button>
+          <Image 
+            src="/mema.svg" 
+            alt="MeMa Logo" 
+            width={64}
+            height={24}
+            className="ml-6"
+          />
+        </div>
       </div>
       
       <div className="p-4">

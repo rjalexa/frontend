@@ -1,12 +1,12 @@
 'use client';
 import React from 'react';
 import { Map as LeafletMap } from 'leaflet';
-import L from 'leaflet';
 import { ArrowLeft } from 'lucide-react';
 import { useRouter, useParams } from 'next/navigation';
 
-function isLeafletMap(map: any): map is LeafletMap {
-  return map && typeof map.remove === 'function';
+// Fix 1: Replace 'any' with a proper type
+function isLeafletMap(map: unknown): map is LeafletMap {
+  return map !== null && typeof map === 'object' && 'remove' in map && typeof (map as LeafletMap).remove === 'function';
 }
 
 interface LinkingInfo {
@@ -55,14 +55,13 @@ const MapComponent = () => {
       } catch (error) {
         console.error('Error cleaning up map:', error);
       } finally {
-        // Reset map state to allow potential re-initialization
         setMap(null);
       }
     }
   }, []);
 
   // Fetch article data
-  React.useEffect(function initializeMapEffect() {
+  React.useEffect(() => {
     let mounted = true;
 
     const fetchArticle = async () => {
@@ -70,7 +69,6 @@ const MapComponent = () => {
         setLoading(true);
         setError(null);
 
-        // Check URL parameters to determine mode
         const searchParams = new URLSearchParams(window.location.search);
         const mode = searchParams.get('mode');
         setViewMode(mode === 'all' ? 'all' : 'single');
@@ -100,7 +98,7 @@ const MapComponent = () => {
 
     fetchArticle();
 
-    return function cleanupEffect() {
+    return () => {
       mounted = false;
     };
   }, [articleId]);
@@ -116,13 +114,14 @@ const MapComponent = () => {
         const L = (await import('leaflet')).default;
         await import('leaflet/dist/leaflet.css');
 
-        // Fix Leaflet's default icon path issues
-        delete (L.Icon.Default.prototype as any)._getIconUrl;
-        L.Icon.Default.mergeOptions({
+        // Fix the IconOptions type
+        const iconOptions: L.IconOptions = {
           iconRetinaUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon-2x.png',
           iconUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon.png',
           shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-shadow.png',
-        });
+        };
+
+        L.Icon.Default.mergeOptions(iconOptions);
 
         if (!mounted || !mapContainerRef.current) return;
 
@@ -212,12 +211,12 @@ const MapComponent = () => {
     };
   }, [article, viewMode, map, cleanupMap]);
 
-  // Cleanup map instance and event listeners on component unmount
+  // Cleanup map instance on unmount
   React.useEffect(() => {
     return () => {
       cleanupMap(map);
     };
-  }, [map]);
+  }, [map, cleanupMap]);
 
   if (loading) {
     return (

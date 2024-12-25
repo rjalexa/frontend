@@ -1,13 +1,8 @@
+// ./components/entities/EntityCard.tsx
 import React, { useState, useRef, useEffect } from "react";
 import { ChevronDown, ChevronUp, MapPin, User, Building } from "lucide-react";
-import {
-  Dialog,
-  DialogContent,
-  DialogTitle,
-  DialogHeader,
-  DialogTrigger,
-} from "@/components/ui/dialog";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
+import Image from "next/image";
 import {
   Entity,
   EntityKind,
@@ -25,13 +20,15 @@ const MAX_LINES = 2;
 const LINE_HEIGHT = 1.5; // rem
 const MAX_HEIGHT = MAX_LINES * LINE_HEIGHT; // rem
 
-const isGeonamesInfo = (info: any): info is GeonamesLinkingInfo => {
+const isGeonamesInfo = (info: LinkingInfo): info is GeonamesLinkingInfo => {
   return info?.source === "geonames";
 };
 
-const isWikipediaInfo = (info: any): info is WikipediaLinkingInfo => {
+const isWikipediaInfo = (info: LinkingInfo): info is WikipediaLinkingInfo => {
   return info?.source === "wikipedia";
 };
+
+type LinkingInfo = GeonamesLinkingInfo | WikipediaLinkingInfo | AILinkingInfo;
 
 const getIcon = (kind: EntityKind) => {
   switch (kind) {
@@ -46,7 +43,6 @@ const getIcon = (kind: EntityKind) => {
 
 export default function EntityCard({ entity }: EntityCardProps) {
   const [isExpanded, setIsExpanded] = useState(false);
-  const [isModalOpen, setIsModalOpen] = useState(false);
   const contentRef = useRef<HTMLDivElement>(null);
   const [isOverflowing, setIsOverflowing] = useState(false);
   const pathname = usePathname();
@@ -95,7 +91,13 @@ export default function EntityCard({ entity }: EntityCardProps) {
             {aiInfo?.summary && (
               <div className="text-gray-600 text-sm">
                 <p className="flex items-center gap-1">
-                  <img src="/mema.svg" alt="MeMa" className="w-8 h-3" />
+                  <Image 
+                    src="/mema.svg" 
+                    alt="MeMa" 
+                    width={32} 
+                    height={12}
+                    className="w-8 h-3" 
+                  />
                   <span className="italic">{aiInfo.summary}</span>
                 </p>
               </div>
@@ -151,22 +153,20 @@ export default function EntityCard({ entity }: EntityCardProps) {
               </div>
 
               {isOverflowing && (
-                <>
-                  <button
-                    className="w-full text-xs text-blue-600 hover:text-blue-800 flex items-center justify-center gap-0.5 pt-0.5"
-                    onClick={() => setIsExpanded(!isExpanded)}
-                  >
-                    {isExpanded ? (
-                      <>
-                        Show less <ChevronUp className="w-3 h-3" />
-                      </>
-                    ) : (
-                      <>
-                        Dettagli <ChevronDown className="w-3 h-3" />
-                      </>
-                    )}
-                  </button>
-                </>
+                <button
+                  className="w-full text-xs text-blue-600 hover:text-blue-800 flex items-center justify-center gap-0.5 pt-0.5"
+                  onClick={() => setIsExpanded(!isExpanded)}
+                >
+                  {isExpanded ? (
+                    <>
+                      Show less <ChevronUp className="w-3 h-3" />
+                    </>
+                  ) : (
+                    <>
+                      Dettagli <ChevronDown className="w-3 h-3" />
+                    </>
+                  )}
+                </button>
               )}
             </div>
           )}
