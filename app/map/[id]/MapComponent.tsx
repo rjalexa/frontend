@@ -204,7 +204,7 @@ const MapComponent = () => {
       mounted = false;
       cleanupMap(map);
     };
-  }, [article, viewMode, map]);
+  }, [article, viewMode, map, cleanupMap]);
 
   // Cleanup on unmount
   React.useEffect(() => {
