@@ -1,5 +1,6 @@
 'use client';
 import React from 'react';
+import { Map as LeafletMap } from 'leaflet';
 import { ArrowLeft } from 'lucide-react';
 import { useRouter, useParams } from 'next/navigation';
 
@@ -39,7 +40,7 @@ const MapComponent = () => {
   const [loading, setLoading] = React.useState(true);
   const [error, setError] = React.useState<string | null>(null);
   const [viewMode, setViewMode] = React.useState<'single' | 'all'>('single');
-  const [map, setMap] = React.useState<any>(null);
+  const [map, setMap] = React.useState<LeafletMap | null>(null);
 
   // Fetch article data
   React.useEffect(() => {
