@@ -32,9 +32,9 @@ export default function Header() {
   };
 
   return (
-    <div className="w-full">
+    <div className="w-full h-[176px]">
       {/* Header container */}
-      <div className="max-w-6xl mx-auto px-4 py-6">
+      <div className="max-w-6xl mx-auto px-4 py-6 h-[160px]">
         <div className="flex justify-between items-center">
           {/* Menu button on the left */}
           <button
