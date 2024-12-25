@@ -37,6 +37,7 @@ export default function RootLayout({
       </head>
       <body className="antialiased">
         <ThemeProvider defaultTheme="light">
+          <Header />
           <main>
             <Suspense
               fallback={
