@@ -49,9 +49,14 @@ const MapComponent = () => {
 
   const cleanupMap = React.useCallback((mapInstance: LeafletMap | null) => {
     if (mapInstance && isLeafletMap(mapInstance)) {
-      mapInstance.off();
-      mapInstance.remove();
-      setMap(null);
+      try {
+        mapInstance.off();
+        mapInstance.remove();
+      } catch (error) {
+        console.error('Error cleaning up map:', error);
+      } finally {
+        setMap(null);
+      }
     }
   }, []);
 
