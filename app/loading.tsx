@@ -11,7 +11,7 @@ export default function RootLoading() {
         className="animate-pulse"
         priority
       />
-      <div className="text-blue-700 text-lg">Loading...</div>
+      <div className="text-blue-700 text-lg">Loading MeMa...</div>
     </div>
   );
 }
