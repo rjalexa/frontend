@@ -55,6 +55,7 @@ const MapComponent = () => {
       } catch (error) {
         console.error('Error cleaning up map:', error);
       } finally {
+        // Reset map state to allow potential re-initialization
         setMap(null);
       }
     }
