@@ -194,9 +194,11 @@ const MapComponent = () => {
 
     return () => {
       mounted = false;
-      if (isLeafletMap(map)) {
-        map.remove();
-        setMap(null);
+      if (map) {
+        if (isLeafletMap(map)) {
+          map.remove();
+          setMap(null);
+        }
       }
     };
   }, [article, viewMode, map]);
