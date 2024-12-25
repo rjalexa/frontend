@@ -206,9 +206,11 @@ const MapComponent = () => {
   // Cleanup on unmount
   React.useEffect(() => {
     return () => {
-      if (isLeafletMap(map)) {
-        map.remove();
-        setMap(null);
+      if (map) {
+        if (isLeafletMap(map)) {
+          map.remove();
+          setMap(null);
+        }
       }
     };
   }, [map]);
