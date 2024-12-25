@@ -2,8 +2,8 @@
 import React from 'react';
 import Image from 'next/image';
 import { Hash } from "lucide-react";
-import { BasePanelProps } from './types';
-import type { Article } from '@/lib/types';
+import type { BasePanelProps } from '@/types/panel';
+import type { Article } from '@/types/article';
 
 interface TopicsPanelProps extends BasePanelProps {
   article: Article;

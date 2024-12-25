@@ -1,10 +1,11 @@
 "use client";
 
 import React from "react";
-import { HighlightsPanel, TopicsPanel, SummaryPanel } from "./panels";
+import { HighlightsPanel, TopicsPanel, SummaryPanel } from "../panels";
 import { EntitiesPanel } from "@/components/entities/EntitiesPanel";
 import MapPanel from "@/components/maps/MapPanel";
-import type { Article } from "@/lib/types";
+import type { Article } from '@/types/article';
+
 
 interface ArticleContentProps {
   article: Article;
@@ -38,7 +39,7 @@ const ArticleContent = ({
       {/* Header section */}
       <div className="mb-8">
         <h1 className="text-3xl font-bold mb-4 text-gray-900">
-          {article.headline || article.title}
+          {article.title}
         </h1>
 
         {article.articleKicker && (
@@ -80,7 +81,7 @@ const ArticleContent = ({
         <HighlightsPanel
           isOpen={highlightsOpen}
           onClose={() => setHighlightsOpen(false)}
-          articleTitle={article.headline || article.title}
+          articleTitle={article.title}
           highlights={article.highlights || []}
         />
 

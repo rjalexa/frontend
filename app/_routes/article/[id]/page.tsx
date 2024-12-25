@@ -13,9 +13,9 @@ import {
   Globe,
 } from "lucide-react";
 import { useRouter } from "next/navigation";
-import Header from "@/components/Header";
-import ArticleContent from "@/components/article/ArticleContent";
-import type { Article, SortField, SortDirection } from "@/lib/types";
+import type { Article, SortField, SortDirection } from '@/types/article';
+import Header from '@/components/common/Header';
+import ArticleContent from '@/components/article/content/ArticleContent';
 
 export default function ArticlePage({
   params,

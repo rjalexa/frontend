@@ -2,28 +2,29 @@
 import React, { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { ArrowUpDown, Eye } from "lucide-react";
-import Header from '@/components/Header';
+import Header from '@/components/common/Header';
 import { HighlightsPanel } from '@/components/article/panels';
+import type { Article } from '@/types/article';
 
-interface Article {
-  id: string;
-  headline: string;
-  date_created: string;
-  author: string;
-  datePublished: string;
-  slug: string;
-  highlights?: Array<{
-    highlight_text: string;
-    highlight_sequence_number: number;
-  }>;
-  meta_data?: Array<{
-    id: string;
-    kind: "person" | "location" | "organization";
-    label: string;
-  }>;
-}
+// interface Article {
+//   id: string;
+//   headline: string;
+//   date_created: string;
+//   author: string;
+//   datePublished: string;
+//   slug: string;
+//   highlights?: Array<{
+//     highlight_text: string;
+//     highlight_sequence_number: number;
+//   }>;
+//   meta_data?: Array<{
+//     id: string;
+//     kind: "person" | "location" | "organization";
+//     label: string;
+//   }>;
+// }
 
-type SortField = "date_created" | "headline" | "author";
+type SortField = "date_created" | "title" | "author";
 type SortDirection = "asc" | "desc";
 
 const columnMappings = {
@@ -112,17 +113,16 @@ export default function Home() {
 
   const sortedArticles = [...articles].sort((a, b) => {
     const direction = sortDirection === "asc" ? 1 : -1;
-
+  
     if (sortField === "date_created") {
       return (
         direction *
-        (new Date(a.date_created).getTime() -
-          new Date(b.date_created).getTime())
+        (new Date(a.date_created).getTime() - new Date(b.date_created).getTime())
       );
     }
-
-    const aValue = a[sortField].toLowerCase();
-    const bValue = b[sortField].toLowerCase();
+  
+    const aValue = (a[sortField] || '').toLowerCase();
+    const bValue = (b[sortField] || '').toLowerCase();
     return direction * aValue.localeCompare(bValue);
   });
 
@@ -182,7 +182,7 @@ export default function Home() {
                         className="py-2 px-4 cursor-pointer"
                         onClick={() => router.push(`/article/${article.id}`)}
                       >
-                        {article.headline}
+                        {article.title}
                       </td>
                       <td
                         className="py-2 px-4 cursor-pointer"
@@ -225,7 +225,7 @@ export default function Home() {
           <HighlightsPanel
             isOpen={highlightsOpen}
             onClose={handleCloseHighlights}
-            articleTitle={selectedArticle.headline}
+            articleTitle={selectedArticle.title}
             highlights={selectedArticle.highlights || []}
           />
         )}

@@ -2,7 +2,7 @@
 import React from 'react';
 import Image from 'next/image';
 import { Highlighter } from "lucide-react";
-import type { BasePanelProps } from './types';
+import type { BasePanelProps } from '@/types/panel';
 
 interface Highlight {
   highlight_text: string;

@@ -3,13 +3,14 @@ import React, { useState, useRef, useEffect } from "react";
 import { ChevronDown, ChevronUp, MapPin, User, Building } from "lucide-react";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import Image from "next/image";
-import {
-  Entity,
-  EntityKind,
-  WikipediaLinkingInfo,
+import { 
+  Entity, 
+  EntityKind, 
+  LinkingInfo,
   GeonamesLinkingInfo,
-  AILinkingInfo,
-} from "@/lib/types";
+  WikipediaLinkingInfo,
+  AILinkingInfo 
+} from '@/types/entity';
 import { usePathname } from "next/navigation";
 
 interface EntityCardProps {
@@ -27,8 +28,6 @@ const isGeonamesInfo = (info: LinkingInfo): info is GeonamesLinkingInfo => {
 const isWikipediaInfo = (info: LinkingInfo): info is WikipediaLinkingInfo => {
   return info?.source === "wikipedia";
 };
-
-type LinkingInfo = GeonamesLinkingInfo | WikipediaLinkingInfo | AILinkingInfo;
 
 const getIcon = (kind: EntityKind) => {
   switch (kind) {

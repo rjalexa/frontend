@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from "react";
 import { Microscope, MapPin, User, Building } from "lucide-react";
 import Image from "next/image";
-import type { Article, Entity, EntityKind } from '@/lib/types';
+import type { Article, Entity, EntityKind } from '@/types';
 import type { BasePanelProps } from '../article/panels/types';
 import EntityCard from './EntityCard';
 

@@ -2,7 +2,7 @@
 import React from 'react';
 import { FileText } from "lucide-react";
 import Image from 'next/image';
-import type { BasePanelProps } from './types';
+import type { BasePanelProps } from '@/types/panel';
 
 interface SummaryPanelProps extends BasePanelProps {
   summary: string | null;

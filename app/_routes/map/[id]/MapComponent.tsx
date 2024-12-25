@@ -3,36 +3,11 @@ import React from 'react';
 import { Map as LeafletMap } from 'leaflet';
 import { ArrowLeft } from 'lucide-react';
 import { useRouter, useParams } from 'next/navigation';
+import type { Article } from '@/types/article';
 
 // Fix 1: Replace 'any' with a proper type
 function isLeafletMap(map: unknown): map is LeafletMap {
   return map !== null && typeof map === 'object' && 'remove' in map && typeof (map as LeafletMap).remove === 'function';
-}
-
-interface LinkingInfo {
-  lat?: number;
-  lng?: number;
-  title?: string;
-  summary?: string;
-  bbox?: {
-    north: number;
-    south: number;
-    east: number;
-    west: number;
-  };
-}
-
-interface Entity {
-  id: string;
-  kind: string;
-  label: string;
-  linking_info?: LinkingInfo[];
-}
-
-interface Article {
-  id: string;
-  headline: string;
-  meta_data?: Entity[];
 }
 
 const MapComponent = () => {
@@ -246,7 +221,7 @@ const MapComponent = () => {
         {article && (
           <div className="mt-2">
             <h1 className="text-lg font-semibold text-gray-900">
-              {article.headline}
+              {article.title}
             </h1>
             <p className="text-sm text-gray-600">
               {viewMode === 'all' ? 'Showing all locations' : 'Showing selected location'}
