@@ -194,7 +194,7 @@ const MapComponent = () => {
 
     return () => {
       mounted = false;
-      if (map) {
+      if (isLeafletMap(map)) {
         map.remove();
         setMap(null);
       }
