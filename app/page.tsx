@@ -167,7 +167,7 @@ export default function Home() {
                     </button>
                   </th>
                   <th className="py-2 px-4 text-center w-20">
-                    Highlights
+                    Dettagli
                   </th>
                 </tr>
               </thead>
@@ -196,7 +196,7 @@ export default function Home() {
                       <td className="py-2 px-4 text-center">
                         {article.highlights && article.highlights.length > 0 && (
                           <button
-                            onClick={() => handleViewHighlights(article)}
+                            onClick={() => router.push(`/article/${article.id}`)}
                             className="text-blue-600 hover:text-blue-800"
                             title="View Highlights"
                           >
