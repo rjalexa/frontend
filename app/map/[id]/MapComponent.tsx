@@ -47,6 +47,14 @@ const MapComponent = () => {
   const [viewMode, setViewMode] = React.useState<'single' | 'all'>('single');
   const [map, setMap] = React.useState<LeafletMap | null>(null);
 
+  const cleanupMap = React.useCallback((mapInstance: LeafletMap | null) => {
+    if (mapInstance && isLeafletMap(mapInstance)) {
+      mapInstance.off();
+      mapInstance.remove();
+      setMap(null);
+    }
+  }, []);
+
   // Fetch article data
   React.useEffect(() => {
     let mounted = true;
@@ -194,22 +202,14 @@ const MapComponent = () => {
 
     return () => {
       mounted = false;
-      if (map && isLeafletMap(map)) {
-        map.off();
-        map.remove();
-        setMap(null);
-      }
+      cleanupMap(map);
     };
   }, [article, viewMode, map]);
 
   // Cleanup on unmount
   React.useEffect(() => {
     return () => {
-      if (map && isLeafletMap(map)) {
-        map.off();
-        map.remove();
-        setMap(null);
-      }
+      cleanupMap(map);
     };
   }, [map]);
 
