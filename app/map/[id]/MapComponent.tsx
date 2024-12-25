@@ -194,12 +194,10 @@ const MapComponent = () => {
 
     return () => {
       mounted = false;
-      if (map) {
-        if (isLeafletMap(map)) {
-          map.off();
-          map.remove();
-          setMap(null);
-        }
+      if (map && isLeafletMap(map)) {
+        map.off();
+        map.remove();
+        setMap(null);
       }
     };
   }, [article, viewMode, map]);
@@ -207,12 +205,10 @@ const MapComponent = () => {
   // Cleanup on unmount
   React.useEffect(() => {
     return () => {
-      if (map) {
-        if (isLeafletMap(map)) {
-          map.off();
-          map.remove();
-          setMap(null);
-        }
+      if (map && isLeafletMap(map)) {
+        map.off();
+        map.remove();
+        setMap(null);
       }
     };
   }, [map]);
