@@ -206,7 +206,7 @@ const MapComponent = () => {
     };
   }, [article, viewMode, map, cleanupMap]);
 
-  // Cleanup on unmount
+  // Cleanup map instance and event listeners on component unmount
   React.useEffect(() => {
     return () => {
       cleanupMap(map);
