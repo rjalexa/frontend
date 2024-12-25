@@ -21,6 +21,7 @@ export default function MapPage({
   params,
 }: {
   params: { id: string };
+  searchParams?: { [key: string]: string | string[] | undefined };
 }) {
   return (
     <NoSSR>
