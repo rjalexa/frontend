@@ -56,7 +56,7 @@ const MapComponent = () => {
   }, []);
 
   // Fetch article data
-  React.useEffect(() => {
+  React.useEffect(function initializeMapEffect() {
     let mounted = true;
 
     const fetchArticle = async () => {
