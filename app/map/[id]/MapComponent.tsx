@@ -190,8 +190,8 @@ const MapComponent = () => {
 
     return () => {
       mounted = false;
-      if (map instanceof L.Map) {
-        map.remove();
+      if (map) {
+        (map as LeafletMap).remove();
         setMap(null);
       }
     };
@@ -200,8 +200,8 @@ const MapComponent = () => {
   // Cleanup on unmount
   React.useEffect(() => {
     return () => {
-      if (map instanceof L.Map) {
-        map.remove();
+      if (map) {
+        (map as LeafletMap).remove();
         setMap(null);
       }
     };
