@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
 import Image from "next/image";
 import {
   ArrowLeft,
@@ -12,10 +13,9 @@ import {
   Hash,
   Globe,
 } from "lucide-react";
-import { useRouter } from "next/navigation";
-import type { Article, SortField, SortDirection } from '@/types/article';
-import Header from '@/components/common/Header';
-import ArticleContent from '@/components/article/content/ArticleContent';
+import type { Article, SortField, SortDirection } from "@/types/article";
+import Header from "@/components/common/Header";
+import ArticleContent from "@/components/article/content/ArticleContent";
 
 export default function ArticlePage({
   params,
@@ -28,13 +28,9 @@ export default function ArticlePage({
   const [allArticles, setAllArticles] = useState<Article[]>([]);
   const [currentIndex, setCurrentIndex] = useState<number>(-1);
 
-  // Sort states - removed unused setters but keeping the state for future use
-  const [sortField] = useState<SortField>(
-    () => (localStorage.getItem("sortField") as SortField) || "date_created"
-  );
-  const [sortDirection] = useState<SortDirection>(
-    () => (localStorage.getItem("sortDirection") as SortDirection) || "desc"
-  );
+  // Move localStorage access for sortField / sortDirection into a useEffect
+  const [sortField, setSortField] = useState<SortField>("date_created");
+  const [sortDirection, setSortDirection] = useState<SortDirection>("desc");
 
   // Panel states
   const [highlightsOpen, setHighlightsOpen] = useState(
@@ -56,8 +52,18 @@ export default function ArticlePage({
   );
   const [mapOpen, setMapOpen] = useState(false);
 
-  const resolvedParams = React.use(params);
-  const articleId = resolvedParams.id;
+  // Access localStorage after component mounts
+  useEffect(() => {
+    const savedSortField = localStorage.getItem("sortField") as SortField;
+    const savedSortDirection = localStorage.getItem("sortDirection") as SortDirection;
+
+    if (savedSortField) {
+      setSortField(savedSortField);
+    }
+    if (savedSortDirection) {
+      setSortDirection(savedSortDirection);
+    }
+  }, []);
 
   // Persist panel states to localStorage
   useEffect(() => {
@@ -80,6 +86,9 @@ export default function ArticlePage({
     localStorage.setItem("desiredMapState", String(desiredMapState));
   }, [desiredMapState]);
 
+  const resolvedParams = React.use(params);
+  const articleId = resolvedParams.id;
+
   // Fetch articles
   useEffect(() => {
     const fetchArticles = async () => {
@@ -87,6 +96,7 @@ export default function ArticlePage({
         const response = await fetch("/api/files");
         let articles: Article[] = await response.json();
 
+        // Sort based on sortField/sortDirection
         articles = [...articles].sort((a, b) => {
           const direction = sortDirection === "asc" ? 1 : -1;
           if (sortField === "date_created") {
@@ -250,9 +260,7 @@ export default function ArticlePage({
                 Punti salienti
               </button>
 
-              {article.meta_data?.some(
-                (entity) => entity.kind === "location"
-              ) && (
+              {article.meta_data?.some((entity) => entity.kind === "location") && (
                 <button
                   onClick={handleMapToggle}
                   className={`px-6 py-2 rounded-full transition-colors flex items-center gap-2 ${
