@@ -1,4 +1,3 @@
-// File: /app/map/[id]/page.tsx
 'use client'
 import { type ReactNode } from 'react';
 import dynamic from 'next/dynamic';
@@ -6,11 +5,9 @@ import dynamic from 'next/dynamic';
 // Create a NoSSR wrapper component with proper typing
 const NoSSR = ({ children }: { children: ReactNode }) => <>{children}</>;
 
-// Define the props interface for MapComponent
+// Define the props interface for the MapComponent
 interface MapComponentProps {
-  params: {
-    id: string;
-  }
+  id: string;
 }
 
 // Create the client-side only Map component with proper typing
@@ -19,7 +16,7 @@ const MapComponent = dynamic<MapComponentProps>(() => import('./MapComponent'), 
   loading: () => <div className="flex-1 bg-gray-100" />
 });
 
-// Main page component
+// Main page component with Next.js page props typing
 export default function MapPage({
   params,
 }: {
@@ -27,7 +24,7 @@ export default function MapPage({
 }) {
   return (
     <NoSSR>
-      <MapComponent params={{ id: params.id }} />
+      <MapComponent id={params.id} />
     </NoSSR>
   );
 }
