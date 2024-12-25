@@ -20,18 +20,14 @@ const MapComponent = dynamic<MapComponentProps>(() => import('./MapComponent'), 
 });
 
 // Main page component
-export default async function MapPage({
+export default function MapPage({
   params,
-  searchParams,
 }: {
-  params: Promise<{ id: string }>;
-  searchParams?: Promise<{ [key: string]: string | string[] | undefined }>;
+  params: { id: string };
 }) {
-  const resolvedParams = await params;
-  
   return (
     <NoSSR>
-      <MapComponent params={{ id: resolvedParams.id }} />
+      <MapComponent params={{ id: params.id }} />
     </NoSSR>
   );
 }

@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
+import Image from "next/image";
 import {
   ArrowLeft,
   ArrowUp,
@@ -27,11 +28,11 @@ export default function ArticlePage({
   const [allArticles, setAllArticles] = useState<Article[]>([]);
   const [currentIndex, setCurrentIndex] = useState<number>(-1);
 
-  // Sort states
-  const [sortField, setSortField] = useState<SortField>(
+  // Sort states - removed unused setters but keeping the state for future use
+  const [sortField] = useState<SortField>(
     () => (localStorage.getItem("sortField") as SortField) || "date_created"
   );
-  const [sortDirection, setSortDirection] = useState<SortDirection>(
+  const [sortDirection] = useState<SortDirection>(
     () => (localStorage.getItem("sortDirection") as SortDirection) || "desc"
   );
 
@@ -205,7 +206,13 @@ export default function ArticlePage({
 
           {/* MeMa logo and button controls */}
           <div className="flex items-center gap-4 mb-8">
-            <img src="/mema.svg" alt="MeMa Logo" className="w-16 h-6" />
+            <Image
+              src="/mema.svg"
+              alt="MeMa Logo"
+              width={64}
+              height={24}
+              className="w-16 h-6"
+            />
             <div className="flex items-center gap-4">
               <button
                 onClick={handleTopicsToggle}

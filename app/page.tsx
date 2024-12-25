@@ -1,7 +1,7 @@
 "use client";
 import React, { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { ArrowUpDown } from "lucide-react";
+import { ArrowUpDown, Eye } from "lucide-react";
 import Header from '@/components/Header';
 import { HighlightsPanel } from '@/components/article/panels';
 
@@ -26,7 +26,6 @@ interface Article {
 type SortField = "date_created" | "headline" | "author";
 type SortDirection = "asc" | "desc";
 
-// Mapping between display names and field names
 const columnMappings = {
   "Titolo": "headline",
   "Data": "date_created",
@@ -170,6 +169,9 @@ export default function Home() {
                       <ArrowUpDown className="h-4 w-4" />
                     </button>
                   </th>
+                  <th className="py-2 px-4 text-center w-20">
+                    Highlights
+                  </th>
                 </tr>
               </thead>
               <tbody>
@@ -194,11 +196,22 @@ export default function Home() {
                       >
                         {article.author}
                       </td>
+                      <td className="py-2 px-4 text-center">
+                        {article.highlights && article.highlights.length > 0 && (
+                          <button
+                            onClick={() => handleViewHighlights(article)}
+                            className="text-blue-600 hover:text-blue-800"
+                            title="View Highlights"
+                          >
+                            <Eye className="h-4 w-4 mx-auto" />
+                          </button>
+                        )}
+                      </td>
                     </tr>
                   ))
                 ) : (
                   <tr>
-                    <td colSpan={3} className="py-4 text-center text-gray-600">
+                    <td colSpan={4} className="py-4 text-center text-gray-600">
                       No articles found.
                     </td>
                   </tr>

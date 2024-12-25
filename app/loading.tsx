@@ -1,6 +1,4 @@
-// app/loading.tsx
 import Image from 'next/image';
-import { Globe } from 'lucide-react';
 
 export default function RootLoading() {
   return (

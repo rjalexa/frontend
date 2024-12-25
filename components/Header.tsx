@@ -1,6 +1,7 @@
 "use client";
 import { Menu } from "lucide-react";
 import { useEffect } from "react";
+import Image from 'next/image';
 
 // Moving this outside the component to ensure it's evaluated at runtime
 const getMemaStatsUrl = () => {
@@ -47,11 +48,21 @@ export default function Header() {
 
           {/* Logo in the center */}
           <div className="flex flex-col items-center">
-            <img src="/manifesto_logo.svg" alt="il manifesto" className="h-8" />
+            <Image
+              src="/manifesto_logo.svg"
+              alt="il manifesto"
+              width={32}
+              height={32}
+              className="h-8 w-auto"
+              priority
+            />
           </div>
 
           {/* User icon on the right */}
-          <button className="p-2 hover:bg-gray-100 rounded-lg">
+          <button 
+            className="p-2 hover:bg-gray-100 rounded-lg"
+            aria-label="User menu"
+          >
             <svg className="h-6 w-6 text-gray-700" viewBox="0 0 24 24" fill="none" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
             </svg>
