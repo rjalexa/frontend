@@ -1,6 +1,7 @@
 'use client';
 import React from 'react';
 import { Map as LeafletMap } from 'leaflet';
+import L from 'leaflet';
 import { ArrowLeft } from 'lucide-react';
 import { useRouter, useParams } from 'next/navigation';
 
@@ -189,7 +190,7 @@ const MapComponent = () => {
 
     return () => {
       mounted = false;
-      if (map) {
+      if (map instanceof L.Map) {
         map.remove();
         setMap(null);
       }
@@ -199,7 +200,7 @@ const MapComponent = () => {
   // Cleanup on unmount
   React.useEffect(() => {
     return () => {
-      if (map) {
+      if (map instanceof L.Map) {
         map.remove();
         setMap(null);
       }
