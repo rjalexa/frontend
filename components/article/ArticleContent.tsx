@@ -92,7 +92,6 @@ const ArticleContent = ({
 
         <EntitiesPanel
           isOpen={entitiesOpen}
-          onClose={() => setEntitiesOpen(false)}
           article={article}
         />
       </div>
