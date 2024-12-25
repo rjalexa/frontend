@@ -14,7 +14,6 @@ import {
   Globe,
 } from "lucide-react";
 import type { Article, SortField, SortDirection } from "@/types/article";
-import Header from "@/components/common/Header";
 import ArticleContent from "@/components/article/content/ArticleContent";
 
 export default function ArticlePage({
@@ -175,8 +174,6 @@ export default function ArticlePage({
 
   return (
     <div className="bg-white min-h-screen">
-      <Header />
-
       <main className="px-8">
         <div className="mx-auto">
           {/* Navigation buttons */}
