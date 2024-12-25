@@ -3,7 +3,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import { Globe } from 'lucide-react';
 import type { Map as LeafletMap, MapOptions } from 'leaflet';
 import type { Article } from '@/types/article';
-import type {WikipediaLinkingInfo, GeonamesLinkingInfo } from '@/lib/types';
+import type {WikipediaLinkingInfo, GeonamesLinkingInfo } from '@/types';
 import Image from 'next/image';
 import 'leaflet/dist/leaflet.css';
 

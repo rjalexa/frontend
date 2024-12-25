@@ -4,11 +4,19 @@ import { Map as LeafletMap } from 'leaflet';
 import { ArrowLeft } from 'lucide-react';
 import { useRouter, useParams } from 'next/navigation';
 import type { Article } from '@/types/article';
+import type { GeonamesLinkingInfo, WikipediaLinkingInfo, LinkingInfo } from '@/types/entity';
 
-// Fix 1: Replace 'any' with a proper type
 function isLeafletMap(map: unknown): map is LeafletMap {
   return map !== null && typeof map === 'object' && 'remove' in map && typeof (map as LeafletMap).remove === 'function';
 }
+
+const isGeonamesInfo = (info: LinkingInfo): info is GeonamesLinkingInfo => {
+  return info?.source === "geonames";
+};
+
+const isWikipediaInfo = (info: LinkingInfo): info is WikipediaLinkingInfo => {
+  return info?.source === "wikipedia";
+};
 
 const MapComponent = () => {
   const router = useRouter();
@@ -89,7 +97,6 @@ const MapComponent = () => {
         const L = (await import('leaflet')).default;
         await import('leaflet/dist/leaflet.css');
 
-        // Fix the IconOptions type
         const iconOptions: L.IconOptions = {
           iconRetinaUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon-2x.png',
           iconUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon.png',
@@ -137,17 +144,23 @@ const MapComponent = () => {
           }
         } else {
           const locations = article.meta_data
-            ?.filter(entity => 
-              entity.kind === 'location' && 
-              entity.linking_info?.[1]?.lat && 
-              entity.linking_info?.[1]?.lng
-            )
-            .map(entity => ({
-              label: entity.label,
-              lat: entity.linking_info![1].lat!,
-              lng: entity.linking_info![1].lng!,
-              summary: entity.linking_info![0]?.summary
-            })) || [];
+            ?.filter(entity => {
+              const geoInfo = entity.linking_info?.find(isGeonamesInfo);
+              return entity.kind === 'location' && 
+                geoInfo?.lat !== undefined && 
+                geoInfo?.lng !== undefined;
+            })
+            .map(entity => {
+              const geoInfo = entity.linking_info?.find(isGeonamesInfo);
+              const wikiInfo = entity.linking_info?.find(isWikipediaInfo);
+              
+              return {
+                label: entity.label,
+                lat: geoInfo!.lat,
+                lng: geoInfo!.lng,
+                summary: wikiInfo?.summary
+              };
+            }) || [];
 
           if (locations.length > 0) {
             const bounds = L.latLngBounds(locations.map(loc => [loc.lat, loc.lng]));
