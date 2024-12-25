@@ -2,7 +2,6 @@
 import React, { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { ArrowUpDown, Eye } from "lucide-react";
-import Header from '@/components/common/Header';
 import { HighlightsPanel } from '@/components/article/panels';
 import type { Article } from '@/types/article';
 
@@ -132,8 +131,6 @@ export default function Home() {
 
   return (
     <div className="bg-white min-h-screen">
-      <Header />
-      
       <div className="p-4">
         <div className="max-w-6xl mx-auto">
           <h1 className="text-2xl font-bold mb-4 text-gray-800">Articoli selezionati</h1>
