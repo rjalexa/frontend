@@ -5,6 +5,10 @@ import L from 'leaflet';
 import { ArrowLeft } from 'lucide-react';
 import { useRouter, useParams } from 'next/navigation';
 
+function isLeafletMap(map: any): map is LeafletMap {
+  return map && typeof map.remove === 'function';
+}
+
 interface LinkingInfo {
   lat?: number;
   lng?: number;
