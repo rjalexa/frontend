@@ -51,7 +51,7 @@ export async function GET() {
               title: article.headline, // Map headline to title
               datePublished: article.date_created,
               slug: generateSlug(article.headline),
-              meta_data: article.meta_data.map(convertMetaDataToEntity), // Convert meta_data items
+              meta_data: article.meta_data?.map(convertMetaDataToEntity) || [], // Convert meta_data items if it exists
               highlights: article.mema_highlights?.map((text: string, index: number) => ({
                 highlight_text: text,
                 highlight_sequence_number: index + 1
