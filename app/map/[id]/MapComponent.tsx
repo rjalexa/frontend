@@ -94,7 +94,7 @@ const MapComponent = () => {
 
     fetchArticle();
 
-    return () => {
+    return function cleanupEffect() {
       mounted = false;
     };
   }, [articleId]);
