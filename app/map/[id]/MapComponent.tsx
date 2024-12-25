@@ -197,6 +197,7 @@ const MapComponent = () => {
       if (map) {
         if (isLeafletMap(map)) {
           map.remove();
+          map.off();
           setMap(null);
         }
       }
@@ -209,6 +210,7 @@ const MapComponent = () => {
       if (map) {
         if (isLeafletMap(map)) {
           map.remove();
+          map.off();
           setMap(null);
         }
       }
