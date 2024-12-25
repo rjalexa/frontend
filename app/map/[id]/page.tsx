@@ -16,12 +16,11 @@ const MapComponent = dynamic<MapComponentProps>(() => import('./MapComponent'), 
   loading: () => <div className="flex-1 bg-gray-100" />
 });
 
-// Main page component with Next.js page props typing
+// Main page component
 export default function MapPage({
   params,
 }: {
-  params: { id: string };
-  searchParams?: { [key: string]: string | string[] | undefined };
+  params: { id: string }
 }) {
   return (
     <NoSSR>
