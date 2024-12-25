@@ -3,6 +3,7 @@ import type { Metadata } from "next";
 import { Inter as FontSans } from "next/font/google";
 import { ThemeProvider } from "./providers/theme-provider";
 import { Suspense } from "react";
+import Header from "@/components/common/Header";
 import "./globals.css";
 
 // Load the Inter font
@@ -36,17 +37,20 @@ export default function RootLayout({
       </head>
       <body className="antialiased">
         <ThemeProvider defaultTheme="light">
-          <Suspense
-            fallback={
-              <div className="min-h-screen flex flex-col items-center justify-center">
-                <div className="animate-pulse text-blue-700 text-lg">
-                  Loading MeMa...
+          <Header />
+          <main>
+            <Suspense
+              fallback={
+                <div className="min-h-[calc(100vh-176px)] flex flex-col items-center justify-center">
+                  <div className="animate-pulse text-blue-700 text-lg">
+                    Loading MeMa...
+                  </div>
                 </div>
-              </div>
-            }
-          >
-            {children}
-          </Suspense>
+              }
+            >
+              {children}
+            </Suspense>
+          </main>
         </ThemeProvider>
       </body>
     </html>

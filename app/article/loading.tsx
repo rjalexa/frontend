@@ -1,7 +1,7 @@
 // app/article/loading.tsx
 export default function ArticleLoading() {
   return (
-    <div className="container mx-auto p-4">
+    <div className="container mx-auto p-4 mt-4">
       <div className="space-y-4">
         {/* Header placeholder */}
         <div className="h-8 bg-gray-200 rounded animate-pulse w-3/4" />
