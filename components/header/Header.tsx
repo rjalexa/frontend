@@ -1,7 +1,6 @@
 // components/header/Header.tsx
 "use client";
 import { Menu } from "lucide-react";
-import { useEffect } from "react";
 import Image from "next/image";
 
 export default function Header() {
