@@ -12,7 +12,7 @@ export function cn(...inputs: ClassValue[]) {
  * @param {string} slug - The article's slug.
  * @returns {string} The formatted article ID.
  */
-export function generateArticleId(datePublished: string, slug: string): string {
-  const datePart = datePublished.slice(0, 10); // Extract YYYY-MM-DD from ISO date.
-  return `${datePart}-${slug}`; // Combine date and slug with a hyphen.
-}
+// export function generateArticleId(datePublished: string, slug: string): string {
+//   const datePart = datePublished.slice(0, 10); // Extract YYYY-MM-DD from ISO date.
+//   return `${datePart}-${slug}`; // Combine date and slug with a hyphen.
+// }
