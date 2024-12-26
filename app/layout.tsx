@@ -2,6 +2,7 @@
 import type { Metadata } from "next";
 import { Inter as FontSans } from "next/font/google";
 import { ThemeProvider } from "./providers/theme-provider";
+import { NavigationProvider } from "./providers/navigation-provider";
 import { Suspense } from "react";
 import Header from "@/components/header/Header";
 import "./globals.css";
@@ -24,10 +25,6 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" className={fontSans.variable}>
-      {/* 
-        In the App Router, you can directly place <head> inside your layout.
-        This <link> ensures your mema.svg is preloaded as an image.
-      */}
       <head>
         <link
           rel="preload"
@@ -37,20 +34,16 @@ export default function RootLayout({
       </head>
       <body className="antialiased">
         <ThemeProvider defaultTheme="light">
-          <Header />
-          <main>
-            <Suspense
-              fallback={
-                <div className="min-h-[calc(100vh-176px)] flex flex-col items-center justify-center">
-                  <div className="animate-pulse text-blue-700 text-lg">
-                    Loading MeMa...
-                  </div>
-                </div>
-              }
-            >
-              {children}
-            </Suspense>
-          </main>
+          <NavigationProvider>
+            <Header />
+            <main>
+              <Suspense fallback={<div className="min-h-[calc(100vh-176px)] flex flex-col items-center justify-center">
+                <div className="animate-pulse text-blue-700 text-lg">Loading MeMa...</div>
+              </div>}>
+                {children}
+              </Suspense>
+            </main>
+          </NavigationProvider>
         </ThemeProvider>
       </body>
     </html>

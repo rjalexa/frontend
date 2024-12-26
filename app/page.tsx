@@ -1,4 +1,3 @@
-// app/page.tsx
 "use client";
 import React, { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
@@ -18,54 +17,43 @@ type DisplayName = keyof typeof columnMappings;
 
 export default function Home() {
   const router = useRouter();
-  const [mounted, setMounted] = useState(false);
   const [articles, setArticles] = useState<Article[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [sortField, setSortField] = useState<SortField>(() => {
-    if (typeof window === 'undefined') return "date_created";
-    const params = new URLSearchParams(window.location.search);
-    const fieldParam = params.get('sortField');
-    return (fieldParam as SortField) || localStorage.getItem('sortField') as SortField || "date_created";
-  });
-  
-  const [sortDirection, setSortDirection] = useState<SortDirection>(() => {
-    if (typeof window === 'undefined') return "desc";
-    const params = new URLSearchParams(window.location.search);
-    const directionParam = params.get('sortDirection');
-    return (directionParam as SortDirection) || localStorage.getItem('sortDirection') as SortDirection || "desc";
-  });
+  const [sortField, setSortField] = useState<SortField>("date_created");
+  const [sortDirection, setSortDirection] = useState<SortDirection>("desc");
 
   useEffect(() => {
-    setMounted(true);
-  }, []);
+    // Initialize sort state from URL or localStorage
+    const params = new URLSearchParams(window.location.search);
+    const savedField = params.get('sortField') || localStorage.getItem('sortField');
+    const savedDirection = params.get('sortDirection') || localStorage.getItem('sortDirection');
 
-  useEffect(() => {
+    if (savedField) setSortField(savedField as SortField);
+    if (savedDirection) setSortDirection(savedDirection as SortDirection);
+
+    // Fetch articles
     const fetchArticles = async () => {
       try {
         const response = await fetch("/api/files");
-        if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`);
-        }
+        if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
         const data = await response.json();
         setArticles(data || []);
       } catch (err) {
-        console.error("Error fetching articles:", err);
         setError(err instanceof Error ? err.message : "An error occurred");
       } finally {
         setLoading(false);
       }
     };
 
-    if (mounted) {
-      fetchArticles();
-    }
-  }, [mounted]);
+    fetchArticles();
+  }, []);
 
   const handleSort = (displayName: DisplayName) => {
     const field = columnMappings[displayName] as SortField;
+    const newDirection: SortDirection = field === sortField && sortDirection === "asc" ? "desc" : "asc";
+    
     if (field === sortField) {
-      const newDirection = sortDirection === "asc" ? "desc" : "asc";
       setSortDirection(newDirection);
       localStorage.setItem('sortDirection', newDirection);
     } else {
@@ -78,20 +66,14 @@ export default function Home() {
 
   const sortedArticles = [...articles].sort((a, b) => {
     const direction = sortDirection === "asc" ? 1 : -1;
-  
     if (sortField === "date_created") {
-      return (
-        direction *
-        (new Date(a.date_created).getTime() - new Date(b.date_created).getTime())
-      );
+      return direction * (new Date(a.date_created).getTime() - new Date(b.date_created).getTime());
     }
-  
     const aValue = (a[sortField] || '').toLowerCase();
     const bValue = (b[sortField] || '').toLowerCase();
     return direction * aValue.localeCompare(bValue);
   });
 
-  if (!mounted) return null;
   if (error) return <div className="p-4 text-red-600">Error: {error}</div>;
   if (loading) return <div className="p-4 text-gray-900">Loading...</div>;
 
@@ -151,7 +133,7 @@ export default function Home() {
                         className="py-2 px-4 cursor-pointer"
                         onClick={() => router.push(`/article/${article.id}`)}
                       >
-                        {mounted ? article.date_created.slice(0, 10) : ""}
+                        {article.date_created.slice(0, 10)}
                       </td>
                       <td
                         className="py-2 px-4 cursor-pointer"

@@ -1,26 +1,43 @@
 // components/header/Header.tsx
-"use client";
-import { Menu } from "lucide-react";
-import Image from "next/image";
+'use client'
+import { Menu, X } from 'lucide-react'
+import Image from 'next/image'
+import Link from 'next/link'
+import { useRouter } from 'next/navigation'
+import { useNavigation } from '@/app/providers/navigation-provider'
 
 export default function Header() {
+  const { isMenuOpen, setMenuOpen } = useNavigation()
+  const router = useRouter()
+  
+  const handleArticlesClick = (e: React.MouseEvent) => {
+    e.preventDefault()
+    const lastArticle = localStorage.getItem('lastViewedArticle')
+    setMenuOpen(false)
+    if (lastArticle && window.location.pathname === '/statistics') {
+      router.push(`/article/${lastArticle}`)
+    } else {
+      router.push('/')
+    }
+  }
 
   return (
     <div className="w-full">
-      {/* Header container */}
       <div className="max-w-6xl mx-auto px-4 py-4">
         <div className="flex justify-between items-center">
-          {/* Menu button on the left */}
           <button
             type="button"
-            disabled
-            className="p-2 cursor-not-allowed opacity-50"
-            aria-label="Menu (disabled)"
+            onClick={() => setMenuOpen(!isMenuOpen)}
+            className="p-2"
+            aria-label="Menu"
           >
-            <Menu className="h-6 w-6 text-gray-700" />
+            {isMenuOpen ? (
+              <X className="h-6 w-6 text-gray-700" />
+            ) : (
+              <Menu className="h-6 w-6 text-gray-700" />
+            )}
           </button>
 
-          {/* Logo in the center */}
           <div className="flex flex-col items-center">
             <Image
               src="/manifesto_logo.svg"
@@ -31,7 +48,6 @@ export default function Header() {
             />
           </div>
 
-          {/* User icon on the right */}
           <button
             type="button"
             disabled
@@ -53,13 +69,34 @@ export default function Header() {
             </svg>
           </button>
         </div>
+
+        {/* Navigation Menu */}
+        {isMenuOpen && (
+          <nav className="absolute left-0 w-64 bg-white shadow-lg z-50 mt-2">
+            <div className="py-2">
+              <a
+                href="#"
+                className="block px-4 py-2 text-gray-800 hover:bg-gray-100"
+                onClick={handleArticlesClick}
+              >
+                Articoli
+              </a>
+              <Link
+                href="/statistics"
+                className="block px-4 py-2 text-gray-800 hover:bg-gray-100"
+                onClick={() => setMenuOpen(false)}
+              >
+                Statistiche
+              </Link>
+            </div>
+          </nav>
+        )}
       </div>
 
-      {/* Bottom border and red bar combined */}
       <div>
         <div className="border-b border-gray-200" />
         <div className="h-2 bg-red-600" />
       </div>
     </div>
-  );
+  )
 }

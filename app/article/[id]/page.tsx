@@ -27,8 +27,6 @@ export default function ArticlePage({
   const [loading, setLoading] = useState(true);
   const [allArticles, setAllArticles] = useState<Article[]>([]);
   const [currentIndex, setCurrentIndex] = useState<number>(-1);
-
-  // Move localStorage access for sortField / sortDirection into a useEffect
   const [sortField, setSortField] = useState<SortField>("date_created");
   const [sortDirection, setSortDirection] = useState<SortDirection>("desc");
 
@@ -88,6 +86,11 @@ export default function ArticlePage({
 
   const resolvedParams = React.use(params);
   const articleId = resolvedParams.id;
+
+  // Save current article ID for navigation
+  useEffect(() => {
+    localStorage.setItem('lastViewedArticle', articleId);
+  }, [articleId]);
 
   // Fetch articles
   useEffect(() => {
