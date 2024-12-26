@@ -122,7 +122,8 @@ export async function executeSparqlQuery(queryId: QueryId): Promise<SparqlRespon
     throw new Error('SPARQL endpoint not configured');
   }
 
-  const headersList = headers();
+  const headersList = await headers();
+  const host = headersList.get('host');
 
   const response = await fetch(endpoint, {
     method: 'POST',
@@ -130,10 +131,11 @@ export async function executeSparqlQuery(queryId: QueryId): Promise<SparqlRespon
       'Accept': 'application/sparql-results+json',
       'Content-Type': 'application/sparql-query',
       'Host': new URL(endpoint).host,
-      'X-Forwarded-Host': headersList.get('host') || '',
+      'X-Forwarded-Host': host || '',
       'X-Forwarded-Proto': 'https'
     },
     body: query,
+    cache: 'no-store'  // Ensures fresh data
   });
 
   if (!response.ok) {
