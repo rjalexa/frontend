@@ -297,6 +297,7 @@ export default function ArticlePage({
               setTopicsOpen={setTopicsOpen}
               mapOpen={mapOpen}
               setMapOpen={setMapOpen}
+              setDesiredMapState={setDesiredMapState}
               entitiesOpen={entitiesOpen}
               setEntitiesOpen={setEntitiesOpen}
             />
