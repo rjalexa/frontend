@@ -1,3 +1,4 @@
+// app/api/files/route.ts
 import { readdir, readFile } from 'fs/promises'
 import path from 'path'
 import { NextResponse } from 'next/server'

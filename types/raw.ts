@@ -1,3 +1,4 @@
+// types/raw.ts
 import type { MetaDataItem } from './entity';
 
 export interface RawArticle {

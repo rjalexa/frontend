@@ -1,3 +1,4 @@
+// components/article/content/ArticleContent.tsx
 import React from "react";
 import {
   HighlightsPanel,

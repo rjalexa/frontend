@@ -1,3 +1,4 @@
+// types/panel.ts
 export interface BasePanelProps {
   isOpen: boolean;
   onClose: () => void;

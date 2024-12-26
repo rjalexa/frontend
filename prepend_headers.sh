@@ -4,36 +4,61 @@
 #   ./prepend_headers.sh [project_root]
 #
 # If [project_root] is omitted, the current directory (.) is used.
-# This script:
-#  1) Recursively searches for all files under [project_root], excluding .git & node_modules.
-#  2) Determines an appropriate comment style based on file extension.
-#  3) Checks the file's first line; if it isn't the expected relative-path comment, it prepends it.
 #
-# MacOS NOTES:
-#  - No native realpath
-#  - BSD sed usage: sed -i '' -e "s/old/new/" file
+# The script:
+#  1) Recursively searches for all files under [project_root], excluding .git, node_modules, and .next.
+#  2) Skips any file not recognized as "text/" by `file --mime-type`.
+#  3) Skips package.json specifically, since true JSON does not allow comments.
+#  4) Determines an appropriate comment style based on file extension (including Dockerfile and .mjs).
+#  5) Prepends a single comment line with the file's relative path if the file doesn't already have it.
+#
+# MacOS specifics:
+#  - We exclude .next (build artifacts).
+#  - We rely on python3 to compute relative paths (instead of realpath --relative-to).
+#  - We use LC_CTYPE=C LANG=C with sed to avoid "illegal byte sequence" issues.
 
 BASE_DIR="${1:-.}"
 
 # -----------------------------------------------------------------------------
-# Function: get_relative_path
-# Description: Returns the relative path of the first argument to the second (base) argument using Python.
+# 1) Check if a file is text, skipping binary files.
+# -----------------------------------------------------------------------------
+is_text_file() {
+  local f="$1"
+  local mimetype
+  mimetype="$(file --mime-type -b "$f" 2>/dev/null)"
+  if echo "$mimetype" | grep -qi '^text/'; then
+    return 0  # It's a recognized text file
+  else
+    return 1  # Not recognized as text
+  fi
+}
+
+# -----------------------------------------------------------------------------
+# 2) Compute relative path using Python (works on macOS).
 # -----------------------------------------------------------------------------
 get_relative_path() {
   local target="$1"
   local base="$2"
-  # We'll rely on Python's os.path.relpath to get the relative path
-  python3 -c "import os,sys; print(os.path.relpath('$target', '$base'))"
+  python3 -c "import os; print(os.path.relpath('$target', '$base'))"
 }
 
 # -----------------------------------------------------------------------------
-# Function: get_comment_style
-# Description: Returns the appropriate comment style (start symbol) for a given file extension.
+# 3) Determine the comment style start symbol.
 # -----------------------------------------------------------------------------
 get_comment_style() {
-  local ext="$1"
+  local full_filename="$1"
+  local filename
+  filename="$(basename "$full_filename")"
+  local ext="${filename##*.}"
+
+  # Special-case Dockerfile (no extension).
+  if [[ "$filename" == "Dockerfile" ]]; then
+    echo "#"
+    return
+  fi
+
   case "$ext" in
-    ts|tsx|js|jsx|json )
+    ts|tsx|js|jsx|json|mjs )
       echo "//"
       ;;
     css|scss )
@@ -46,18 +71,21 @@ get_comment_style() {
       echo "#"
       ;;
     *)
-      # Default comment style
+      # Default fallback to '#'
       echo "#"
       ;;
   esac
 }
 
 # -----------------------------------------------------------------------------
-# Function: get_comment_ending_style
-# Description: Returns the appropriate comment style (end symbol) for a given file extension.
+# 4) Determine the comment style end symbol.
 # -----------------------------------------------------------------------------
 get_comment_ending_style() {
-  local ext="$1"
+  local full_filename="$1"
+  local filename
+  filename="$(basename "$full_filename")"
+  local ext="${filename##*.}"
+
   case "$ext" in
     css|scss )
       echo " */"
@@ -69,36 +97,40 @@ get_comment_ending_style() {
 }
 
 # -----------------------------------------------------------------------------
-# Main logic
+# 5) Main logic
 # -----------------------------------------------------------------------------
 while IFS= read -r -d '' file; do
-  # Make sure it's not a directory (though find -type f ensures they're files).
-  if [[ -d "$file" ]]; then
+  # Skip binary (non-text) files
+  if ! is_text_file "$file"; then
     continue
   fi
 
-  # Extract the file extension (anything after last dot).
-  ext="${file##*.}"
+  # Skip package.json because valid package.json must have no comments.
+  if [[ "$(basename "$file")" == "package.json" ]]; then
+    continue
+  fi
 
-  # Determine comment style.
-  comment_start="$(get_comment_style "$ext")"
-  comment_end="$(get_comment_ending_style "$ext")"
-
-  # Build the expected header line using relative path to BASE_DIR.
+  comment_start="$(get_comment_style "$file")"
+  comment_end="$(get_comment_ending_style "$file")"
   rel_path="$(get_relative_path "$file" "$BASE_DIR")"
   expected_comment="${comment_start} ${rel_path}${comment_end}"
 
-  # Check the file’s first line.
+  # Check the file’s first line
   first_line="$(head -n 1 "$file")"
 
+  # If missing or incorrect, prepend the new header line
   if [[ "$first_line" != "$expected_comment" ]]; then
-    # On macOS, BSD sed requires an empty string after -i to specify "no backup".
-    sed -i '' -e "1s|^|${expected_comment}\n|" "$file"
+    # Force locale to avoid "illegal byte sequence" errors on macOS
+    if ! LC_CTYPE=C LANG=C sed -i '' -e "1s|^|${expected_comment}\n|" "$file" 2>/dev/null; then
+      echo "Skipping file due to sed error: $file"
+      continue
+    fi
     echo "Prepended header in: $file"
   fi
 done < <(
   find "$BASE_DIR" -type f \
     ! -path '*/.git/*' \
     ! -path '*/node_modules/*' \
+    ! -path '*/.next/*' \
     -print0
 )

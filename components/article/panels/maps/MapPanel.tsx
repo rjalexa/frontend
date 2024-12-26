@@ -1,3 +1,4 @@
+// components/article/panels/maps/MapPanel.tsx
 import React, { useEffect, useRef, useState } from "react";
 import { Globe } from "lucide-react";
 import type { Map as LeafletMap } from "leaflet";

@@ -1,4 +1,4 @@
-// PanelButton.tsx
+// components/article/panels/PanelButton.tsx
 import { LucideIcon } from 'lucide-react';
 
 interface PanelButtonProps {

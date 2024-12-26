@@ -1,3 +1,4 @@
+# README.md
 # Article Entity & Highlights Viewer
 
 A Next.js application for viewing articles with their associated entities (people, locations, organizations) and highlights.

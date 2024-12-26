@@ -1,4 +1,4 @@
-// ./components/entities/EntityCard.tsx
+// components/entities/EntityCard.tsx
 import React, { useState, useRef, useEffect } from "react";
 import { ChevronDown, ChevronUp, MapPin, User, Building } from "lucide-react";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";

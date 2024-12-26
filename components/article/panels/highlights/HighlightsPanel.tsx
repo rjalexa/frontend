@@ -1,3 +1,4 @@
+// components/article/panels/highlights/HighlightsPanel.tsx
 import React from 'react';
 import { Highlighter } from "lucide-react";
 import Image from 'next/image';

@@ -1,3 +1,4 @@
+// components/article/panels/topics/TopicsPanel.tsx
 import React from 'react';
 import Image from 'next/image';
 import { Hash } from "lucide-react";

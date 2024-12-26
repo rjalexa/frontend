@@ -1,3 +1,4 @@
+// components/article/panels/summary/SummaryPanel.tsx
 import React from 'react';
 import { FileText } from "lucide-react";
 import Image from 'next/image';
