@@ -4,33 +4,7 @@ import { Menu } from "lucide-react";
 import { useEffect } from "react";
 import Image from "next/image";
 
-const getMemaStatsUrl = () => {
-  const envUrl =
-    window.__NEXT_DATA__?.props?.pageProps?.memaStatsUrl ||
-    process.env.NEXT_PUBLIC_MEMASTATS_URL ||
-    "http://localhost:8118";
-  console.log("MemaStats URL:", envUrl); // Debug log
-  return envUrl;
-};
-
 export default function Header() {
-  useEffect(() => {
-    console.log("Header component mounted");
-    // Log the URL when component mounts for debugging
-    console.log("Current MemaStats URL:", getMemaStatsUrl());
-  }, []);
-
-  const handleMenuClick = (e: React.MouseEvent<HTMLButtonElement>) => {
-    console.log("Menu button clicked");
-    e.preventDefault();
-    try {
-      const memaStatsUrl = getMemaStatsUrl();
-      window.open(memaStatsUrl, "_blank", "noopener,noreferrer");
-      console.log("Window.open called with URL:", memaStatsUrl);
-    } catch (error) {
-      console.error("Error opening window:", error);
-    }
-  };
 
   return (
     <div className="w-full">
@@ -40,9 +14,9 @@ export default function Header() {
           {/* Menu button on the left */}
           <button
             type="button"
-            onClick={handleMenuClick}
-            className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
-            aria-label="Open Menu"
+            disabled
+            className="p-2 cursor-not-allowed opacity-50"
+            aria-label="Menu (disabled)"
           >
             <Menu className="h-6 w-6 text-gray-700" />
           </button>
