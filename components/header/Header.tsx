@@ -32,9 +32,9 @@ export default function Header() {
   };
 
   return (
-    <div className="w-full h-[176px]">
+    <div className="w-full">
       {/* Header container */}
-      <div className="max-w-6xl mx-auto px-4 py-6 h-[160px]">
+      <div className="max-w-6xl mx-auto px-4 py-4">
         <div className="flex justify-between items-center">
           {/* Menu button on the left */}
           <button
@@ -51,8 +51,8 @@ export default function Header() {
             <Image
               src="/manifesto_logo.svg"
               alt="il manifesto"
-              width={128}
-              height={128}
+              width={256}
+              height={256}
               priority
             />
           </div>
@@ -79,11 +79,11 @@ export default function Header() {
         </div>
       </div>
 
-      {/* Bottom border */}
-      <div className="w-full border-b border-gray-200" />
-
-      {/* Red bar */}
-      <div className="w-full h-2 bg-red-600" />
+      {/* Bottom border and red bar combined */}
+      <div>
+        <div className="border-b border-gray-200" />
+        <div className="h-2 bg-red-600" />
+      </div>
     </div>
   );
 }
