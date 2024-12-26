@@ -33,8 +33,10 @@ export default function Header() {
 
           {/* User icon on the right */}
           <button
-            className="p-2 hover:bg-gray-100 rounded-lg"
-            aria-label="User menu"
+            type="button"
+            disabled
+            className="p-2 cursor-not-allowed opacity-50"
+            aria-label="User menu (disabled)"
           >
             <svg
               className="h-6 w-6 text-gray-700"
