@@ -1,7 +1,7 @@
-// components/ui/slide-panel.tsx
+// components/ui/slide/index.tsx
 import * as React from "react"
-import { cn } from "@/lib/utils"
 import { X } from "lucide-react"
+import { cn } from '@/lib/utils/components';
 
 interface SlidePanelProps {
   isOpen: boolean

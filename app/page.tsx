@@ -1,29 +1,11 @@
+// app/page.tsx
 "use client";
 import React, { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { ArrowUpDown, Eye } from "lucide-react";
-import Header from '@/components/Header';
-import { HighlightsPanel } from '@/components/article/panels';
+import type { Article } from '@/types/article';
 
-interface Article {
-  id: string;
-  headline: string;
-  date_created: string;
-  author: string;
-  datePublished: string;
-  slug: string;
-  highlights?: Array<{
-    highlight_text: string;
-    highlight_sequence_number: number;
-  }>;
-  meta_data?: Array<{
-    id: string;
-    kind: "person" | "location" | "organization";
-    label: string;
-  }>;
-}
-
-type SortField = "date_created" | "headline" | "author";
+type SortField = "date_created" | "title" | "author";
 type SortDirection = "asc" | "desc";
 
 const columnMappings = {
@@ -53,8 +35,6 @@ export default function Home() {
     const directionParam = params.get('sortDirection');
     return (directionParam as SortDirection) || localStorage.getItem('sortDirection') as SortDirection || "desc";
   });
-  const [highlightsOpen, setHighlightsOpen] = useState(false);
-  const [selectedArticle, setSelectedArticle] = useState<Article | null>(null);
 
   useEffect(() => {
     setMounted(true);
@@ -96,33 +76,18 @@ export default function Home() {
     }
   };
 
-  const handleViewHighlights = (article: Article) => {
-    setSelectedArticle(article);
-    setHighlightsOpen(true);
-  };
-
-  const handleCloseHighlights = () => {
-    setHighlightsOpen(false);
-    setSelectedArticle(null);
-    setTimeout(() => {
-      document.body.style.pointerEvents = "auto";
-      document.body.style.overflow = "auto";
-    }, 0);
-  };
-
   const sortedArticles = [...articles].sort((a, b) => {
     const direction = sortDirection === "asc" ? 1 : -1;
-
+  
     if (sortField === "date_created") {
       return (
         direction *
-        (new Date(a.date_created).getTime() -
-          new Date(b.date_created).getTime())
+        (new Date(a.date_created).getTime() - new Date(b.date_created).getTime())
       );
     }
-
-    const aValue = a[sortField].toLowerCase();
-    const bValue = b[sortField].toLowerCase();
+  
+    const aValue = (a[sortField] || '').toLowerCase();
+    const bValue = (b[sortField] || '').toLowerCase();
     return direction * aValue.localeCompare(bValue);
   });
 
@@ -132,8 +97,6 @@ export default function Home() {
 
   return (
     <div className="bg-white min-h-screen">
-      <Header />
-      
       <div className="p-4">
         <div className="max-w-6xl mx-auto">
           <h1 className="text-2xl font-bold mb-4 text-gray-800">Articoli selezionati</h1>
@@ -170,7 +133,7 @@ export default function Home() {
                     </button>
                   </th>
                   <th className="py-2 px-4 text-center w-20">
-                    Highlights
+                    Dettagli
                   </th>
                 </tr>
               </thead>
@@ -182,7 +145,7 @@ export default function Home() {
                         className="py-2 px-4 cursor-pointer"
                         onClick={() => router.push(`/article/${article.id}`)}
                       >
-                        {article.headline}
+                        {article.title}
                       </td>
                       <td
                         className="py-2 px-4 cursor-pointer"
@@ -199,7 +162,7 @@ export default function Home() {
                       <td className="py-2 px-4 text-center">
                         {article.highlights && article.highlights.length > 0 && (
                           <button
-                            onClick={() => handleViewHighlights(article)}
+                            onClick={() => router.push(`/article/${article.id}`)}
                             className="text-blue-600 hover:text-blue-800"
                             title="View Highlights"
                           >
@@ -220,15 +183,6 @@ export default function Home() {
             </table>
           </div>
         </div>
-  
-        {selectedArticle && (
-          <HighlightsPanel
-            isOpen={highlightsOpen}
-            onClose={handleCloseHighlights}
-            articleTitle={selectedArticle.headline}
-            highlights={selectedArticle.highlights || []}
-          />
-        )}
       </div>
     </div>
   );

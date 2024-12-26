@@ -1,58 +1,12 @@
+// app/api/files/route.ts
 import { readdir, readFile } from 'fs/promises'
 import path from 'path'
 import { NextResponse } from 'next/server'
+import type { Article } from '@/types/article'
+import type { Entity, EntityKind, MetaDataItem } from '@/types/entity'
+import type { RawArticle } from '@/types/raw'
 
-// Define interfaces for article types
-interface LinkingSourceInfo {
-  source: string;
-  url?: string;
-  title?: string;
-  summary?: string;
-  timestamp?: string;
-  geoid?: number;
-  name?: string;
-  feature_class?: string;
-  feature_code?: string;
-  lat?: number;
-  lng?: number;
-  country_name?: string;
-  bbox?: {
-    north: number;
-    south: number;
-    east: number;
-    west: number;
-  } | null;
-}
-
-interface MetaDataItem {
-  id: string;
-  kind: string;
-  label: string;
-  score: number | null;
-  linking_info: LinkingSourceInfo[];
-}
-
-interface RawArticle {
-  headline: string;
-  articleBody: string;
-  excerpt: string | null;
-  summary: string;
-  articleKicker: string;
-  id: string;
-  date_created: string;
-  articleTag: string;
-  author: string;
-  topics: string;
-  tags: string;
-  meta_data: MetaDataItem[];
-  mema_summary: string[];
-  mema_highlights: string[];
-  mema_topics: string[];
-}
-
-interface ProcessedArticle extends Omit<RawArticle, 'date_created'> {
-  datePublished: string;
-  slug: string;
+interface ProcessedArticle extends Omit<Article, 'dateCreated'> {
   highlights: {
     highlight_text: string;
     highlight_sequence_number: number;
@@ -64,6 +18,16 @@ function generateSlug(headline: string): string {
     .toLowerCase()
     .replace(/[^a-z0-9]+/g, '-')
     .replace(/(^-|-$)/g, '');
+}
+
+// Helper function to convert MetaDataItem to Entity
+function convertMetaDataToEntity(metaData: MetaDataItem): Entity {
+  return {
+    id: metaData.id,
+    kind: metaData.kind as EntityKind, // Cast the string kind to EntityKind
+    label: metaData.label,
+    linking_info: metaData.linking_info
+  };
 }
 
 export async function GET() {
@@ -85,8 +49,10 @@ export async function GET() {
           const articlesWithRequiredFields = parsed.map((article: RawArticle): ProcessedArticle => {
             return {
               ...article,
+              title: article.headline, // Map headline to title
               datePublished: article.date_created,
               slug: generateSlug(article.headline),
+              meta_data: article.meta_data?.map(convertMetaDataToEntity) || [], // Convert meta_data items if it exists
               highlights: article.mema_highlights?.map((text: string, index: number) => ({
                 highlight_text: text,
                 highlight_sequence_number: index + 1

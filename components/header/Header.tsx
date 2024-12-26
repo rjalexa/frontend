@@ -1,14 +1,15 @@
+// components/header/Header.tsx
 "use client";
 import { Menu } from "lucide-react";
 import { useEffect } from "react";
-import Image from 'next/image';
+import Image from "next/image";
 
-// Moving this outside the component to ensure it's evaluated at runtime
 const getMemaStatsUrl = () => {
-  const envUrl = window.__NEXT_DATA__?.props?.pageProps?.memaStatsUrl || 
-                 process.env.NEXT_PUBLIC_MEMASTATS_URL || 
-                 'http://localhost:8118';
-  console.log('MemaStats URL:', envUrl);  // Debug log
+  const envUrl =
+    window.__NEXT_DATA__?.props?.pageProps?.memaStatsUrl ||
+    process.env.NEXT_PUBLIC_MEMASTATS_URL ||
+    "http://localhost:8118";
+  console.log("MemaStats URL:", envUrl); // Debug log
   return envUrl;
 };
 
@@ -24,7 +25,7 @@ export default function Header() {
     e.preventDefault();
     try {
       const memaStatsUrl = getMemaStatsUrl();
-      window.open(memaStatsUrl, '_blank', 'noopener,noreferrer');
+      window.open(memaStatsUrl, "_blank", "noopener,noreferrer");
       console.log("Window.open called with URL:", memaStatsUrl);
     } catch (error) {
       console.error("Error opening window:", error);
@@ -34,10 +35,10 @@ export default function Header() {
   return (
     <div className="w-full">
       {/* Header container */}
-      <div className="max-w-6xl mx-auto px-4 py-6">
+      <div className="max-w-6xl mx-auto px-4 py-4">
         <div className="flex justify-between items-center">
           {/* Menu button on the left */}
-          <button 
+          <button
             type="button"
             onClick={handleMenuClick}
             className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
@@ -51,30 +52,39 @@ export default function Header() {
             <Image
               src="/manifesto_logo.svg"
               alt="il manifesto"
-              width={32}
-              height={32}
-              className="h-8 w-auto"
+              width={256}
+              height={256}
               priority
             />
           </div>
 
           {/* User icon on the right */}
-          <button 
+          <button
             className="p-2 hover:bg-gray-100 rounded-lg"
             aria-label="User menu"
           >
-            <svg className="h-6 w-6 text-gray-700" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+            <svg
+              className="h-6 w-6 text-gray-700"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="2"
+                d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
+              />
             </svg>
           </button>
         </div>
       </div>
-      
-      {/* Bottom border */}
-      <div className="w-full border-b border-gray-200" />
-      
-      {/* Red bar */}
-      <div className="w-full h-2 bg-red-600" />
+
+      {/* Bottom border and red bar combined */}
+      <div>
+        <div className="border-b border-gray-200" />
+        <div className="h-2 bg-red-600" />
+      </div>
     </div>
   );
 }

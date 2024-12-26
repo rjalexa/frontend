@@ -1,15 +1,15 @@
-// components/article/panels/TopicsPanel.tsx
+// components/article/panels/topics/TopicsPanel.tsx
 import React from 'react';
 import Image from 'next/image';
 import { Hash } from "lucide-react";
-import { BasePanelProps } from './types';
-import type { Article } from '@/lib/types';
+import type { BasePanelProps } from '@/types/panel';
+import type { Article } from '@/types/article';
 
 interface TopicsPanelProps extends BasePanelProps {
   article: Article;
 }
 
-export default function TopicsPanel({ isOpen, article }: TopicsPanelProps) {
+export default function TopicsPanel({ isOpen, onClose, article }: TopicsPanelProps) {
   if (!isOpen) return null;
 
   const manifestoTopics = [article.articleTag, article.topics, article.tags]
@@ -27,13 +27,22 @@ export default function TopicsPanel({ isOpen, article }: TopicsPanelProps) {
           <Hash className="w-4 h-4" />
           <span>Argomenti</span>
         </div>
-        <Image
-          src="/mema.svg"
-          alt="MeMa Logo"
-          width={64}
-          height={24}
-          className="ml-6"
-        />
+        <div className="flex items-center gap-4">
+          <button
+            onClick={onClose}
+            className="text-gray-500 hover:text-gray-700"
+            aria-label="Close panel"
+          >
+            ✕
+          </button>
+          <Image
+            src="/mema.svg"
+            alt="MeMa Logo"
+            width={64}
+            height={24}
+            className="ml-6"
+          />
+        </div>
       </div>
       
       <div className="p-4 pb-2">

@@ -1,6 +1,6 @@
 // components/article/panels/BasePanel.tsx
 import React from 'react';
-import { SlidePanel } from "@/components/ui/slide-panel";
+import { SlidePanel } from "@/components/ui/slide";
 import type { BasePanelProps } from './types';
 
 interface PanelWrapperProps extends BasePanelProps {

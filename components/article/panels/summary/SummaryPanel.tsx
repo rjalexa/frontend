@@ -1,14 +1,14 @@
-// components/article/panels/SummaryPanel.tsx
+// components/article/panels/summary/SummaryPanel.tsx
 import React from 'react';
 import { FileText } from "lucide-react";
 import Image from 'next/image';
-import type { BasePanelProps } from './types';
+import type { BasePanelProps } from '@/types/panel';
 
 interface SummaryPanelProps extends BasePanelProps {
   summary: string | null;
 }
 
-export default function SummaryPanel({ isOpen, summary }: SummaryPanelProps) {
+export default function SummaryPanel({ isOpen, onClose, summary }: SummaryPanelProps) {
   if (!isOpen) return null;
 
   return (
@@ -18,7 +18,22 @@ export default function SummaryPanel({ isOpen, summary }: SummaryPanelProps) {
           <FileText className="w-4 h-4" />
           <span>Sommario</span>
         </div>
-        <Image src="/mema.svg" alt="MeMa Logo" width={64} height={24} className="ml-6" />
+        <div className="flex items-center gap-4">
+          <button
+            onClick={onClose}
+            className="text-gray-500 hover:text-gray-700"
+            aria-label="Close panel"
+          >
+            ✕
+          </button>
+          <Image 
+            src="/mema.svg" 
+            alt="MeMa Logo" 
+            width={64}
+            height={24}
+            className="ml-6" 
+          />
+        </div>
       </div>
       
       <div className="p-4">
