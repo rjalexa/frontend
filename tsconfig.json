@@ -18,6 +18,7 @@
       "./node_modules/@types",
       "./custom.d.ts"
     ],
+    "declaration": true,
     "resolveJsonModule": true,
     "isolatedModules": true,
     "jsx": "preserve",

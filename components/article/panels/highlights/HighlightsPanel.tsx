@@ -3,7 +3,7 @@ import React from 'react';
 import { Highlighter } from "lucide-react";
 import Image from 'next/image';
 import type { BasePanelProps } from '@/types/panel';
-import type { Highlight } from '@/types/article';
+import type { Highlight } from '@/types/panel';
 
 interface HighlightsPanelProps extends BasePanelProps {
   highlights: Highlight[];
