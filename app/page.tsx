@@ -2,26 +2,7 @@
 import React, { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { ArrowUpDown, Eye } from "lucide-react";
-import { HighlightsPanel } from '@/components/article/panels';
 import type { Article } from '@/types/article';
-
-// interface Article {
-//   id: string;
-//   headline: string;
-//   date_created: string;
-//   author: string;
-//   datePublished: string;
-//   slug: string;
-//   highlights?: Array<{
-//     highlight_text: string;
-//     highlight_sequence_number: number;
-//   }>;
-//   meta_data?: Array<{
-//     id: string;
-//     kind: "person" | "location" | "organization";
-//     label: string;
-//   }>;
-// }
 
 type SortField = "date_created" | "title" | "author";
 type SortDirection = "asc" | "desc";
@@ -53,8 +34,6 @@ export default function Home() {
     const directionParam = params.get('sortDirection');
     return (directionParam as SortDirection) || localStorage.getItem('sortDirection') as SortDirection || "desc";
   });
-  const [highlightsOpen, setHighlightsOpen] = useState(false);
-  const [selectedArticle, setSelectedArticle] = useState<Article | null>(null);
 
   useEffect(() => {
     setMounted(true);
@@ -94,20 +73,6 @@ export default function Home() {
       localStorage.setItem('sortField', field);
       localStorage.setItem('sortDirection', "desc");
     }
-  };
-
-  const handleViewHighlights = (article: Article) => {
-    setSelectedArticle(article);
-    setHighlightsOpen(true);
-  };
-
-  const handleCloseHighlights = () => {
-    setHighlightsOpen(false);
-    setSelectedArticle(null);
-    setTimeout(() => {
-      document.body.style.pointerEvents = "auto";
-      document.body.style.overflow = "auto";
-    }, 0);
   };
 
   const sortedArticles = [...articles].sort((a, b) => {
@@ -217,15 +182,6 @@ export default function Home() {
             </table>
           </div>
         </div>
-  
-        {selectedArticle && (
-          <HighlightsPanel
-            isOpen={highlightsOpen}
-            onClose={handleCloseHighlights}
-            articleTitle={selectedArticle.title}
-            highlights={selectedArticle.highlights || []}
-          />
-        )}
       </div>
     </div>
   );
