@@ -7,6 +7,7 @@ services:
     environment:
       - NODE_ENV=production
       - NEXT_TELEMETRY_DISABLED=1
+      - NEXT_PUBLIC_SPARQL_URL=http://mema_fuseki:3030
 
   web-dev:
     build: 

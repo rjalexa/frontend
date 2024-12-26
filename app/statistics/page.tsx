@@ -1,22 +1,51 @@
 // app/statistics/page.tsx
-'use client'
-import Image from 'next/image'
-import { Cog } from 'lucide-react'
+import StatsCard from '@/components/statistics/StatsCard';
+import { executeSparqlQuery } from '@/lib/sparql';
 
-export default function StatisticsPage() {
+export const revalidate = 3600; // Revalidate every hour
+
+// This runs only on the server
+async function getStatistics() {
+  try {
+    const [totalArticles, uniqueAuthors, uniqueLocations] = await Promise.all([
+      executeSparqlQuery('totalArticles'),
+      executeSparqlQuery('uniqueAuthors'),
+      executeSparqlQuery('uniqueLocations'),
+    ]);
+
+    // Process the data server-side before sending to client
+    return {
+      totalArticles: Number(totalArticles.results.bindings[0].count.value),
+      uniqueAuthors: Number(uniqueAuthors.results.bindings[0].count.value),
+      uniqueLocations: Number(uniqueLocations.results.bindings[0].count.value),
+    };
+  } catch (error) {
+    console.error('Error fetching statistics:', error);
+    throw error;
+  }
+}
+
+export default async function StatisticsPage() {
+  // This runs server-side
+  const stats = await getStatistics();
+
   return (
-    <div className="min-h-[calc(100vh-176px)] flex flex-col items-center justify-center gap-8 bg-white">
-      <Image 
-        src="/mema.svg" 
-        alt="MeMa Logo" 
-        width={128} 
-        height={48}
-        priority
-      />
-      <div className="flex items-center gap-3 text-gray-600">
-        <Cog className="w-6 h-6 animate-spin" />
-        <span className="text-xl">In costruzione...</span>
+    <div className="container mx-auto py-8">
+      <h1 className="text-3xl font-bold mb-8">Statistics</h1>
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <StatsCard 
+          title="Total Articles"
+          value={stats.totalArticles.toLocaleString()}
+        />
+        <StatsCard 
+          title="Unique Authors"
+          value={stats.uniqueAuthors.toLocaleString()}
+        />
+        <StatsCard 
+          title="Unique Locations"
+          value={stats.uniqueLocations.toLocaleString()}
+        />
       </div>
     </div>
-  )
+  );
 }
