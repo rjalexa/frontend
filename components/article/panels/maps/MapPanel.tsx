@@ -177,6 +177,7 @@ const MapPanel: React.FC<MapPanelProps> = ({ isOpen, onClose, article, setDesire
           })
           .filter((loc): loc is NonNullable<typeof loc> => loc !== null);
 
+        // Set initial view and markers
         if (locations.length > 0) {
           const bounds = L.latLngBounds(locations.map((loc) => [loc.lat, loc.lng]));
           locations.forEach((location) => {
@@ -188,22 +189,16 @@ const MapPanel: React.FC<MapPanelProps> = ({ isOpen, onClose, article, setDesire
         } else {
           map.setView([0, 0], 2);
         }
+
+        // Calculate initial view distance and set appropriate layer
+        const initialBounds = map.getBounds();
+        const initialDistance = initialBounds.getNorthWest().distanceTo(initialBounds.getSouthEast());
         
-        // Force an immediate layer update based on the initial view
-        requestAnimationFrame(() => {
-          if (mapInstanceRef.current) {
-            const bounds = mapInstanceRef.current.getBounds();
-            const distance = bounds.getNorthWest().distanceTo(bounds.getSouthEast());
-            
-            if (satelliteLayerRef.current && streetsLayerRef.current) {
-              if (distance > 500000) {
-                switchLayer(satelliteLayerRef.current, streetsLayerRef.current);
-              } else {
-                switchLayer(streetsLayerRef.current, satelliteLayerRef.current);
-              }
-            }
-          }
-        });
+        if (initialDistance > 500000) {
+          switchLayer(satelliteLayerRef.current, streetsLayerRef.current);
+        } else {
+          switchLayer(streetsLayerRef.current, satelliteLayerRef.current);
+        }
 
         // Set map ready state after initialization
         setIsMapReady(true);
