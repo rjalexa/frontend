@@ -84,8 +84,8 @@ const MapPanel: React.FC<MapPanelProps> = ({ isOpen, onClose, article, setDesire
         streetsLayerRef.current.addTo(map);
 
         // Function to switch layers safely
-        const switchLayer = (targetLayer: typeof streetsLayerRef.current, otherLayer: typeof satelliteLayerRef.current) => {
-          if (!mapInstanceRef.current || !targetLayer || !otherLayer) return;
+        const switchLayer = (targetLayer: TileLayer, otherLayer: TileLayer) => {
+          if (!mapInstanceRef.current) return;
           
           try {
             // Only proceed if map instance exists and is valid
@@ -195,10 +195,12 @@ const MapPanel: React.FC<MapPanelProps> = ({ isOpen, onClose, article, setDesire
             const bounds = mapInstanceRef.current.getBounds();
             const distance = bounds.getNorthWest().distanceTo(bounds.getSouthEast());
             
-            if (distance > 500000) {
-              switchLayer(satelliteLayerRef.current, streetsLayerRef.current);
-            } else {
-              switchLayer(streetsLayerRef.current, satelliteLayerRef.current);
+            if (satelliteLayerRef.current && streetsLayerRef.current) {
+              if (distance > 500000) {
+                switchLayer(satelliteLayerRef.current, streetsLayerRef.current);
+              } else {
+                switchLayer(streetsLayerRef.current, satelliteLayerRef.current);
+              }
             }
           }
         }
