@@ -87,14 +87,21 @@ const MapPanel: React.FC<MapPanelProps> = ({ isOpen, onClose, article, setDesire
         const switchLayer = (targetLayer: typeof streetsLayerRef.current, otherLayer: typeof satelliteLayerRef.current) => {
           if (!mapInstanceRef.current || !targetLayer || !otherLayer) return;
           
-          // First add the new layer
-          if (!mapInstanceRef.current.hasLayer(targetLayer)) {
-            targetLayer.addTo(mapInstanceRef.current);
-          }
-          
-          // Then remove the old layer if it exists
-          if (mapInstanceRef.current.hasLayer(otherLayer)) {
-            mapInstanceRef.current.removeLayer(otherLayer);
+          try {
+            // Only proceed if map instance exists and is valid
+            if (mapInstanceRef.current.getContainer()) {
+              // First add the new layer if it's not already there
+              if (!mapInstanceRef.current.hasLayer(targetLayer)) {
+                targetLayer.addTo(mapInstanceRef.current);
+              }
+              
+              // Then remove the old layer if it exists and is different from target
+              if (mapInstanceRef.current.hasLayer(otherLayer) && targetLayer !== otherLayer) {
+                otherLayer.remove();
+              }
+            }
+          } catch (error) {
+            console.debug('Error switching layers:', error);
           }
         };
 
