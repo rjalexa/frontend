@@ -4,7 +4,7 @@ import { Microscope, MapPin, User, Building } from "lucide-react";
 import Image from "next/image";
 import type { Article, Entity, EntityKind } from '@/types';
 import type { BasePanelProps } from '../types';
-import EntityCard from 'entities/EntityCard';
+import EntityCard from './EntityCard';
 
 interface EntitiesPanelProps extends BasePanelProps {
   article: Article;
