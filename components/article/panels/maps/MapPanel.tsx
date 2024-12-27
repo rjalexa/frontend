@@ -45,7 +45,7 @@ const MapPanel: React.FC<MapPanelProps> = ({ isOpen, onClose, article, setDesire
 
         if (!mapRef.current) return;
 
-        if (currentMapRef._leaflet_id) {
+        if (mapRef.current._leaflet_id) {
           console.debug('Map instance already exists');
           return;
         }
@@ -210,8 +210,8 @@ const MapPanel: React.FC<MapPanelProps> = ({ isOpen, onClose, article, setDesire
         mapInstanceRef.current = null;
 
         // Reset map container
-        if (currentMapRef) {
-          currentMapRef._leaflet_id = undefined;
+        if (mapRef.current) {
+          mapRef.current._leaflet_id = undefined;
         }
       }
       setIsMapReady(false);
