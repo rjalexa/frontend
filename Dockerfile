@@ -7,27 +7,22 @@ WORKDIR /app
 RUN corepack enable \
     && corepack prepare pnpm@latest --activate
 
+# Copy package files and install dependencies
 COPY package.json pnpm-lock.yaml ./
-
-# Build argument for environment variables
-ARG NEXT_PUBLIC_SPARQL_URL
-
-# Install dependencies
 RUN pnpm install --frozen-lockfile
 
-# Copy all source files and data directory
+# Copy application source files and data directory
 COPY . .
 COPY data/ /app/data/
 
-# Set build-time environment variable
+# Set build-time argument and environment variable
 ARG NEXT_PUBLIC_MEMASTATS_URL=http://memastats:8118
 ENV NEXT_PUBLIC_MEMASTATS_URL=${NEXT_PUBLIC_MEMASTATS_URL}
-ENV NEXT_PUBLIC_SPARQL_URL=$NEXT_PUBLIC_SPARQL_URL
 
 # Build the application
-RUN pnpm build
+RUN echo "NEXT_PUBLIC_MEMASTATS_URL=${NEXT_PUBLIC_MEMASTATS_URL}" && pnpm build
 
-# Production image, copy all the files and run next
+# Production image, copy build output
 FROM node:20-alpine AS runner
 
 WORKDIR /app

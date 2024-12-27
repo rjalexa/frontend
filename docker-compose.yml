@@ -6,7 +6,7 @@ services:
       context: /home/mema/code/frontend
       dockerfile: Dockerfile
       args:
-        NEXT_PUBLIC_SPARQL_URL: http://mema_fuseki:3030
+        NEXT_PUBLIC_MEMASTATS_URL: http://memastats:8118
     container_name: memademo
     ports:
       - "3333:3000"
@@ -15,10 +15,9 @@ services:
     environment:
       - NODE_ENV=production
       - NEXT_TELEMETRY_DISABLED=1
-      - NEXT_PUBLIC_SPARQL_URL=http://mema_fuseki:3030
+      - NEXT_PUBLIC_MEMASTATS_URL=http://memastats:8118
     depends_on:
       - mema_fuseki
-    restart: unless-stopped
 
   web-dev:
     build: 
