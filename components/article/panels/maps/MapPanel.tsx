@@ -203,8 +203,9 @@ const MapPanel: React.FC<MapPanelProps> = ({ isOpen, onClose, article, setDesire
               }
             }
           }
-        }
+        });
 
+        // Set map ready state after initialization
         setIsMapReady(true);
       } catch (error) {
         console.error("Error initializing map:", error);
