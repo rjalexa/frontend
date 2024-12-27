@@ -1,4 +1,10 @@
 # docker-compose.yml
+x-logging: &default-logging
+  driver: "local"
+  options:
+    max-size: "1m"
+    max-file: "7"
+    
 services:
   memademo:
     image: memademo:0.1.3
@@ -7,6 +13,7 @@ services:
       dockerfile: Dockerfile
       args:
         NEXT_PUBLIC_MEMASTATS_URL: http://memastats:8118
+        NEXT_PUBLIC_SPARQL_URL: http://mema_fuseki:3030
     container_name: memademo
     ports:
       - "3333:3000"
@@ -16,8 +23,11 @@ services:
       - NODE_ENV=production
       - NEXT_TELEMETRY_DISABLED=1
       - NEXT_PUBLIC_MEMASTATS_URL=http://memastats:8118
+      - NEXT_PUBLIC_SPARQL_URL=http://mema_fuseki:3030
     depends_on:
       - mema_fuseki
+    restart: unless-stopped
+    logging: *default-logging
 
   web-dev:
     build: 

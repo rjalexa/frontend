@@ -4,8 +4,7 @@ FROM node:20-alpine AS builder
 WORKDIR /app
 
 # Enable pnpm using corepack
-RUN corepack enable \
-    && corepack prepare pnpm@latest --activate
+RUN corepack enable && corepack prepare pnpm@latest --activate
 
 # Copy package files and install dependencies
 COPY package.json pnpm-lock.yaml ./
@@ -15,14 +14,21 @@ RUN pnpm install --frozen-lockfile
 COPY . .
 COPY data/ /app/data/
 
-# Set build-time argument and environment variable
+# Define build-time arguments
 ARG NEXT_PUBLIC_MEMASTATS_URL=http://memastats:8118
+ARG NEXT_PUBLIC_SPARQL_URL=http://mema_fuseki:3030
+
+# Set environment variables for build phase
 ENV NEXT_PUBLIC_MEMASTATS_URL=${NEXT_PUBLIC_MEMASTATS_URL}
+ENV NEXT_PUBLIC_SPARQL_URL=${NEXT_PUBLIC_SPARQL_URL}
+
+# Debug: Verify variables are passed
+RUN echo "Build ENV - MEMASTATS: $NEXT_PUBLIC_MEMASTATS_URL, SPARQL: $NEXT_PUBLIC_SPARQL_URL"
 
 # Build the application
-RUN echo "NEXT_PUBLIC_MEMASTATS_URL=${NEXT_PUBLIC_MEMASTATS_URL}" && pnpm build
+RUN pnpm build
 
-# Production image, copy build output
+# Production image
 FROM node:20-alpine AS runner
 
 WORKDIR /app
@@ -36,8 +42,10 @@ COPY --from=builder /app/data ./data
 
 EXPOSE 3000
 
+# Set runtime environment variables
 ENV PORT 3000
 ENV HOSTNAME "0.0.0.0"
 ENV NEXT_PUBLIC_MEMASTATS_URL=http://memastats:8118
+ENV NEXT_PUBLIC_SPARQL_URL=http://mema_fuseki:3030
 
 CMD ["node", "server.js"]
