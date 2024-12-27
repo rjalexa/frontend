@@ -206,7 +206,6 @@ const MapPanel: React.FC<MapPanelProps> = ({ isOpen, onClose, article, setDesire
         }
 
         setIsMapReady(true);
-        map.invalidateSize();
       } catch (error) {
         console.error("Error initializing map:", error);
       }
