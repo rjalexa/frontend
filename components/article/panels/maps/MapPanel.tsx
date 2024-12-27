@@ -23,16 +23,12 @@ const MapPanel: React.FC<MapPanelProps> = ({ isOpen, onClose, article, setDesire
   const [isMapReady, setIsMapReady] = useState(false);
 
   useEffect(() => {
-    if (!isOpen || !mapRef.current) return () => {
-      if (mapInstanceRef.current) {
-        mapInstanceRef.current.off();
-        mapInstanceRef.current.remove();
-      }
-      mapInstanceRef.current = null;
-      streetsLayerRef.current = null;
-      satelliteLayerRef.current = null;
-      setIsMapReady(false);
-    };
+    if (!isOpen || !mapRef.current) {
+      // Cleanup function when not open or no ref
+      return () => {
+        setIsMapReady(false);
+      };
+    }
 
     const loadLeaflet = async () => {
       try {
@@ -191,30 +187,46 @@ const MapPanel: React.FC<MapPanelProps> = ({ isOpen, onClose, article, setDesire
 
     // Component cleanup on unmount or when isOpen changes
     return () => {
-      if (mapInstanceRef.current) {
-        // Remove all layers first
-        if (streetsLayerRef.current) {
-          streetsLayerRef.current.removeFrom(mapInstanceRef.current);
-          streetsLayerRef.current = null;
+      try {
+        if (mapInstanceRef.current) {
+          // Remove event listeners first
+          mapInstanceRef.current.off();
+          
+          // Remove layers carefully
+          if (streetsLayerRef.current) {
+            try {
+              streetsLayerRef.current.remove();
+            } catch (e) {
+              console.debug('Error removing streets layer:', e);
+            }
+          }
+          if (satelliteLayerRef.current) {
+            try {
+              satelliteLayerRef.current.remove();
+            } catch (e) {
+              console.debug('Error removing satellite layer:', e);
+            }
+          }
+          
+          // Finally remove the map instance
+          try {
+            mapInstanceRef.current.remove();
+          } catch (e) {
+            console.debug('Error removing map instance:', e);
+          }
         }
-        if (satelliteLayerRef.current) {
-          satelliteLayerRef.current.removeFrom(mapInstanceRef.current);
-          satelliteLayerRef.current = null;
-        }
-        
-        // Remove all event listeners
-        mapInstanceRef.current.off();
-        
-        // Remove and cleanup map instance
-        mapInstanceRef.current.remove();
+      } catch (e) {
+        console.debug('Error in cleanup:', e);
+      } finally {
+        // Reset all refs
         mapInstanceRef.current = null;
-
-        // Reset map container
+        streetsLayerRef.current = null;
+        satelliteLayerRef.current = null;
         if (mapRef.current) {
           mapRef.current._leaflet_id = undefined;
         }
+        setIsMapReady(false);
       }
-      setIsMapReady(false);
     };
   }, [isOpen, article]);
 
