@@ -203,6 +203,9 @@ const MapPanel: React.FC<MapPanelProps> = ({ isOpen, onClose, article, setDesire
     loadLeaflet();
 
     // Component cleanup on unmount or when isOpen changes
+    // Capture the ref value
+    const currentMapRef = mapRef.current;
+
     return () => {
       try {
         if (mapInstanceRef.current) {
@@ -239,8 +242,8 @@ const MapPanel: React.FC<MapPanelProps> = ({ isOpen, onClose, article, setDesire
         mapInstanceRef.current = null;
         streetsLayerRef.current = null;
         satelliteLayerRef.current = null;
-        if (mapRef.current) {
-          mapRef.current._leaflet_id = undefined;
+        if (currentMapRef) {
+          currentMapRef._leaflet_id = undefined;
         }
         setIsMapReady(false);
       }
