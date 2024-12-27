@@ -185,12 +185,22 @@ const MapPanel: React.FC<MapPanelProps> = ({ isOpen, onClose, article, setDesire
               .addTo(map);
           });
           map.fitBounds(bounds, { padding: [50, 50] });
-          // Update layer after bounds are set
-          updateLayerBasedOnBounds();
         } else {
           map.setView([0, 0], 2);
-          // Update layer after view is set
-          updateLayerBasedOnBounds();
+        }
+        
+        // Force an immediate layer update based on the initial view
+        requestAnimationFrame(() => {
+          if (mapInstanceRef.current) {
+            const bounds = mapInstanceRef.current.getBounds();
+            const distance = bounds.getNorthWest().distanceTo(bounds.getSouthEast());
+            
+            if (distance > 500000) {
+              switchLayer(satelliteLayerRef.current, streetsLayerRef.current);
+            } else {
+              switchLayer(streetsLayerRef.current, satelliteLayerRef.current);
+            }
+          }
         }
 
         setIsMapReady(true);
