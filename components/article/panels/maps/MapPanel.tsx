@@ -1,45 +1,56 @@
-// components/article/panels/maps/MapPanel.tsx
 import React, { useEffect, useRef, useState } from "react";
 import { Globe } from "lucide-react";
-import type { Map as LeafletMap } from "leaflet";
+import type { Map as LeafletMap, TileLayer } from "leaflet";
 import type { BasePanelProps } from "@/types/panel";
 import type { Article } from "@/types/article";
 import Image from "next/image";
 import "leaflet/dist/leaflet.css";
+
+interface LeafletElement extends HTMLDivElement {
+  _leaflet_id?: number;
+}
 
 interface MapPanelProps extends BasePanelProps {
   article: Article;
   setDesiredMapState?: (state: boolean) => void;
 }
 
-const MapPanel: React.FC<MapPanelProps> = ({
-  isOpen,
-  onClose,
-  article,
-  setDesiredMapState,
-}) => {
-  const mapRef = useRef<HTMLDivElement>(null);
+const MapPanel: React.FC<MapPanelProps> = ({ isOpen, onClose, article, setDesiredMapState }) => {
+  const mapRef = useRef<LeafletElement | null>(null);
   const mapInstanceRef = useRef<LeafletMap | null>(null);
+  const streetsLayerRef = useRef<TileLayer | null>(null);
+  const satelliteLayerRef = useRef<TileLayer | null>(null);
   const [isMapReady, setIsMapReady] = useState(false);
 
   useEffect(() => {
-    if (!isOpen || !mapRef.current) return;
+    if (!isOpen || !mapRef.current) return () => {
+      if (mapInstanceRef.current) {
+        mapInstanceRef.current.off();
+        mapInstanceRef.current.remove();
+      }
+      mapInstanceRef.current = null;
+      streetsLayerRef.current = null;
+      satelliteLayerRef.current = null;
+      setIsMapReady(false);
+    };
 
     const loadLeaflet = async () => {
       try {
-        const leaflet = (await import("leaflet")).default;
+        const L = (await import("leaflet")).default;
 
-        // Clean up existing map instance
         if (mapInstanceRef.current) {
           mapInstanceRef.current.remove();
           mapInstanceRef.current = null;
         }
 
-        // Ensure mapRef.current exists before creating map
         if (!mapRef.current) return;
 
-        // Create new map instance
-        const map = leaflet.map(mapRef.current, {
+        if (currentMapRef._leaflet_id) {
+          console.debug('Map instance already exists');
+          return;
+        }
+
+        const map = L.map(mapRef.current, {
           zoomControl: true,
           scrollWheelZoom: true,
           preferCanvas: true,
@@ -48,79 +59,88 @@ const MapPanel: React.FC<MapPanelProps> = ({
         mapInstanceRef.current = map;
 
         // Set default icon paths
-        const IconDefault = leaflet.Icon.Default as unknown as {
+        const IconDefault = L.Icon.Default as unknown as {
           prototype: { _getIconUrl?: string };
-          mergeOptions(options: Record<string, string>): void;
         };
-
-        if (IconDefault.prototype._getIconUrl) {
-          delete IconDefault.prototype._getIconUrl;
-        }
-
-        IconDefault.mergeOptions({
-          iconRetinaUrl:
-            "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon-2x.png",
-          iconUrl:
-            "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon.png",
-          shadowUrl:
-            "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-shadow.png",
+        delete IconDefault.prototype._getIconUrl;
+        L.Icon.Default.mergeOptions({
+          iconRetinaUrl: "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon-2x.png",
+          iconUrl: "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon.png",
+          shadowUrl: "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-shadow.png",
         });
 
         // Create tile layers
-        const streetsLayer = leaflet.tileLayer(
+        streetsLayerRef.current = L.tileLayer(
           "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
           {
             attribution: "© OpenStreetMap contributors",
           }
         );
 
-        const satelliteLayer = leaflet.tileLayer(
+        satelliteLayerRef.current = L.tileLayer(
           "https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}",
           {
             attribution: "© ESRI",
           }
         );
 
-        // Add streets layer by default
-        streetsLayer.addTo(map);
+        // Add initial layer
+        streetsLayerRef.current.addTo(map);
 
-        // Add layer control
-        const LayerControl = leaflet.Control.extend({
-          options: {
-            position: "topright",
-          },
+        // Function to switch layers safely
+        const switchLayer = (targetLayer: typeof streetsLayerRef.current, otherLayer: typeof satelliteLayerRef.current) => {
+          if (!mapInstanceRef.current || !targetLayer || !otherLayer) return;
+          if (mapInstanceRef.current.hasLayer(otherLayer)) {
+            otherLayer.removeFrom(mapInstanceRef.current);
+          }
+          targetLayer.addTo(mapInstanceRef.current);
+        };
 
+        // Function to update layer based on map bounds
+        const updateLayerBasedOnBounds = () => {
+          if (!mapInstanceRef.current || !streetsLayerRef.current || !satelliteLayerRef.current) return;
+
+          const bounds = mapInstanceRef.current.getBounds();
+          const distance = bounds.getNorthWest().distanceTo(bounds.getSouthEast());
+          
+          if (distance > 500000) {
+            switchLayer(satelliteLayerRef.current, streetsLayerRef.current);
+          } else {
+            switchLayer(streetsLayerRef.current, satelliteLayerRef.current);
+          }
+        };
+
+        // Bind events
+        map.on('moveend', updateLayerBasedOnBounds);
+        map.on('zoomend', updateLayerBasedOnBounds);
+
+        // Add manual layer toggle control
+        const LayerControl = L.Control.extend({
+          options: { position: "topright" },
           onAdd: function () {
-            const container = leaflet.DomUtil.create(
-              "div",
-              "leaflet-bar leaflet-control"
-            );
-            const button = leaflet.DomUtil.create("a", "", container);
-            button.innerHTML = "🗺️";
+            const container = L.DomUtil.create("div", "leaflet-bar leaflet-control");
+            const button = L.DomUtil.create("a", "", container);
+            
+            const updateButton = () => {
+              const isStreets = map.hasLayer(streetsLayerRef.current!);
+              button.innerHTML = isStreets ? "🗺️" : "🛰️";
+            };
+
             button.title = "Toggle Map Type";
-            button.style.width = "30px";
-            button.style.height = "30px";
-            button.style.lineHeight = "30px";
-            button.style.textAlign = "center";
-            button.style.fontSize = "20px";
-            button.style.cursor = "pointer";
-            button.style.backgroundColor = "white";
+            button.style.cssText = "width:30px;height:30px;line-height:30px;text-align:center;font-size:20px;cursor:pointer;background:white;";
             button.href = "#";
+            updateButton();
 
-            let isStreets = true;
-
-            leaflet.DomEvent.on(button, "click", function (e) {
-              leaflet.DomEvent.preventDefault(e);
-              if (isStreets) {
-                map.removeLayer(streetsLayer);
-                satelliteLayer.addTo(map);
-                button.innerHTML = "🛰️";
+            L.DomEvent.on(button, "click", function (e) {
+              L.DomEvent.preventDefault(e);
+              if (!mapInstanceRef.current || !streetsLayerRef.current || !satelliteLayerRef.current) return;
+              
+              if (mapInstanceRef.current.hasLayer(streetsLayerRef.current)) {
+                switchLayer(satelliteLayerRef.current, streetsLayerRef.current);
               } else {
-                map.removeLayer(satelliteLayer);
-                streetsLayer.addTo(map);
-                button.innerHTML = "🗺️";
+                switchLayer(streetsLayerRef.current, satelliteLayerRef.current);
               }
-              isStreets = !isStreets;
+              updateButton();
             });
 
             return container;
@@ -129,28 +149,16 @@ const MapPanel: React.FC<MapPanelProps> = ({
 
         map.addControl(new LayerControl());
 
-        // Extract locations from article metadata
+        // Handle locations
         const locations = (article.meta_data || [])
           .filter((entity) => {
-            const geoInfo = entity.linking_info?.find(
-              (info) => info.source === "geonames"
-            );
-            return (
-              entity.kind === "location" &&
-              geoInfo?.lat !== undefined &&
-              geoInfo?.lng !== undefined
-            );
+            const geoInfo = entity.linking_info?.find((info) => info.source === "geonames");
+            return entity.kind === "location" && geoInfo?.lat !== undefined && geoInfo?.lng !== undefined;
           })
           .map((entity) => {
-            const geoInfo = entity.linking_info?.find(
-              (info) => info.source === "geonames"
-            );
-            const wikiInfo = entity.linking_info?.find(
-              (info) => info.source === "wikipedia"
-            );
-
+            const geoInfo = entity.linking_info?.find((info) => info.source === "geonames");
+            const wikiInfo = entity.linking_info?.find((info) => info.source === "wikipedia");
             if (!geoInfo?.lat || !geoInfo?.lng) return null;
-
             return {
               label: entity.label,
               lat: geoInfo.lat,
@@ -160,34 +168,18 @@ const MapPanel: React.FC<MapPanelProps> = ({
           })
           .filter((loc): loc is NonNullable<typeof loc> => loc !== null);
 
-        // Add markers and set bounds
         if (locations.length > 0) {
-          const bounds = leaflet.latLngBounds(
-            locations.map((loc) => [loc.lat, loc.lng])
-          );
-
+          const bounds = L.latLngBounds(locations.map((loc) => [loc.lat, loc.lng]));
           locations.forEach((location) => {
-            leaflet
-              .marker([location.lat, location.lng])
-              .bindPopup(
-                `
-                <strong>${location.label}</strong>
-                ${
-                  location.summary
-                    ? `<br/><br/>${location.summary.split(".")[0]}.`
-                    : ""
-                }
-              `
-              )
+            L.marker([location.lat, location.lng])
+              .bindPopup(`<strong>${location.label}</strong>${location.summary ? `<br/><br/>${location.summary.split(".")[0]}.` : ""}`)
               .addTo(map);
           });
-
           map.fitBounds(bounds, { padding: [50, 50] });
         } else {
           map.setView([0, 0], 2);
         }
 
-        // Mark map as ready and trigger a resize
         setIsMapReady(true);
         map.invalidateSize();
       } catch (error) {
@@ -197,16 +189,35 @@ const MapPanel: React.FC<MapPanelProps> = ({
 
     loadLeaflet();
 
+    // Component cleanup on unmount or when isOpen changes
     return () => {
       if (mapInstanceRef.current) {
+        // Remove all layers first
+        if (streetsLayerRef.current) {
+          streetsLayerRef.current.removeFrom(mapInstanceRef.current);
+          streetsLayerRef.current = null;
+        }
+        if (satelliteLayerRef.current) {
+          satelliteLayerRef.current.removeFrom(mapInstanceRef.current);
+          satelliteLayerRef.current = null;
+        }
+        
+        // Remove all event listeners
+        mapInstanceRef.current.off();
+        
+        // Remove and cleanup map instance
         mapInstanceRef.current.remove();
         mapInstanceRef.current = null;
+
+        // Reset map container
+        if (currentMapRef) {
+          currentMapRef._leaflet_id = undefined;
+        }
       }
       setIsMapReady(false);
     };
   }, [isOpen, article]);
 
-  // Effect to handle map resize when ready
   useEffect(() => {
     if (isMapReady && mapInstanceRef.current) {
       mapInstanceRef.current.invalidateSize();
@@ -225,9 +236,7 @@ const MapPanel: React.FC<MapPanelProps> = ({
         <div className="flex items-center gap-4">
           <button
             onClick={() => {
-              if (setDesiredMapState) {
-                setDesiredMapState(false);
-              }
+              if (setDesiredMapState) setDesiredMapState(false);
               onClose();
             }}
             className="text-gray-500 hover:text-gray-700"
@@ -235,13 +244,7 @@ const MapPanel: React.FC<MapPanelProps> = ({
           >
             ✕
           </button>
-          <Image
-            src="/mema.svg"
-            alt="MeMa Logo"
-            width={64}
-            height={24}
-            className="ml-6"
-          />
+          <Image src="/mema.svg" alt="MeMa Logo" width={64} height={24} className="ml-6" />
         </div>
       </div>
       <div className="p-4">
