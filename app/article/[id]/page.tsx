@@ -1,4 +1,3 @@
-// app/article/[id]/page.tsx
 "use client";
 
 import React, { useState, useEffect } from "react";
@@ -17,6 +16,11 @@ import {
 import type { Article, SortField, SortDirection } from "@/types/article";
 import ArticleContent from "@/components/article/content/ArticleContent";
 
+const getInitialState = (key: string): boolean => {
+  if (typeof window === 'undefined') return false;
+  return localStorage.getItem(key) === "true";
+};
+
 export default function ArticlePage({
   params,
 }: {
@@ -30,24 +34,12 @@ export default function ArticlePage({
   const [sortField, setSortField] = useState<SortField>("date_created");
   const [sortDirection, setSortDirection] = useState<SortDirection>("desc");
 
-  // Panel states
-  const [highlightsOpen, setHighlightsOpen] = useState(
-    () => localStorage.getItem("highlightsOpen") === "true"
-  );
-  const [summaryOpen, setSummaryOpen] = useState(
-    () => localStorage.getItem("summaryOpen") === "true"
-  );
-  const [topicsOpen, setTopicsOpen] = useState(
-    () => localStorage.getItem("topicsOpen") === "true"
-  );
-  const [entitiesOpen, setEntitiesOpen] = useState(
-    () => localStorage.getItem("entitiesOpen") === "true"
-  );
-
-  // Separate desired and actual map states
-  const [desiredMapState, setDesiredMapState] = useState(
-    () => localStorage.getItem("desiredMapState") === "true"
-  );
+  // Panel states with SSR-safe initialization
+  const [highlightsOpen, setHighlightsOpen] = useState(() => getInitialState("highlightsOpen"));
+  const [summaryOpen, setSummaryOpen] = useState(() => getInitialState("summaryOpen"));
+  const [topicsOpen, setTopicsOpen] = useState(() => getInitialState("topicsOpen"));
+  const [entitiesOpen, setEntitiesOpen] = useState(() => getInitialState("entitiesOpen"));
+  const [desiredMapState, setDesiredMapState] = useState(() => getInitialState("desiredMapState"));
   const [mapOpen, setMapOpen] = useState(false);
 
   // Access localStorage after component mounts

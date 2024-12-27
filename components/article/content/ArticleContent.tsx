@@ -5,8 +5,8 @@ import {
   TopicsPanel,
   SummaryPanel,
   MapPanel,
+  EntitiesPanel
 } from "../panels";
-import { EntitiesPanel } from "@/components/entities/EntitiesPanel";
 import type { Article } from "@/types/article";
 
 interface ArticleContentProps {
