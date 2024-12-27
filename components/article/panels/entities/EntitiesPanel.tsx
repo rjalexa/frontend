@@ -12,7 +12,7 @@ interface EntitiesPanelProps extends BasePanelProps {
 
 type EntityTypeFilter = "all" | EntityKind;
 
-export function EntitiesPanel({ isOpen, onClose, article }: EntitiesPanelProps) {
+export default function EntitiesPanel({ isOpen, onClose, article }: EntitiesPanelProps) {
   const [selectedType, setSelectedType] = useState<EntityTypeFilter>("all");
 
   // Handle escape key press
