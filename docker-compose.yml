@@ -1,13 +1,24 @@
 # docker-compose.yml
 services:
-  web:
-    build: .
+  memademo:
+    image: memademo:0.1.3
+    build:
+      context: /home/mema/code/frontend
+      dockerfile: Dockerfile
+      args:
+        NEXT_PUBLIC_SPARQL_URL: http://mema_fuseki:3030
+    container_name: memademo
     ports:
       - "3333:3000"
+    networks:
+      - mema_network
     environment:
       - NODE_ENV=production
       - NEXT_TELEMETRY_DISABLED=1
       - NEXT_PUBLIC_SPARQL_URL=http://mema_fuseki:3030
+    depends_on:
+      - mema_fuseki
+    restart: unless-stopped
 
   web-dev:
     build: 

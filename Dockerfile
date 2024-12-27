@@ -9,6 +9,9 @@ RUN corepack enable \
 
 COPY package.json pnpm-lock.yaml ./
 
+# Build argument for environment variables
+ARG NEXT_PUBLIC_SPARQL_URL
+
 # Install dependencies
 RUN pnpm install --frozen-lockfile
 
@@ -19,6 +22,7 @@ COPY data/ /app/data/
 # Set build-time environment variable
 ARG NEXT_PUBLIC_MEMASTATS_URL=http://memastats:8118
 ENV NEXT_PUBLIC_MEMASTATS_URL=${NEXT_PUBLIC_MEMASTATS_URL}
+ENV NEXT_PUBLIC_SPARQL_URL=$NEXT_PUBLIC_SPARQL_URL
 
 # Build the application
 RUN pnpm build
