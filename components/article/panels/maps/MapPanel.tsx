@@ -185,8 +185,12 @@ const MapPanel: React.FC<MapPanelProps> = ({ isOpen, onClose, article, setDesire
               .addTo(map);
           });
           map.fitBounds(bounds, { padding: [50, 50] });
+          // Update layer after bounds are set
+          updateLayerBasedOnBounds();
         } else {
           map.setView([0, 0], 2);
+          // Update layer after view is set
+          updateLayerBasedOnBounds();
         }
 
         setIsMapReady(true);
