@@ -23,6 +23,7 @@ export default function StatLoader({ queryId, onData, onError }: StatLoaderProps
     }
 
     const loadStat = async () => {
+      let error = null;
       try {
         const timeoutPromise = new Promise((_, reject) => {
           setTimeout(() => reject(new Error('Query timeout')), QUERY_TIMEOUT);
@@ -38,15 +39,25 @@ export default function StatLoader({ queryId, onData, onError }: StatLoaderProps
         }
         
         onData(res);
-      } catch (error) {
+      } catch (err) {
+        error = err;
         if (!isMounted.current) return;
-        console.error(`Error loading stat ${queryId}:`, error);
+        
+        const errorMessage = err.message || 'Unknown error';
+        console.error(`Error loading stat ${queryId}:`, {
+          message: errorMessage,
+          stack: err.stack
+        });
+        
         if (onError) {
-          onError(error);
+          onError(new Error(`Failed to load ${queryId}: ${errorMessage}`));
         }
       } finally {
         if (isMounted.current) {
           setHasAttempted(true);
+          if (error) {
+            console.warn(`Query ${queryId} marked as attempted after error:`, error.message);
+          }
         }
       }
     };

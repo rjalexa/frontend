@@ -49,9 +49,18 @@ async function fetchWithTimeout(
       method: 'GET',
       headers: {
         'Accept': 'application/json'
-      }
+      },
+      // Add cache control headers
+      cache: 'no-cache',
+      credentials: 'same-origin',
     });
+    
     clearTimeout(timeoutId);
+    
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+    
     return response;
   } catch (error) {
     clearTimeout(timeoutId);
@@ -60,15 +69,17 @@ async function fetchWithTimeout(
     const isRetryable = 
       (error.name === 'AbortError' || 
        error.name === 'TypeError' || 
-       error.message === 'Failed to fetch') && 
+       error.message.includes('Failed to fetch') ||
+       error.message.includes('HTTP error!')) && 
       attempt <= MAX_RETRIES;
 
     if (isRetryable) {
-      console.log(`Retrying query ${queryId}, attempt ${attempt + 1} after error:`, error.message);
+      console.warn(`Retrying query ${queryId}, attempt ${attempt + 1}/${MAX_RETRIES} after error:`, error.message);
       await new Promise(resolve => setTimeout(resolve, RETRY_DELAY * attempt)); // Exponential backoff
       return fetchWithTimeout(queryId, attempt + 1);
     }
     
+    console.error(`Query ${queryId} failed permanently after ${attempt} attempts:`, error);
     throw new Error(`Query ${queryId} failed: ${error.message}`);
   }
 }
