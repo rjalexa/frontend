@@ -1,5 +1,8 @@
 /* eslint-disable import/no-unused-modules */
 // lib/sparql/index.ts
+
+const QUERY_TIMEOUT = 30000; // 30 second timeout
+
 export type QueryId = 
   | 'dateRange'
   | 'totalArticles'
@@ -10,7 +13,7 @@ export type QueryId =
   | 'totalPeople'
   | 'topPeople';
 
-const CACHE_DURATION = 15 * 60 * 1000; // 15 minutes
+  const CACHE_DURATION = 60 * 60 * 1000; // 1 hour
 const queryCache = new Map<string, { data: SparqlResponse; timestamp: number }>();
 
 export interface SparqlResponse {
@@ -23,8 +26,6 @@ export interface SparqlResponse {
     }>;
   };
 }
-
-const QUERY_TIMEOUT = 25000; // 25 second timeout
 
 class QueryTimeoutError extends Error {
   constructor(queryId: string) {
