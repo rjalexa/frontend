@@ -26,6 +26,8 @@ export default function StatisticsPage() {
   const [stats, setStats] = useState<Statistics>({});
   const [loading, setLoading] = useState(true);
 
+  const [errors, setErrors] = useState<Record<string, boolean>>({});
+
   const processStatResult = (queryId: QueryId, res: any) => {
     setStats(prevStats => {
       const newStats = { ...prevStats };
@@ -103,7 +105,8 @@ export default function StatisticsPage() {
         <StatLoader 
           key={queryId} 
           queryId={queryId as QueryId} 
-          onData={(res) => processStatResult(queryId as QueryId, res)} 
+          onData={(res) => processStatResult(queryId as QueryId, res)}
+          onError={() => setErrors(prev => ({ ...prev, [queryId]: true }))}
         />
       ))}
       

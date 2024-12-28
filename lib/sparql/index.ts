@@ -24,13 +24,18 @@ export interface SparqlResponse {
 }
 
 const QUERY_TIMEOUT = 3500; // 3.5 second timeout
-const MAX_RETRIES = 2;
-const RETRY_DELAY = 1000; // 1 second
+const MAX_RETRIES = 1; // Reduce retries since they're likely to timeout too
+const RETRY_DELAY = 500; // 0.5 second - faster retry
+const LONG_QUERIES = ['topAuthors', 'topLocations', 'topPeople'];
 
 async function fetchWithTimeout(
   queryId: QueryId,
   attempt: number = 1
 ): Promise<Response> {
+  // Adjust timeout for known long-running queries
+  const timeout = LONG_QUERIES.includes(queryId) ? 
+    QUERY_TIMEOUT * 1.5 : // Give 50% more time
+    QUERY_TIMEOUT;
   const controller = new AbortController();
   const timeoutId = setTimeout(() => {
     controller.abort();

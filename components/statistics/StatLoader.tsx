@@ -6,9 +6,11 @@ import { useEffect, useRef } from 'react';
 interface StatLoaderProps {
   queryId: QueryId;
   onData: (data: any) => void;
+  onError?: (error: Error) => void;
 }
 
-export default function StatLoader({ queryId, onData }: StatLoaderProps) {
+export default function StatLoader({ queryId, onData, onError }: StatLoaderProps) {
+  const retryCount = useRef(0);
   useEffect(() => {
     const abortController = new AbortController();
     const loadStat = async () => {
@@ -26,6 +28,9 @@ export default function StatLoader({ queryId, onData }: StatLoaderProps) {
         onData(res);
       } catch (error) {
         console.error(`Error loading stat ${queryId}:`, error);
+        if (onError) {
+          onError(error);
+        }
       }
     };
 
