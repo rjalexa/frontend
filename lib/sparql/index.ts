@@ -25,10 +25,7 @@ export interface SparqlResponse {
 
 const QUERY_TIMEOUT = 25000; // 25 second timeout
 
-async function fetchWithTimeout(
-  queryId: QueryId
-): Promise<Response> {
-  
+async function fetchWithTimeout(queryId: QueryId): Promise<Response> {
   const controller = new AbortController();
   const timeoutId = setTimeout(() => {
     controller.abort();
@@ -42,7 +39,6 @@ async function fetchWithTimeout(
       headers: {
         'Accept': 'application/json'
       },
-      // Add cache control headers
       cache: 'no-cache',
       credentials: 'same-origin',
     });
@@ -56,17 +52,8 @@ async function fetchWithTimeout(
     return response;
   } catch (error) {
     clearTimeout(timeoutId);
-    
-    // Handle network errors and retries
-    const isRetryable = 
-      (error.name === 'AbortError' || 
-       error.name === 'TypeError' || 
-       error.message.includes('Failed to fetch') ||
-       error.message.includes('HTTP error!')) && 
-      attempt <= MAX_RETRIES;
-
     console.error(`Query ${queryId} failed:`, error);
-    throw new Error(`Query ${queryId} failed: ${error.message}`);
+    throw error;
   }
 }
 

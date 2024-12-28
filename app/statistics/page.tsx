@@ -73,30 +73,44 @@ export default function StatisticsPage() {
   };
 
   useEffect(() => {
-    const loadStats = () => {
-      setLoading(true);
-      console.log('Fetching statistics...');
-      
-      // Load queries in priority order
-      const queryPriorities: QueryId[][] = [
-        // Priority 1: Fast basic counts
-        ['totalArticles', 'uniqueAuthors'],
-        // Priority 2: Additional counts
-        ['uniqueLocations', 'totalPeople'],
-        // Priority 3: Complex top-N queries
-        ['topAuthors'],
-        // Priority 4: Remaining top-N queries
-        ['topLocations', 'topPeople']
-      ];
+    const queries: QueryId[] = [
+      'totalArticles',
+      'uniqueAuthors',
+      'uniqueLocations',
+      'totalPeople',
+      'topAuthors',
+      'topLocations',
+      'topPeople'
+    ];
 
-      // Show initial content quickly
-      const timeout = setTimeout(() => setLoading(false), 2000);
+    setLoading(true);
+    console.log('Fetching statistics...');
 
-      return queryPriorities;
+    // Launch all queries in parallel
+    queries.forEach(queryId => {
+      const timeoutId = setTimeout(() => {
+        setErrors(prev => ({ ...prev, [queryId]: true }));
+      }, 25000); // 25 second timeout
+
+      executeSparqlQuery(queryId)
+        .then(res => {
+          clearTimeout(timeoutId);
+          processStatResult(queryId, res);
+        })
+        .catch(error => {
+          clearTimeout(timeoutId);
+          console.error(`Query ${queryId} failed:`, error);
+          setErrors(prev => ({ ...prev, [queryId]: true }));
+        });
+    });
+
+    // Show initial loading state for at least 2 seconds
+    const loadingTimeout = setTimeout(() => setLoading(false), 2000);
+    
+    return () => {
+      clearTimeout(loadingTimeout);
     };
-
-    loadStats();
-  }, []);
+  }, []); // Empty dependency array ensures this runs only once
 
   return (
     <div className="container mx-auto py-8 px-4">
