@@ -36,26 +36,40 @@ async function fetchWithTimeout(
   const timeout = LONG_QUERIES.includes(queryId) ? 
     QUERY_TIMEOUT * 1.5 : // Give 50% more time
     QUERY_TIMEOUT;
+  
   const controller = new AbortController();
   const timeoutId = setTimeout(() => {
     controller.abort();
-    console.warn(`Query ${queryId} timed out after ${QUERY_TIMEOUT}ms`);
-  }, QUERY_TIMEOUT);
+    console.warn(`Query ${queryId} timed out after ${timeout}ms`);
+  }, timeout);
 
   try {
     const response = await fetch(`/api/sparql?queryId=${queryId}`, {
-      signal: controller.signal
+      signal: controller.signal,
+      method: 'GET',
+      headers: {
+        'Accept': 'application/json'
+      }
     });
     clearTimeout(timeoutId);
     return response;
   } catch (error) {
     clearTimeout(timeoutId);
-    if (error.name === 'AbortError' && attempt <= MAX_RETRIES) {
-      console.log(`Retrying query ${queryId}, attempt ${attempt + 1}`);
-      await new Promise(resolve => setTimeout(resolve, RETRY_DELAY));
+    
+    // Handle network errors and retries
+    const isRetryable = 
+      (error.name === 'AbortError' || 
+       error.name === 'TypeError' || 
+       error.message === 'Failed to fetch') && 
+      attempt <= MAX_RETRIES;
+
+    if (isRetryable) {
+      console.log(`Retrying query ${queryId}, attempt ${attempt + 1} after error:`, error.message);
+      await new Promise(resolve => setTimeout(resolve, RETRY_DELAY * attempt)); // Exponential backoff
       return fetchWithTimeout(queryId, attempt + 1);
     }
-    throw error;
+    
+    throw new Error(`Query ${queryId} failed: ${error.message}`);
   }
 }
 
@@ -83,10 +97,17 @@ export async function executeSparqlQuery(queryId: QueryId): Promise<SparqlRespon
     
     if (!response.ok) {
       const errorText = await response.text();
-      throw new Error(`SPARQL query failed: ${response.statusText} - ${errorText}`);
+      console.error(`SPARQL query ${queryId} failed with status ${response.status}:`, errorText);
+      throw new Error(`SPARQL query failed: ${response.status} ${response.statusText}`);
     }
 
-    const data = await response.json();
+    let data;
+    try {
+      data = await response.json();
+    } catch (error) {
+      console.error(`Failed to parse JSON response for ${queryId}:`, error);
+      throw new Error(`Invalid JSON response for query ${queryId}`);
+    }
     console.log(`SPARQL response for ${queryId}:`, data);
     
     // Cache the result
