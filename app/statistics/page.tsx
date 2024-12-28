@@ -28,6 +28,30 @@ export default function StatisticsPage() {
   useEffect(() => {
     const fetchData = async () => {
       try {
+        console.log('Fetching statistics...');
+        const queries = [
+          'totalArticles',
+          'uniqueAuthors',
+          'uniqueLocations',
+          'totalPeople',
+          'topAuthors',
+          'topLocations',
+          'topPeople'
+        ];
+
+        const results = await Promise.all(
+          queries.map(async (queryId) => {
+            try {
+              const res = await executeSparqlQuery(queryId);
+              console.log(`Query ${queryId} response:`, res);
+              return res;
+            } catch (error) {
+              console.error(`Error executing query ${queryId}:`, error);
+              throw error;
+            }
+          })
+        );
+
         const [
           totalArticlesRes,
           uniqueAuthorsRes,
@@ -36,7 +60,7 @@ export default function StatisticsPage() {
           topAuthorsRes,
           topLocationsRes,
           topPeopleRes
-        ] = await Promise.all([
+        ] = results;
           executeSparqlQuery('totalArticles'),
           executeSparqlQuery('uniqueAuthors'),
           executeSparqlQuery('uniqueLocations'),
