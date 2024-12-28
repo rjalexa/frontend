@@ -32,8 +32,8 @@ async function fetchWithTimeout(
   const controller = new AbortController();
   const timeoutId = setTimeout(() => {
     controller.abort();
-    console.warn(`Query ${queryId} timed out after ${timeout}ms`);
-  }, timeout);
+    console.warn(`Query ${queryId} timed out after ${QUERY_TIMEOUT}ms`);
+  }, QUERY_TIMEOUT);
 
   try {
     const response = await fetch(`/api/sparql?queryId=${queryId}`, {
