@@ -61,14 +61,6 @@ export default function StatisticsPage() {
           topLocationsRes,
           topPeopleRes
         ] = results;
-          executeSparqlQuery('totalArticles'),
-          executeSparqlQuery('uniqueAuthors'),
-          executeSparqlQuery('uniqueLocations'),
-          executeSparqlQuery('totalPeople'),
-          executeSparqlQuery('topAuthors'),
-          executeSparqlQuery('topLocations'),
-          executeSparqlQuery('topPeople')
-        ]);
 
         setStats({
           totalArticles: Number(totalArticlesRes.results.bindings[0].count.value),
