@@ -9,7 +9,7 @@ export type QueryId =
   | 'totalPeople'
   | 'topPeople';
 
-const CACHE_DURATION = 5 * 60 * 1000; // 5 minutes
+const CACHE_DURATION = 15 * 60 * 1000; // 15 minutes
 const queryCache = new Map<string, { data: SparqlResponse; timestamp: number }>();
 
 export interface SparqlResponse {
@@ -23,7 +23,7 @@ export interface SparqlResponse {
   };
 }
 
-const QUERY_TIMEOUT = 5000; // 5 second timeout
+const QUERY_TIMEOUT = 3500; // 3.5 second timeout
 const MAX_RETRIES = 2;
 const RETRY_DELAY = 1000; // 1 second
 
