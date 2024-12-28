@@ -1,6 +1,9 @@
+'use client';
+
 // app/layout.tsx
 import type { Metadata } from "next";
 import { Inter as FontSans } from "next/font/google";
+import { ClerkProvider } from "@clerk/nextjs";
 import { ThemeProvider } from "./providers/theme-provider";
 import { NavigationProvider } from "./providers/navigation-provider";
 import { Suspense } from "react";
@@ -13,10 +16,36 @@ const fontSans = FontSans({
   variable: "--font-sans",
 });
 
+// Metadata needs to be in a separate component since we're using 'use client'
 export const metadata: Metadata = {
   title: "MeMa V7",
   description: "Il Manifesto - Isagog SrL",
 };
+
+function RootLayoutContent({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
+  return (
+    <ClerkProvider>
+      <ThemeProvider defaultTheme="light">
+        <NavigationProvider>
+          <Header />
+          <main>
+            <Suspense fallback={
+              <div className="min-h-[calc(100vh-176px)] flex flex-col items-center justify-center">
+                <div className="animate-pulse text-blue-700 text-lg">Loading MeMa...</div>
+              </div>
+            }>
+              {children}
+            </Suspense>
+          </main>
+        </NavigationProvider>
+      </ThemeProvider>
+    </ClerkProvider>
+  );
+}
 
 export default function RootLayout({
   children,
@@ -33,18 +62,9 @@ export default function RootLayout({
         />
       </head>
       <body className="antialiased">
-        <ThemeProvider defaultTheme="light">
-          <NavigationProvider>
-            <Header />
-            <main>
-              <Suspense fallback={<div className="min-h-[calc(100vh-176px)] flex flex-col items-center justify-center">
-                <div className="animate-pulse text-blue-700 text-lg">Loading MeMa...</div>
-              </div>}>
-                {children}
-              </Suspense>
-            </main>
-          </NavigationProvider>
-        </ThemeProvider>
+        <RootLayoutContent>
+          {children}
+        </RootLayoutContent>
       </body>
     </html>
   );
