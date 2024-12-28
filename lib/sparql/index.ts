@@ -23,19 +23,11 @@ export interface SparqlResponse {
   };
 }
 
-const QUERY_TIMEOUT = 30000; // 30 second timeout
-const MAX_RETRIES = 2; // Allow more retries with longer timeout
-const RETRY_DELAY = 1000; // 1 second between retries
-const LONG_QUERIES = ['topAuthors', 'topLocations', 'topPeople'];
+const QUERY_TIMEOUT = 25000; // 25 second timeout
 
 async function fetchWithTimeout(
-  queryId: QueryId,
-  attempt: number = 1
+  queryId: QueryId
 ): Promise<Response> {
-  // Adjust timeout for known long-running queries
-  const timeout = LONG_QUERIES.includes(queryId) ? 
-    QUERY_TIMEOUT * 1.5 : // Give 50% more time
-    QUERY_TIMEOUT;
   
   const controller = new AbortController();
   const timeoutId = setTimeout(() => {
@@ -73,13 +65,7 @@ async function fetchWithTimeout(
        error.message.includes('HTTP error!')) && 
       attempt <= MAX_RETRIES;
 
-    if (isRetryable) {
-      console.warn(`Retrying query ${queryId}, attempt ${attempt + 1}/${MAX_RETRIES} after error:`, error.message);
-      await new Promise(resolve => setTimeout(resolve, RETRY_DELAY * attempt)); // Exponential backoff
-      return fetchWithTimeout(queryId, attempt + 1);
-    }
-    
-    console.error(`Query ${queryId} failed permanently after ${attempt} attempts:`, error);
+    console.error(`Query ${queryId} failed:`, error);
     throw new Error(`Query ${queryId} failed: ${error.message}`);
   }
 }

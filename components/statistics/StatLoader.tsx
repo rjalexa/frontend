@@ -9,7 +9,7 @@ interface StatLoaderProps {
   onError?: (error: Error) => void;
 }
 
-const QUERY_TIMEOUT = 30000; // 30 seconds
+const QUERY_TIMEOUT = 25000; // 25 seconds
 
 export default function StatLoader({ queryId, onData, onError }: StatLoaderProps) {
   const [hasAttempted, setHasAttempted] = useState(false);
