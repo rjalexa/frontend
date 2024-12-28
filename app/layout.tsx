@@ -1,17 +1,9 @@
-import type { Metadata } from "next";
-import { Inter as FontSans } from "next/font/google";
-import RootLayoutContent from "./components/RootLayoutContent";
-import "./globals.css";
+'use client';
 
-const fontSans = FontSans({
-  subsets: ["latin"],
-  variable: "--font-sans",
-});
-
-export const metadata: Metadata = {
-  title: "MeMa V7",
-  description: "Il Manifesto - Isagog SrL",
-};
+// app/layout.tsx
+import { ClerkProvider } from '@clerk/nextjs';
+import ClientLayout from './client-layout';
+import './globals.css';
 
 export default function RootLayout({
   children,
@@ -19,19 +11,12 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className={fontSans.variable}>
-      <head>
-        <link
-          rel="preload"
-          href="/mema.svg"
-          as="image"
-        />
-      </head>
-      <body className="antialiased">
-        <RootLayoutContent>
-          {children}
-        </RootLayoutContent>
-      </body>
-    </html>
+    <ClerkProvider>
+      <html lang="en">
+        <body>
+          <ClientLayout>{children}</ClientLayout>
+        </body>
+      </html>
+    </ClerkProvider>
   );
 }
