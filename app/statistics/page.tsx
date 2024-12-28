@@ -42,8 +42,10 @@ export default function StatisticsPage() {
         const results = await Promise.all(
           queries.map(async (queryId) => {
             try {
+              const startTime = performance.now();
               const res = await executeSparqlQuery(queryId);
-              console.log(`Query ${queryId} response:`, res);
+              const duration = performance.now() - startTime;
+              console.log(`Query ${queryId} completed in ${duration.toFixed(0)}ms:`, res);
               // Validate response structure
               if (!res?.results?.bindings) {
                 console.error(`Invalid response structure for ${queryId}:`, res);
