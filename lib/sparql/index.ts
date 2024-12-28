@@ -23,7 +23,7 @@ export interface SparqlResponse {
   };
 }
 
-const QUERY_TIMEOUT = 10000; // 10 second timeout
+const QUERY_TIMEOUT = 5000; // 5 second timeout
 const MAX_RETRIES = 2;
 const RETRY_DELAY = 1000; // 1 second
 

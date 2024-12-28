@@ -1,7 +1,7 @@
 'use client';
 
 import { QueryId, executeSparqlQuery } from '@/lib/sparql';
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 
 interface StatLoaderProps {
   queryId: QueryId;
@@ -10,6 +10,7 @@ interface StatLoaderProps {
 
 export default function StatLoader({ queryId, onData }: StatLoaderProps) {
   useEffect(() => {
+    const abortController = new AbortController();
     const loadStat = async () => {
       try {
         const startTime = performance.now();
@@ -29,6 +30,10 @@ export default function StatLoader({ queryId, onData }: StatLoaderProps) {
     };
 
     loadStat();
+    
+    return () => {
+      abortController.abort();
+    };
   }, [queryId, onData]);
 
   return null;

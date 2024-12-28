@@ -74,21 +74,18 @@ export default function StatisticsPage() {
       setLoading(true);
       console.log('Fetching statistics...');
       
-      // Start all queries independently
-      const queries: QueryId[] = [
-        'totalArticles',
-        'uniqueAuthors',
-        'uniqueLocations',
-        'totalPeople',
-        'topAuthors',
-        'topLocations',
-        'topPeople'
+      // Group related queries together
+      const queryGroups: QueryId[][] = [
+        // Basic stats group
+        ['totalArticles', 'uniqueAuthors', 'uniqueLocations', 'totalPeople'],
+        // Top items group
+        ['topAuthors', 'topLocations', 'topPeople']
       ];
 
-      // Set a timeout to show content even if some queries are still loading
-      setTimeout(() => setLoading(false), 5000);
+      // Set a timeout to show partial content
+      const timeout = setTimeout(() => setLoading(false), 3000);
 
-      return queries;
+      return queryGroups;
     };
 
     loadStats();
@@ -97,8 +94,17 @@ export default function StatisticsPage() {
   return (
     <div className="container mx-auto py-8 px-4">
       <h1 className="text-3xl font-bold mb-8 text-gray-800">Statistiche</h1>
-      {['totalArticles', 'uniqueAuthors', 'uniqueLocations', 'totalPeople', 
-        'topAuthors', 'topLocations', 'topPeople'].map((queryId) => (
+      {/* Basic stats queries */}
+      {['totalArticles', 'uniqueAuthors', 'uniqueLocations', 'totalPeople'].map((queryId) => (
+        <StatLoader 
+          key={queryId} 
+          queryId={queryId as QueryId} 
+          onData={(res) => processStatResult(queryId as QueryId, res)} 
+        />
+      ))}
+      
+      {/* Top items queries - loaded after basic stats */}
+      {loading === false && ['topAuthors', 'topLocations', 'topPeople'].map((queryId) => (
         <StatLoader 
           key={queryId} 
           queryId={queryId as QueryId} 
