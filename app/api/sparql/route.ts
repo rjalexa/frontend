@@ -124,12 +124,44 @@ export async function GET(request: NextRequest) {
       throw new Error(`SPARQL query failed: ${response.statusText} - ${errorText}`);
     }
 
-    const data = await response.json();
+    let data;
+    try {
+      data = await response.json();
+    } catch (jsonError) {
+      console.error('Failed to parse SPARQL response:', jsonError);
+      const responseText = await response.text();
+      console.error('Raw response:', responseText);
+      return NextResponse.json(
+        { 
+          error: 'Invalid SPARQL response format',
+          details: jsonError.message,
+          raw: responseText.substring(0, 500) // First 500 chars for debugging
+        },
+        { status: 500 }
+      );
+    }
+
+    // Validate response structure
+    if (!data?.results?.bindings) {
+      console.error('Invalid SPARQL response structure:', data);
+      return NextResponse.json(
+        { 
+          error: 'Invalid SPARQL response structure',
+          received: JSON.stringify(data).substring(0, 500)
+        },
+        { status: 500 }
+      );
+    }
+
     return NextResponse.json(data);
   } catch (error) {
     console.error('SPARQL query failed:', error);
     return NextResponse.json(
-      { error: 'Failed to execute SPARQL query' },
+      { 
+        error: 'Failed to execute SPARQL query',
+        message: error.message,
+        type: error.name
+      },
       { status: 500 }
     );
   }
