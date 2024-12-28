@@ -23,9 +23,9 @@ export interface SparqlResponse {
   };
 }
 
-const QUERY_TIMEOUT = 3500; // 3.5 second timeout
-const MAX_RETRIES = 1; // Reduce retries since they're likely to timeout too
-const RETRY_DELAY = 500; // 0.5 second - faster retry
+const QUERY_TIMEOUT = 30000; // 30 second timeout
+const MAX_RETRIES = 2; // Allow more retries with longer timeout
+const RETRY_DELAY = 1000; // 1 second between retries
 const LONG_QUERIES = ['topAuthors', 'topLocations', 'topPeople'];
 
 async function fetchWithTimeout(

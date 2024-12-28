@@ -27,10 +27,12 @@ export default function StatLoader({ queryId, onData, onError }: StatLoaderProps
         
         onData(res);
       } catch (error) {
-        console.error(`Error loading stat ${queryId}:`, error);
+        console.error(`Error loading stat ${queryId} after ${duration.toFixed(0)}ms:`, error);
         if (onError) {
           onError(error);
         }
+        // Don't retry - let the timeout handle it
+        return;
       }
     };
 

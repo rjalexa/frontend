@@ -13,7 +13,9 @@ export default function StatsCard({ title, value, isLoading }: StatsCardProps) {
           {isLoading ? (
             <div className="flex items-center space-x-2">
               <div className="w-4 h-4 bg-gray-200 rounded-full animate-pulse" />
-              <span className="text-gray-500">Caricamento statistiche...</span>
+              <span className="text-gray-500">
+                {value === undefined ? "Caricamento statistiche..." : "Query fallita..."}
+              </span>
             </div>
           ) : (
             <p className="text-3xl font-bold text-gray-900">
