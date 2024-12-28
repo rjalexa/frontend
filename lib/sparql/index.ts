@@ -61,9 +61,14 @@ export async function executeSparqlQuery(queryId: QueryId): Promise<SparqlRespon
 
     // Check cache
     const cached = queryCache.get(queryId);
-    if (cached && (Date.now() - cached.timestamp) < CACHE_DURATION) {
-      console.log(`Using cached result for ${queryId}`);
-      return cached.data;
+    if (cached) {
+      const age = Date.now() - cached.timestamp;
+      if (age < CACHE_DURATION) {
+        console.log(`Using cached result for ${queryId} (age: ${(age/1000).toFixed(1)}s)`);
+        return cached.data;
+      } else {
+        console.log(`Cache expired for ${queryId} (age: ${(age/1000).toFixed(1)}s)`);
+      }
     }
     
     const response = await fetchWithTimeout(queryId);

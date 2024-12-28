@@ -74,18 +74,22 @@ export default function StatisticsPage() {
       setLoading(true);
       console.log('Fetching statistics...');
       
-      // Group related queries together
-      const queryGroups: QueryId[][] = [
-        // Basic stats group
-        ['totalArticles', 'uniqueAuthors', 'uniqueLocations', 'totalPeople'],
-        // Top items group
-        ['topAuthors', 'topLocations', 'topPeople']
+      // Load queries in priority order
+      const queryPriorities: QueryId[][] = [
+        // Priority 1: Fast basic counts
+        ['totalArticles', 'uniqueAuthors'],
+        // Priority 2: Additional counts
+        ['uniqueLocations', 'totalPeople'],
+        // Priority 3: Complex top-N queries
+        ['topAuthors'],
+        // Priority 4: Remaining top-N queries
+        ['topLocations', 'topPeople']
       ];
 
-      // Set a timeout to show partial content
-      const timeout = setTimeout(() => setLoading(false), 3000);
+      // Show initial content quickly
+      const timeout = setTimeout(() => setLoading(false), 2000);
 
-      return queryGroups;
+      return queryPriorities;
     };
 
     loadStats();
@@ -94,7 +98,7 @@ export default function StatisticsPage() {
   return (
     <div className="container mx-auto py-8 px-4">
       <h1 className="text-3xl font-bold mb-8 text-gray-800">Statistiche</h1>
-      {/* Basic stats queries */}
+      {/* Priority 1 & 2 queries */}
       {['totalArticles', 'uniqueAuthors', 'uniqueLocations', 'totalPeople'].map((queryId) => (
         <StatLoader 
           key={queryId} 
@@ -103,8 +107,17 @@ export default function StatisticsPage() {
         />
       ))}
       
-      {/* Top items queries - loaded after basic stats */}
-      {loading === false && ['topAuthors', 'topLocations', 'topPeople'].map((queryId) => (
+      {/* Priority 3 query */}
+      {!loading && (
+        <StatLoader 
+          key="topAuthors"
+          queryId="topAuthors"
+          onData={(res) => processStatResult('topAuthors', res)}
+        />
+      )}
+      
+      {/* Priority 4 queries - load last */}
+      {!loading && stats.topAuthors && ['topLocations', 'topPeople'].map((queryId) => (
         <StatLoader 
           key={queryId} 
           queryId={queryId as QueryId} 
