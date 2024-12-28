@@ -20,21 +20,43 @@ export interface SparqlResponse {
   };
 }
 
-const QUERY_TIMEOUT = 5000; // 5 second timeout
+const QUERY_TIMEOUT = 10000; // 10 second timeout
+const MAX_RETRIES = 2;
+const RETRY_DELAY = 1000; // 1 second
+
+async function fetchWithTimeout(
+  queryId: QueryId,
+  attempt: number = 1
+): Promise<Response> {
+  const controller = new AbortController();
+  const timeoutId = setTimeout(() => {
+    controller.abort();
+    console.warn(`Query ${queryId} timed out after ${QUERY_TIMEOUT}ms`);
+  }, QUERY_TIMEOUT);
+
+  try {
+    const response = await fetch(`/api/sparql?queryId=${queryId}`, {
+      signal: controller.signal
+    });
+    clearTimeout(timeoutId);
+    return response;
+  } catch (error) {
+    clearTimeout(timeoutId);
+    if (error.name === 'AbortError' && attempt <= MAX_RETRIES) {
+      console.log(`Retrying query ${queryId}, attempt ${attempt + 1}`);
+      await new Promise(resolve => setTimeout(resolve, RETRY_DELAY));
+      return fetchWithTimeout(queryId, attempt + 1);
+    }
+    throw error;
+  }
+}
 
 export async function executeSparqlQuery(queryId: QueryId): Promise<SparqlResponse> {
   try {
     const startTime = performance.now();
     console.log(`Executing SPARQL query: ${queryId}`);
     
-    const controller = new AbortController();
-    const timeoutId = setTimeout(() => controller.abort(), QUERY_TIMEOUT);
-    
-    const response = await fetch(`/api/sparql?queryId=${queryId}`, {
-      signal: controller.signal
-    });
-    
-    clearTimeout(timeoutId);
+    const response = await fetchWithTimeout(queryId);
     
     const duration = performance.now() - startTime;
     console.log(`Query ${queryId} completed in ${duration.toFixed(0)}ms`);

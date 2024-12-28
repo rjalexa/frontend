@@ -43,7 +43,10 @@ export default function StatisticsPage() {
           queries.map(async (queryId) => {
             try {
               const startTime = performance.now();
-              const res = await executeSparqlQuery(queryId);
+              const res = await executeSparqlQuery(queryId).catch(error => {
+                console.error(`Failed to fetch ${queryId} after retries:`, error);
+                return { results: { bindings: [] } };
+              });
               const duration = performance.now() - startTime;
               console.log(`Query ${queryId} completed in ${duration.toFixed(0)}ms:`, res);
               // Validate response structure
