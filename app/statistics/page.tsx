@@ -24,7 +24,8 @@ interface Statistics {
 
 export default function StatisticsPage() {
   const [stats, setStats] = useState<Statistics>({});
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState<boolean>(true);
+  const [queryTimeouts, setQueryTimeouts] = useState<Set<string>>(new Set());
 
   const [errors, setErrors] = useState<Record<string, boolean>>({});
 
@@ -106,7 +107,10 @@ export default function StatisticsPage() {
           key="totalArticles"
           queryId="totalArticles"
           onData={(res) => processStatResult('totalArticles', res)}
-          onError={() => setErrors(prev => ({ ...prev, totalArticles: true }))}
+          onError={() => {
+            setErrors(prev => ({ ...prev, totalArticles: true }));
+            setQueryTimeouts(prev => new Set([...prev, 'totalArticles']));
+          }}
         />
         <StatLoader 
           key="uniqueAuthors"

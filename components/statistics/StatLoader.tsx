@@ -1,7 +1,7 @@
 'use client';
 
 import { QueryId, executeSparqlQuery } from '@/lib/sparql';
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 interface StatLoaderProps {
   queryId: QueryId;
@@ -9,30 +9,44 @@ interface StatLoaderProps {
   onError?: (error: Error) => void;
 }
 
+const QUERY_TIMEOUT = 30000; // 30 seconds
+
 export default function StatLoader({ queryId, onData, onError }: StatLoaderProps) {
-  const retryCount = useRef(0);
+  const [hasAttempted, setHasAttempted] = useState(false);
+  const isMounted = useRef(true);
+  
   useEffect(() => {
-    let isMounted = true;
+    isMounted.current = true;
+    
+    if (hasAttempted) {
+      return; // Don't retry if we've already attempted
+    }
+
     const loadStat = async () => {
       try {
-        const startTime = performance.now();
-        const res = await executeSparqlQuery(queryId);
-        const duration = performance.now() - startTime;
+        const timeoutPromise = new Promise((_, reject) => {
+          setTimeout(() => reject(new Error('Query timeout')), QUERY_TIMEOUT);
+        });
+
+        const queryPromise = executeSparqlQuery(queryId);
+        const res = await Promise.race([queryPromise, timeoutPromise]);
         
-        if (!isMounted) return;
+        if (!isMounted.current) return;
         
         if (!res?.results?.bindings) {
-          console.error(`Invalid response structure for ${queryId}:`, res);
-          return;
+          throw new Error('Invalid response structure');
         }
         
-        console.log(`Query ${queryId} completed in ${duration.toFixed(0)}ms`);
         onData(res);
       } catch (error) {
-        if (!isMounted) return;
+        if (!isMounted.current) return;
         console.error(`Error loading stat ${queryId}:`, error);
         if (onError) {
           onError(error);
+        }
+      } finally {
+        if (isMounted.current) {
+          setHasAttempted(true);
         }
       }
     };
@@ -40,9 +54,9 @@ export default function StatLoader({ queryId, onData, onError }: StatLoaderProps
     loadStat();
     
     return () => {
-      isMounted = false;
+      isMounted.current = false;
     };
-  }, [queryId, onData]);
+  }, [queryId, onData, onError, hasAttempted]);
 
   return null;
 }
