@@ -44,6 +44,14 @@ export default function StatisticsPage() {
             try {
               const res = await executeSparqlQuery(queryId);
               console.log(`Query ${queryId} response:`, res);
+              // Validate response structure
+              if (!res?.results?.bindings) {
+                console.error(`Invalid response structure for ${queryId}:`, res);
+                throw new Error(`Invalid response structure for ${queryId}`);
+              }
+              if (res.results.bindings.length === 0) {
+                console.warn(`Empty results for ${queryId}`);
+              }
               return res;
             } catch (error) {
               console.error(`Error executing query ${queryId}:`, error);
@@ -62,23 +70,53 @@ export default function StatisticsPage() {
           topPeopleRes
         ] = results;
 
-        setStats({
-          totalArticles: Number(totalArticlesRes.results.bindings[0].count.value),
-          uniqueAuthors: Number(uniqueAuthorsRes.results.bindings[0].count.value),
-          uniqueLocations: Number(uniqueLocationsRes.results.bindings[0].count.value),
-          totalPeople: Number(totalPeopleRes.results.bindings[0].count.value),
-          topAuthors: topAuthorsRes.results.bindings.map(b => ({
-            label: b.author.value,
-            value: Number(b.count.value)
-          })),
-          topLocations: topLocationsRes.results.bindings.map(b => ({
-            label: b.location.value,
-            value: Number(b.count.value)
-          })),
-          topPeople: topPeopleRes.results.bindings.map(b => ({
-            label: b.person.value,
-            value: Number(b.count.value)
-          }))
+        const newStats: Statistics = {};
+        
+        // Process single value responses
+        if (totalArticlesRes.results.bindings[0]?.count) {
+          newStats.totalArticles = Number(totalArticlesRes.results.bindings[0].count.value);
+        }
+        if (uniqueAuthorsRes.results.bindings[0]?.count) {
+          newStats.uniqueAuthors = Number(uniqueAuthorsRes.results.bindings[0].count.value);
+        }
+        if (uniqueLocationsRes.results.bindings[0]?.count) {
+          newStats.uniqueLocations = Number(uniqueLocationsRes.results.bindings[0].count.value);
+        }
+        if (totalPeopleRes.results.bindings[0]?.count) {
+          newStats.totalPeople = Number(totalPeopleRes.results.bindings[0].count.value);
+        }
+
+        // Process list responses
+        // Process list responses with validation
+        if (topAuthorsRes.results.bindings.length > 0) {
+          newStats.topAuthors = topAuthorsRes.results.bindings
+            .filter(b => b.author?.value && b.count?.value)
+            .map(b => ({
+              label: b.author.value,
+              value: Number(b.count.value)
+            }));
+        }
+        
+        if (topLocationsRes.results.bindings.length > 0) {
+          newStats.topLocations = topLocationsRes.results.bindings
+            .filter(b => b.location?.value && b.count?.value)
+            .map(b => ({
+              label: b.location.value,
+              value: Number(b.count.value)
+            }));
+        }
+        
+        if (topPeopleRes.results.bindings.length > 0) {
+          newStats.topPeople = topPeopleRes.results.bindings
+            .filter(b => b.person?.value && b.count?.value)
+            .map(b => ({
+              label: b.person.value,
+              value: Number(b.count.value)
+            }));
+        }
+
+        console.log('Processed statistics:', newStats);
+        setStats(newStats
         });
       } catch (error) {
         console.error('Error fetching statistics:', error);
