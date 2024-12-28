@@ -9,6 +9,9 @@ export type QueryId =
   | 'totalPeople'
   | 'topPeople';
 
+const CACHE_DURATION = 5 * 60 * 1000; // 5 minutes
+const queryCache = new Map<string, { data: SparqlResponse; timestamp: number }>();
+
 export interface SparqlResponse {
   results: {
     bindings: Array<{
@@ -55,6 +58,13 @@ export async function executeSparqlQuery(queryId: QueryId): Promise<SparqlRespon
   try {
     const startTime = performance.now();
     console.log(`Executing SPARQL query: ${queryId}`);
+
+    // Check cache
+    const cached = queryCache.get(queryId);
+    if (cached && (Date.now() - cached.timestamp) < CACHE_DURATION) {
+      console.log(`Using cached result for ${queryId}`);
+      return cached.data;
+    }
     
     const response = await fetchWithTimeout(queryId);
     
@@ -68,6 +78,10 @@ export async function executeSparqlQuery(queryId: QueryId): Promise<SparqlRespon
 
     const data = await response.json();
     console.log(`SPARQL response for ${queryId}:`, data);
+    
+    // Cache the result
+    queryCache.set(queryId, { data, timestamp: Date.now() });
+    
     return data;
   } catch (error) {
     console.error(`Failed to execute SPARQL query ${queryId}:`, error);
