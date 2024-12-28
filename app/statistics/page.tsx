@@ -18,18 +18,15 @@ export default function StatisticsPage() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const [totalArticles, uniqueAuthors, uniqueLocations] = await Promise.all([
+        await Promise.all([
           executeSparqlQuery('totalArticles').then(res => {
             setStats(prev => ({ ...prev, totalArticles: Number(res.results.bindings[0].count.value) }));
-            return res;
           }),
           executeSparqlQuery('uniqueAuthors').then(res => {
             setStats(prev => ({ ...prev, uniqueAuthors: Number(res.results.bindings[0].count.value) }));
-            return res;
           }),
           executeSparqlQuery('uniqueLocations').then(res => {
             setStats(prev => ({ ...prev, uniqueLocations: Number(res.results.bindings[0].count.value) }));
-            return res;
           }),
         ]);
       } catch (error) {
