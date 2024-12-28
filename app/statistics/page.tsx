@@ -1,18 +1,24 @@
 // app/statistics/page.tsx
-'use client';
+"use client";
 
-import StatsCard from '@/components/statistics/StatsCard';
-import ListStatsCard from '@/components/statistics/ListStatsCard';
-import StatLoader from '@/components/statistics/StatLoader';
-import { executeSparqlQuery } from '@/lib/sparql';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from "react";
+import StatsCard from "@/components/statistics/StatsCard";
+import ListStatsCard from "@/components/statistics/ListStatsCard";
+import { QueryId } from "@/lib/sparql";
+import { executeSparqlQuery } from "@/lib/sparql";
+
+interface DateRange {
+  oldestDate?: string;
+  mostRecentDate?: string;
+}
 
 interface ListItem {
   label: string;
   value: number;
 }
 
-interface Statistics {
+interface QueryResults {
+  dateRange?: DateRange;
   totalArticles?: number;
   uniqueAuthors?: number;
   uniqueLocations?: number;
@@ -22,194 +28,274 @@ interface Statistics {
   topPeople?: ListItem[];
 }
 
+interface QueryStatus {
+  [key: string]: "loading" | "success" | "error";
+}
+
 export default function StatisticsPage() {
-  const [stats, setStats] = useState<Statistics>({});
-  const [loading, setLoading] = useState<boolean>(true);
-  const [queryTimeouts, setQueryTimeouts] = useState<Set<string>>(new Set());
+  const [results, setResults] = useState<QueryResults>({});
+  const [queryStatus, setQueryStatus] = useState<QueryStatus>({});
 
-  const [errors, setErrors] = useState<Record<string, boolean>>({});
+  const executeQuery = useCallback(async (queryId: QueryId) => {
+    setQueryStatus((prev) => ({ ...prev, [queryId]: "loading" }));
 
-  const processStatResult = (queryId: QueryId, res: any) => {
-    setStats(prevStats => {
-      const newStats = { ...prevStats };
-      
-      // Process single value stats
-      if (['totalArticles', 'uniqueAuthors', 'uniqueLocations', 'totalPeople'].includes(queryId)) {
-        if (res.results.bindings[0]?.count) {
-          newStats[queryId] = Number(res.results.bindings[0].count.value);
+    try {
+      const data = await executeSparqlQuery(queryId);
+
+      setResults((prev) => {
+        const newResults = { ...prev };
+
+        switch (queryId) {
+          case "dateRange": {
+            if (data.results.bindings[0]) {
+              newResults.dateRange = {
+                oldestDate: data.results.bindings[0].oldestDate?.value,
+                mostRecentDate: data.results.bindings[0].mostRecentDate?.value,
+              };
+            }
+            break;
+          }
+
+          case "totalArticles":
+          case "uniqueAuthors":
+          case "uniqueLocations":
+          case "totalPeople": {
+            if (data.results.bindings[0]?.count?.value) {
+              newResults[queryId] = parseInt(
+                data.results.bindings[0].count.value
+              );
+            }
+            break;
+          }
+
+          case "topAuthors": {
+            newResults.topAuthors = data.results.bindings.map((binding) => ({
+              label: binding.authorName.value,
+              value: parseInt(binding.article_count.value),
+            }));
+            break;
+          }
+
+          case "topLocations": {
+            newResults.topLocations = data.results.bindings.map((binding) => ({
+              label: binding.locationName.value,
+              value: parseInt(binding.mention_count.value),
+            }));
+            break;
+          }
+
+          case "topPeople": {
+            // Helper function to check if a name is a part of another name
+            function isNameVariation(
+              shortName: string,
+              fullName: string
+            ): boolean {
+              // Split names into components (all parts start with capital letter)
+              const shortParts = shortName.match(/[A-Z][a-z]+/g) || [];
+              const fullParts = fullName.match(/[A-Z][a-z]+/g) || [];
+
+              // If short name has more parts than full name, they can't match
+              if (shortParts.length > fullParts.length) {
+                return false;
+              }
+
+              // Check if all parts from short name exist in full name in the same order
+              let fullIndex = 0;
+              for (const shortPart of shortParts) {
+                // Find this part in remaining full name parts
+                while (
+                  fullIndex < fullParts.length &&
+                  fullParts[fullIndex] !== shortPart
+                ) {
+                  fullIndex++;
+                }
+                if (fullIndex >= fullParts.length) {
+                  return false; // Part not found
+                }
+                fullIndex++; // Move to next position to maintain order
+              }
+              return true;
+            }
+
+            // First pass: collect all names and their counts
+            const initialCounts = new Map<string, number>();
+            data.results.bindings.forEach((binding) => {
+              const name = binding.personLabel.value;
+              const count = parseInt(binding.mentions_count.value);
+              initialCounts.set(name, count);
+            });
+
+            // Second pass: find variations and aggregate
+            const aggregatedCounts = new Map<string, number>();
+            const processedNames = new Set<string>();
+
+            // Process longer names first to prefer full names as canonical
+            const sortedNames = Array.from(initialCounts.keys()).sort(
+              (a, b) => b.length - a.length
+            );
+
+            for (const name of sortedNames) {
+              if (processedNames.has(name)) continue;
+
+              let totalCount = initialCounts.get(name) || 0;
+              const variations: string[] = [name];
+
+              // Look for shorter variations of this name
+              for (const otherName of sortedNames) {
+                if (otherName !== name && !processedNames.has(otherName)) {
+                  if (
+                    isNameVariation(otherName, name) ||
+                    isNameVariation(name, otherName)
+                  ) {
+                    totalCount += initialCounts.get(otherName) || 0;
+                    variations.push(otherName);
+                    processedNames.add(otherName);
+                  }
+                }
+              }
+
+              // Use the shortest name as canonical unless it's just one word and we have a full version
+              const canonicalName = variations.sort((a, b) => {
+                const aParts = a.match(/[A-Z][a-z]+/g) || [];
+                const bParts = b.match(/[A-Z][a-z]+/g) || [];
+                if (aParts.length === 1 && bParts.length > 1) return 1;
+                if (bParts.length === 1 && aParts.length > 1) return -1;
+                return a.length - b.length;
+              })[0];
+
+              aggregatedCounts.set(canonicalName, totalCount);
+              processedNames.add(name);
+            }
+
+            // Convert to array, sort by count, and take top 20
+            newResults.topPeople = Array.from(aggregatedCounts)
+              .map(([label, value]) => ({ label, value }))
+              .sort((a, b) => b.value - a.value)
+              .slice(0, 20);
+
+            console.log(
+              "People count aggregation:",
+              Array.from(aggregatedCounts)
+                .sort((a, b) => b[1] - a[1])
+                .map(([name, count]) => `${name}: ${count}`)
+                .join("\n")
+            );
+
+            break;
+          }
         }
-      }
-      
-      // Process list stats
-      if (queryId === 'topAuthors' && res.results.bindings.length > 0) {
-        newStats.topAuthors = res.results.bindings
-          .filter(b => b.author?.value && b.count?.value)
-          .map(b => ({
-            label: b.author.value,
-            value: Number(b.count.value)
-          }));
-      }
-      
-      if (queryId === 'topLocations' && res.results.bindings.length > 0) {
-        newStats.topLocations = res.results.bindings
-          .filter(b => b.location?.value && b.count?.value)
-          .map(b => ({
-            label: b.location.value,
-            value: Number(b.count.value)
-          }));
-      }
-      
-      if (queryId === 'topPeople' && res.results.bindings.length > 0) {
-        newStats.topPeople = res.results.bindings
-          .filter(b => b.person?.value && b.count?.value)
-          .map(b => ({
-            label: b.person.value,
-            value: Number(b.count.value)
-          }));
-      }
-      
-      return newStats;
-    });
-  };
 
-  useEffect(() => {
+        return newResults;
+      });
+
+      setQueryStatus((prev) => ({ ...prev, [queryId]: "success" }));
+    } catch (error) {
+      console.error(`Query ${queryId} failed:`, error);
+      setQueryStatus((prev) => ({ ...prev, [queryId]: "error" }));
+    }
+  }, []);
+
+  const executeAllQueries = useCallback(() => {
     const queries: QueryId[] = [
-      'totalArticles',
-      'uniqueAuthors',
-      'uniqueLocations',
-      'totalPeople',
-      'topAuthors',
-      'topLocations',
-      'topPeople'
+      "dateRange",
+      "totalArticles",
+      "uniqueAuthors",
+      "uniqueLocations",
+      "totalPeople",
+      "topAuthors",
+      "topLocations",
+      "topPeople",
     ];
 
-    setLoading(true);
-    console.log('Fetching statistics...');
-
-    // Launch all queries in parallel
-    queries.forEach(queryId => {
-      const timeoutId = setTimeout(() => {
-        setErrors(prev => ({ ...prev, [queryId]: true }));
-      }, 25000); // 25 second timeout
-
-      executeSparqlQuery(queryId)
-        .then(res => {
-          clearTimeout(timeoutId);
-          processStatResult(queryId, res);
-        })
-        .catch(error => {
-          clearTimeout(timeoutId);
-          console.error(`Query ${queryId} failed:`, error);
-          setErrors(prev => ({ ...prev, [queryId]: true }));
-        });
+    queries.forEach((queryId) => {
+      executeQuery(queryId);
     });
+  }, [executeQuery]);
 
-    // Show initial loading state for at least 2 seconds
-    const loadingTimeout = setTimeout(() => setLoading(false), 2000);
-    
-    return () => {
-      clearTimeout(loadingTimeout);
-    };
-  }, []); // Empty dependency array ensures this runs only once
+  useEffect(() => {
+    executeAllQueries();
+  }, [executeAllQueries]);
+
+  const formatDate = (dateString?: string) => {
+    if (!dateString) return "";
+    const date = new Date(dateString);
+    return new Intl.DateTimeFormat("it-IT", {
+      day: "numeric",
+      month: "long",
+      year: "numeric",
+    }).format(date);
+  };
 
   return (
     <div className="container mx-auto py-8 px-4">
-      <h1 className="text-3xl font-bold mb-8 text-gray-800">Statistiche</h1>
-      {/* Basic stats loaders - only render once */}
-      <div className="hidden">
-        <StatLoader 
-          key="totalArticles"
-          queryId="totalArticles"
-          onData={(res) => processStatResult('totalArticles', res)}
-          onError={() => {
-            setErrors(prev => ({ ...prev, totalArticles: true }));
-            setQueryTimeouts(prev => new Set([...prev, 'totalArticles']));
-          }}
-        />
-        <StatLoader 
-          key="uniqueAuthors"
-          queryId="uniqueAuthors"
-          onData={(res) => processStatResult('uniqueAuthors', res)}
-          onError={() => setErrors(prev => ({ ...prev, uniqueAuthors: true }))}
-        />
-        <StatLoader 
-          key="uniqueLocations"
-          queryId="uniqueLocations"
-          onData={(res) => processStatResult('uniqueLocations', res)}
-          onError={() => setErrors(prev => ({ ...prev, uniqueLocations: true }))}
-        />
-        <StatLoader 
-          key="totalPeople"
-          queryId="totalPeople"
-          onData={(res) => processStatResult('totalPeople', res)}
-          onError={() => setErrors(prev => ({ ...prev, totalPeople: true }))}
-        />
-        
-        {/* Complex queries */}
-        {!loading && (
-          <>
-            <StatLoader 
-              key="topAuthors"
-              queryId="topAuthors"
-              onData={(res) => processStatResult('topAuthors', res)}
-            />
-            {stats.topAuthors && (
-              <>
-                <StatLoader 
-                  key="topLocations"
-                  queryId="topLocations"
-                  onData={(res) => processStatResult('topLocations', res)}
-                />
-                <StatLoader 
-                  key="topPeople"
-                  queryId="topPeople"
-                  onData={(res) => processStatResult('topPeople', res)}
-                />
-              </>
-            )}
-          </>
-        )}
-      </div>
+      <h1 className="text-3xl font-bold mb-8 text-gray-800">
+        {queryStatus.dateRange === "loading"
+          ? "Esecuzione query..."
+          : queryStatus.dateRange === "error"
+          ? "Query fallita..."
+          : results.dateRange
+          ? `Articoli dal ${formatDate(
+              results.dateRange.oldestDate
+            )} al ${formatDate(results.dateRange.mostRecentDate)}`
+          : "Statistiche"}
+      </h1>
+
       <div className="space-y-8">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-          <StatsCard 
+          <StatsCard
             title="Articoli Totali"
-            value={stats.totalArticles}
-            isLoading={loading || typeof stats.totalArticles === 'undefined'}
+            value={results.totalArticles}
+            isLoading={queryStatus.totalArticles === "loading"}
+            hasError={queryStatus.totalArticles === "error"}
           />
-          <StatsCard 
+          <StatsCard
             title="Autori Unici"
-            value={stats.uniqueAuthors}
-            isLoading={loading || typeof stats.uniqueAuthors === 'undefined'}
+            value={results.uniqueAuthors}
+            isLoading={queryStatus.uniqueAuthors === "loading"}
+            hasError={queryStatus.uniqueAuthors === "error"}
           />
-          <StatsCard 
+          <StatsCard
             title="Località Uniche"
-            value={stats.uniqueLocations}
-            isLoading={loading || typeof stats.uniqueLocations === 'undefined'}
+            value={results.uniqueLocations}
+            isLoading={queryStatus.uniqueLocations === "loading"}
+            hasError={queryStatus.uniqueLocations === "error"}
           />
-          <StatsCard 
+          <StatsCard
             title="Persone Totali"
-            value={stats.totalPeople}
-            isLoading={loading || typeof stats.totalPeople === 'undefined'}
+            value={results.totalPeople}
+            isLoading={queryStatus.totalPeople === "loading"}
+            hasError={queryStatus.totalPeople === "error"}
           />
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           <ListStatsCard
             title="Autori più citati"
-            items={stats.topAuthors}
-            isLoading={loading || typeof stats.topAuthors === 'undefined'}
+            items={results.topAuthors}
+            isLoading={queryStatus.topAuthors === "loading"}
+            hasError={queryStatus.topAuthors === "error"}
           />
           <ListStatsCard
             title="Località più citate"
-            items={stats.topLocations}
-            isLoading={loading || typeof stats.topLocations === 'undefined'}
+            items={results.topLocations}
+            isLoading={queryStatus.topLocations === "loading"}
+            hasError={queryStatus.topLocations === "error"}
           />
           <ListStatsCard
             title="Persone più citate"
-            items={stats.topPeople}
-            isLoading={loading || typeof stats.topPeople === 'undefined'}
+            items={results.topPeople}
+            isLoading={queryStatus.topPeople === "loading"}
+            hasError={queryStatus.topPeople === "error"}
           />
+        </div>
+
+        <div className="flex justify-center mt-8">
+          <button
+            onClick={() => window.location.reload()}
+            className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition-colors"
+          >
+            Ricalcola statistiche
+          </button>
         </div>
       </div>
     </div>

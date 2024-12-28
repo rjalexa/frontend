@@ -1,5 +1,27 @@
+// app/api/sparql/route.ts
 import { ENDPOINTS } from '@/src/config/constants';
 import { NextRequest, NextResponse } from 'next/server';
+
+export type QueryId = 
+  | 'dateRange'
+  | 'totalArticles'
+  | 'uniqueAuthors'
+  | 'topAuthors'
+  | 'uniqueLocations'
+  | 'topLocations'
+  | 'totalPeople'
+  | 'topPeople';
+
+export interface SparqlValue {
+  value: string;
+  type: string;
+}
+
+export interface SparqlResponse {
+  results: {
+    bindings: Array<Record<string, SparqlValue>>;
+  };
+}
 
 const SPARQL_QUERIES: Record<QueryId, string> = {
   dateRange: `
@@ -26,6 +48,22 @@ const SPARQL_QUERIES: Record<QueryId, string> = {
                mema:authored_by ?author .
     }
   `,
+  uniqueLocations: `
+    PREFIX mema: <https://ilmanifesto.it/mema/ontology#>
+    PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+    SELECT (COUNT(DISTINCT ?location) AS ?count)
+    WHERE {
+      ?location rdf:type mema:Location .
+    }
+  `,
+  totalPeople: `
+    PREFIX mema: <https://ilmanifesto.it/mema/ontology#>
+    PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+    SELECT (COUNT(DISTINCT ?person) AS ?count)
+    WHERE {
+      ?person rdf:type mema:Person .
+    }
+  `,
   topAuthors: `
     PREFIX mema: <https://ilmanifesto.it/mema/ontology#>
     PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
@@ -38,14 +76,6 @@ const SPARQL_QUERIES: Record<QueryId, string> = {
     GROUP BY ?authorName
     ORDER BY DESC(?article_count)
     LIMIT 20
-  `,
-  uniqueLocations: `
-    PREFIX mema: <https://ilmanifesto.it/mema/ontology#>
-    PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
-    SELECT (COUNT(DISTINCT ?location) AS ?count)
-    WHERE {
-      ?location rdf:type mema:Location .
-    }
   `,
   topLocations: `
     PREFIX mema: <https://ilmanifesto.it/mema/ontology#>
@@ -75,26 +105,8 @@ const SPARQL_QUERIES: Record<QueryId, string> = {
     GROUP BY ?personLabel
     ORDER BY DESC(?mentions_count)
     LIMIT 101
-  `,
-  totalPeople: `
-    PREFIX mema: <https://ilmanifesto.it/mema/ontology#>
-    PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
-    SELECT (COUNT(DISTINCT ?person) AS ?uniquePersonCount)
-    WHERE {
-      ?person rdf:type mema:Person .
-    }
   `
 };
-
-export type QueryId = 
-  | 'dateRange'
-  | 'totalArticles'
-  | 'uniqueAuthors'
-  | 'topAuthors'
-  | 'uniqueLocations'
-  | 'topLocations'
-  | 'totalPeople'
-  | 'topPeople';
 
 export async function GET(request: NextRequest) {
   const searchParams = request.nextUrl.searchParams;
@@ -120,48 +132,15 @@ export async function GET(request: NextRequest) {
     });
 
     if (!response.ok) {
-      const errorText = await response.text();
-      throw new Error(`SPARQL query failed: ${response.statusText} - ${errorText}`);
+      throw new Error(`SPARQL query failed: ${response.status}`);
     }
 
-    let data;
-    try {
-      data = await response.json();
-    } catch (jsonError) {
-      console.error('Failed to parse SPARQL response:', jsonError);
-      const responseText = await response.text();
-      console.error('Raw response:', responseText);
-      return NextResponse.json(
-        { 
-          error: 'Invalid SPARQL response format',
-          details: jsonError.message,
-          raw: responseText.substring(0, 500) // First 500 chars for debugging
-        },
-        { status: 500 }
-      );
-    }
-
-    // Validate response structure
-    if (!data?.results?.bindings) {
-      console.error('Invalid SPARQL response structure:', data);
-      return NextResponse.json(
-        { 
-          error: 'Invalid SPARQL response structure',
-          received: JSON.stringify(data).substring(0, 500)
-        },
-        { status: 500 }
-      );
-    }
-
+    const data = await response.json();
     return NextResponse.json(data);
   } catch (error) {
     console.error('SPARQL query failed:', error);
     return NextResponse.json(
-      { 
-        error: 'Failed to execute SPARQL query',
-        message: error.message,
-        type: error.name
-      },
+      { error: 'Failed to execute SPARQL query' },
       { status: 500 }
     );
   }

@@ -1,3 +1,5 @@
+import React, { useEffect, useState } from 'react';
+
 interface ListItem {
   label: string;
   value: number;
@@ -7,29 +9,60 @@ interface ListStatsCardProps {
   title: string;
   items?: ListItem[];
   isLoading?: boolean;
+  hasError?: boolean;
 }
 
-export default function ListStatsCard({ title, items, isLoading }: ListStatsCardProps) {
+const ListStatsCard = ({ title, items, isLoading, hasError }: ListStatsCardProps) => {
+  const [visibleItems, setVisibleItems] = useState<number[]>([]);
+  
+  useEffect(() => {
+    if (items && items.length > 0) {
+      // Reset visible items when items change
+      setVisibleItems([]);
+      
+      // Show items one by one with a delay
+      items.forEach((_, index) => {
+        setTimeout(() => {
+          setVisibleItems(prev => [...prev, index]);
+        }, index * 100); // 100ms delay between each item
+      });
+    }
+  }, [items]);
+
   return (
-    <div className="bg-white rounded-lg shadow-md p-6 hover:shadow-lg transition-shadow duration-200">
+    <div className="bg-white rounded-lg shadow-md p-4 hover:shadow-lg transition-shadow duration-200">
       <h3 className="text-lg font-semibold text-gray-700 mb-4">{title}</h3>
-      <div className="min-h-[12rem]">
+      
+      <div className="space-y-2">
         {isLoading ? (
           <div className="flex items-center space-x-2">
             <div className="w-4 h-4 bg-gray-200 rounded-full animate-pulse" />
-            <span className="text-gray-500">Caricamento statistiche...</span>
+            <span className="text-gray-500">Esecuzione query...</span>
           </div>
+        ) : hasError ? (
+          <span className="text-gray-500">Query fallita...</span>
+        ) : items && items.length > 0 ? (
+          items.map((item, index) => (
+            <div
+              key={item.label}
+              className={`flex justify-between items-center py-1 transition-all duration-300 ${
+                visibleItems.includes(index)
+                  ? 'opacity-100 translate-y-0'
+                  : 'opacity-0 translate-y-4'
+              }`}
+            >
+              <span className="text-gray-600 truncate flex-1 pr-4">{item.label}</span>
+              <span className="text-gray-900 font-medium">
+                {item.value.toLocaleString()}
+              </span>
+            </div>
+          ))
         ) : (
-          <ul className="space-y-2">
-            {items?.map((item, index) => (
-              <li key={index} className="flex justify-between items-center">
-                <span className="text-gray-600">{item.label}</span>
-                <span className="font-semibold">{item.value.toLocaleString()}</span>
-              </li>
-            ))}
-          </ul>
+          <span className="text-gray-500">Nessun dato disponibile</span>
         )}
       </div>
     </div>
   );
-}
+};
+
+export default ListStatsCard;
