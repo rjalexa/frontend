@@ -100,33 +100,58 @@ export default function StatisticsPage() {
   return (
     <div className="container mx-auto py-8 px-4">
       <h1 className="text-3xl font-bold mb-8 text-gray-800">Statistiche</h1>
-      {/* Priority 1 & 2 queries */}
-      {['totalArticles', 'uniqueAuthors', 'uniqueLocations', 'totalPeople'].map((queryId) => (
+      {/* Basic stats loaders - only render once */}
+      <div className="hidden">
         <StatLoader 
-          key={queryId} 
-          queryId={queryId as QueryId} 
-          onData={(res) => processStatResult(queryId as QueryId, res)}
-          onError={() => setErrors(prev => ({ ...prev, [queryId]: true }))}
+          key="totalArticles"
+          queryId="totalArticles"
+          onData={(res) => processStatResult('totalArticles', res)}
+          onError={() => setErrors(prev => ({ ...prev, totalArticles: true }))}
         />
-      ))}
-      
-      {/* Priority 3 query */}
-      {!loading && (
         <StatLoader 
-          key="topAuthors"
-          queryId="topAuthors"
-          onData={(res) => processStatResult('topAuthors', res)}
+          key="uniqueAuthors"
+          queryId="uniqueAuthors"
+          onData={(res) => processStatResult('uniqueAuthors', res)}
+          onError={() => setErrors(prev => ({ ...prev, uniqueAuthors: true }))}
         />
-      )}
-      
-      {/* Priority 4 queries - load last */}
-      {!loading && stats.topAuthors && ['topLocations', 'topPeople'].map((queryId) => (
         <StatLoader 
-          key={queryId} 
-          queryId={queryId as QueryId} 
-          onData={(res) => processStatResult(queryId as QueryId, res)} 
+          key="uniqueLocations"
+          queryId="uniqueLocations"
+          onData={(res) => processStatResult('uniqueLocations', res)}
+          onError={() => setErrors(prev => ({ ...prev, uniqueLocations: true }))}
         />
-      ))}
+        <StatLoader 
+          key="totalPeople"
+          queryId="totalPeople"
+          onData={(res) => processStatResult('totalPeople', res)}
+          onError={() => setErrors(prev => ({ ...prev, totalPeople: true }))}
+        />
+        
+        {/* Complex queries */}
+        {!loading && (
+          <>
+            <StatLoader 
+              key="topAuthors"
+              queryId="topAuthors"
+              onData={(res) => processStatResult('topAuthors', res)}
+            />
+            {stats.topAuthors && (
+              <>
+                <StatLoader 
+                  key="topLocations"
+                  queryId="topLocations"
+                  onData={(res) => processStatResult('topLocations', res)}
+                />
+                <StatLoader 
+                  key="topPeople"
+                  queryId="topPeople"
+                  onData={(res) => processStatResult('topPeople', res)}
+                />
+              </>
+            )}
+          </>
+        )}
+      </div>
       <div className="space-y-8">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
           <StatsCard 
