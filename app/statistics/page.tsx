@@ -25,22 +25,85 @@ export default function StatisticsPage() {
   const [stats, setStats] = useState<Statistics>({});
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        console.log('Fetching statistics...');
-        const queries = [
-          'totalArticles',
-          'uniqueAuthors',
-          'uniqueLocations',
-          'totalPeople',
-          'topAuthors',
-          'topLocations',
-          'topPeople'
-        ];
+  const processStatResult = (queryId: QueryId, res: any) => {
+    setStats(prevStats => {
+      const newStats = { ...prevStats };
+      
+      // Process single value stats
+      if (['totalArticles', 'uniqueAuthors', 'uniqueLocations', 'totalPeople'].includes(queryId)) {
+        if (res.results.bindings[0]?.count) {
+          newStats[queryId] = Number(res.results.bindings[0].count.value);
+        }
+      }
+      
+      // Process list stats
+      if (queryId === 'topAuthors' && res.results.bindings.length > 0) {
+        newStats.topAuthors = res.results.bindings
+          .filter(b => b.author?.value && b.count?.value)
+          .map(b => ({
+            label: b.author.value,
+            value: Number(b.count.value)
+          }));
+      }
+      
+      if (queryId === 'topLocations' && res.results.bindings.length > 0) {
+        newStats.topLocations = res.results.bindings
+          .filter(b => b.location?.value && b.count?.value)
+          .map(b => ({
+            label: b.location.value,
+            value: Number(b.count.value)
+          }));
+      }
+      
+      if (queryId === 'topPeople' && res.results.bindings.length > 0) {
+        newStats.topPeople = res.results.bindings
+          .filter(b => b.person?.value && b.count?.value)
+          .map(b => ({
+            label: b.person.value,
+            value: Number(b.count.value)
+          }));
+      }
+      
+      return newStats;
+    });
+  };
 
-        const results = await Promise.all(
-          queries.map(async (queryId) => {
+  useEffect(() => {
+    const loadStats = () => {
+      setLoading(true);
+      console.log('Fetching statistics...');
+      
+      // Start all queries independently
+      const queries: QueryId[] = [
+        'totalArticles',
+        'uniqueAuthors',
+        'uniqueLocations',
+        'totalPeople',
+        'topAuthors',
+        'topLocations',
+        'topPeople'
+      ];
+
+      // Set a timeout to show content even if some queries are still loading
+      setTimeout(() => setLoading(false), 5000);
+
+      return queries;
+    };
+
+    loadStats();
+  }, []);
+
+  return (
+    <div className="container mx-auto py-8 px-4">
+      <h1 className="text-3xl font-bold mb-8 text-gray-800">Statistiche</h1>
+      {['totalArticles', 'uniqueAuthors', 'uniqueLocations', 'totalPeople', 
+        'topAuthors', 'topLocations', 'topPeople'].map((queryId) => (
+        <StatLoader 
+          key={queryId} 
+          queryId={queryId as QueryId} 
+          onData={(res) => processStatResult(queryId as QueryId, res)} 
+        />
+      ))}
             try {
               const startTime = performance.now();
               const res = await executeSparqlQuery(queryId).catch(error => {
