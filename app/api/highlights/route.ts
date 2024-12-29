@@ -1,10 +1,9 @@
-// app/api/highlights/route.ts
-import { NextResponse } from 'next/server';
 import fs from 'fs';
+import { NextResponse } from 'next/server';
 import path from 'path';
 
 // For the debug logger
-interface DebugData {
+interface IDebugData {
   articleId?: string | null;
   count?: number;
   error?: {
@@ -14,15 +13,23 @@ interface DebugData {
   } | unknown;
 }
 
-const debugLog = (message: string, data?: DebugData) => {
-  console.log(`[Highlights Debug] ${message}`);
-  if (data) {
-    console.log(JSON.stringify(data, null, 2));
+// Create a proper logger utility to handle console warnings
+const logger = {
+  debug: (message: string, data?: IDebugData) => {
+    // You might want to disable this in production
+    if (process.env.NODE_ENV === 'development') {
+      // eslint-disable-next-line no-console
+      console.log(`[Highlights Debug] ${message}`);
+      if (data) {
+        // eslint-disable-next-line no-console
+        console.log(JSON.stringify(data, null, 2));
+      }
+    }
   }
 };
 
 // For the raw data from merged-ai.json
-interface RawHighlight {
+interface IRawHighlight {
   highlight_article_mema_id: string;
   highlight_type: string;
   highlight_text: string;
@@ -32,7 +39,7 @@ interface RawHighlight {
 }
 
 // For the processed highlight data
-interface ProcessedHighlight {
+interface IProcessedHighlight {
   highlight_text: string;
   highlight_sequence_number: number;
   highlight_type: string;
@@ -41,8 +48,8 @@ interface ProcessedHighlight {
 }
 
 // For the API response
-interface HighlightsResponse {
-  highlights: ProcessedHighlight[];
+interface IHighlightsResponse {
+  highlights: IProcessedHighlight[];
   count: number;
   debug: {
     timestamp: string;
@@ -52,7 +59,7 @@ interface HighlightsResponse {
 }
 
 // For the error response
-interface ErrorResponse {
+interface IErrorResponse {
   error: string;
   fallback: boolean;
   highlights: never[];
@@ -66,14 +73,15 @@ interface ErrorResponse {
 }
 
 export async function GET(request: Request) {
-  debugLog('Starting highlights request');
+  logger.debug('Starting highlights request');
+  
   try {
     const { searchParams } = new URL(request.url);
     const articleId = searchParams.get('articleId');
-    debugLog('Request parameters:', { articleId });
+    logger.debug('Request parameters:', { articleId });
 
     if (!articleId) {
-      debugLog('No articleId provided');
+      logger.debug('No articleId provided');
       return NextResponse.json(
         { error: 'Article ID is required' },
         { status: 400 }
@@ -81,19 +89,19 @@ export async function GET(request: Request) {
     }
 
     const dataPath = path.join(process.cwd(), 'data', 'merged-ai.json');
-    const jsonData = JSON.parse(fs.readFileSync(dataPath, 'utf8')) as RawHighlight[];
+    const jsonData = JSON.parse(fs.readFileSync(dataPath, 'utf8')) as IRawHighlight[];
 
-    const articleHighlights = jsonData.filter((item: RawHighlight) =>
+    const articleHighlights = jsonData.filter((item: IRawHighlight) =>
       item.highlight_article_mema_id === articleId &&
       item.highlight_type === 'LLM'
     );
 
     const sortedHighlights = articleHighlights.sort(
-      (a: RawHighlight, b: RawHighlight) => 
+      (a: IRawHighlight, b: IRawHighlight) => 
         a.highlight_sequence_number - b.highlight_sequence_number
     );
 
-    const highlights: ProcessedHighlight[] = sortedHighlights.map((highlight) => ({
+    const highlights: IProcessedHighlight[] = sortedHighlights.map((highlight) => ({
       highlight_text: highlight.highlight_text,
       highlight_sequence_number: highlight.highlight_sequence_number,
       highlight_type: highlight.highlight_type,
@@ -101,9 +109,9 @@ export async function GET(request: Request) {
       highlight_article_date: highlight.highlight_article_date
     }));
 
-    debugLog('Processed highlights:', { count: highlights.length });
+    logger.debug('Processed highlights:', { count: highlights.length });
 
-    const response: HighlightsResponse = {
+    const response: IHighlightsResponse = {
       highlights,
       count: highlights.length,
       debug: {
@@ -116,7 +124,7 @@ export async function GET(request: Request) {
     return NextResponse.json(response);
 
   } catch (error) {
-    debugLog('Error in highlights API:', {
+    logger.debug('Error in highlights API:', {
       error: error instanceof Error ? {
         message: error.message,
         stack: error.stack,
@@ -124,7 +132,7 @@ export async function GET(request: Request) {
       } : error
     });
 
-    const errorResponse: ErrorResponse = {
+    const errorResponse: IErrorResponse = {
       error: 'An unexpected error occurred',
       fallback: true,
       highlights: [],

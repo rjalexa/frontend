@@ -1,8 +1,10 @@
 // components/entities/EntityCard.tsx
-import React, { useState, useRef, useEffect } from "react";
 import { ChevronDown, ChevronUp, MapPin, User, Building } from "lucide-react";
-import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import Image from "next/image";
+import { usePathname } from "next/navigation";
+import React, { useState, useRef, useEffect } from "react";
+
+import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { 
   Entity, 
   EntityKind, 
@@ -11,9 +13,9 @@ import {
   WikipediaLinkingInfo,
   AILinkingInfo 
 } from '@/types/entity';
-import { usePathname } from "next/navigation";
 
-interface EntityCardProps {
+
+interface IEntityCardProps {
   entity: Entity;
 }
 
@@ -40,7 +42,7 @@ const getIcon = (kind: EntityKind) => {
   }
 };
 
-export default function EntityCard({ entity }: EntityCardProps) {
+export default function EntityCard({ entity }: IEntityCardProps) {
   const [isExpanded, setIsExpanded] = useState(false);
   const contentRef = useRef<HTMLDivElement>(null);
   const [isOverflowing, setIsOverflowing] = useState(false);

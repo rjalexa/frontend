@@ -1,15 +1,16 @@
 // components/article/panels/topics/TopicsPanel.tsx
-import React from 'react';
-import Image from 'next/image';
 import { Hash } from "lucide-react";
-import type { BasePanelProps } from '@/types/panel';
-import type { Article } from '@/types/article';
+import Image from 'next/image';
+import React from 'react';
 
-interface TopicsPanelProps extends BasePanelProps {
+import type { Article } from '@/types/article';
+import type { BasePanelProps } from '@/types/panel';
+
+interface ITopicsPanelProps extends BasePanelProps {
   article: Article;
 }
 
-export default function TopicsPanel({ isOpen, onClose, article }: TopicsPanelProps) {
+export default function TopicsPanel({ isOpen, onClose, article }: ITopicsPanelProps) {
   if (!isOpen) return null;
 
   const manifestoTopics = [article.articleTag, article.topics, article.tags]

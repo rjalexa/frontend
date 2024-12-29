@@ -1,6 +1,8 @@
 /* eslint-disable import/no-unused-modules */
 // lib/sparql/index.ts
 
+import { logger } from "@/utils/logger";
+
 const QUERY_TIMEOUT = 30000; // 30 second timeout
 
 export type QueryId = 
@@ -13,10 +15,10 @@ export type QueryId =
   | 'totalPeople'
   | 'topPeople';
 
-  const CACHE_DURATION = 60 * 60 * 1000; // 1 hour
-const queryCache = new Map<string, { data: SparqlResponse; timestamp: number }>();
+const CACHE_DURATION = 60 * 60 * 1000; // 1 hour
+const queryCache = new Map<string, { data: ISparqlResponse; timestamp: number }>();
 
-export interface SparqlResponse {
+export interface ISparqlResponse {
   results: {
     bindings: Array<{
       [key: string]: {
@@ -65,7 +67,6 @@ async function fetchWithTimeout(queryId: QueryId): Promise<Response> {
       if (error.name === 'AbortError') {
         throw new QueryTimeoutError(queryId);
       }
-      console.error(`Query ${queryId} failed:`, error);
       throw error;
     }
     
@@ -74,38 +75,38 @@ async function fetchWithTimeout(queryId: QueryId): Promise<Response> {
   }
 }
 
-export async function executeSparqlQuery(queryId: QueryId): Promise<SparqlResponse> {
+export async function executeSparqlQuery(queryId: QueryId): Promise<ISparqlResponse> {
   try {
     const startTime = performance.now();
-    console.log(`Executing SPARQL query: ${queryId}`);
+    logger.debug(`Executing SPARQL query: ${queryId}`);
 
     // Check cache
     const cached = queryCache.get(queryId);
     if (cached) {
       const age = Date.now() - cached.timestamp;
       if (age < CACHE_DURATION) {
-        console.log(`Using cached result for ${queryId} (age: ${(age/1000).toFixed(1)}s)`);
+        logger.debug(`Using cached result for ${queryId} (age: ${(age/1000).toFixed(1)}s)`);
         return cached.data;
       } else {
-        console.log(`Cache expired for ${queryId} (age: ${(age/1000).toFixed(1)}s)`);
+        logger.debug(`Cache expired for ${queryId} (age: ${(age/1000).toFixed(1)}s)`);
       }
     }
     
     const response = await fetchWithTimeout(queryId);
     
     const duration = performance.now() - startTime;
-    console.log(`Query ${queryId} completed in ${duration.toFixed(0)}ms`);
+    logger.debug(`Query ${queryId} completed in ${duration.toFixed(0)}ms`);
 
     let data;
     try {
       data = await response.json();
     } catch (error) {
-      console.error(`Failed to parse JSON response for ${queryId}:`, error);
+      logger.error(`Failed to parse JSON response for ${queryId}:`, error);
       throw new Error(`Invalid JSON response for query ${queryId}`);
     }
     
     if (!data?.results?.bindings) {
-      console.error(`Invalid SPARQL response structure for ${queryId}:`, data);
+      logger.error(`Invalid SPARQL response structure for ${queryId}:`, data);
       throw new Error(`Invalid SPARQL response structure for query ${queryId}`);
     }
     
@@ -115,9 +116,9 @@ export async function executeSparqlQuery(queryId: QueryId): Promise<SparqlRespon
     return data;
   } catch (error) {
     if (error instanceof QueryTimeoutError) {
-      console.warn(error.message);
+      logger.error(error.message);
     } else {
-      console.error(`Failed to execute SPARQL query ${queryId}:`, error);
+      logger.error(`Failed to execute SPARQL query ${queryId}:`, error);
     }
     throw error;
   }

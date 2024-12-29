@@ -1,10 +1,12 @@
 // app/layout.tsx
 import type { Metadata } from "next";
 import { Inter as FontSans } from "next/font/google";
-import { ThemeProvider } from "./providers/theme-provider";
-import { NavigationProvider } from "./providers/navigation-provider";
 import { Suspense } from "react";
+
 import Header from "@/components/header/Header";
+
+import { NavigationProvider } from "./providers/navigation-provider";
+import { ThemeProvider } from "./providers/theme-provider";
 import "./globals.css";
 
 // Load the Inter font

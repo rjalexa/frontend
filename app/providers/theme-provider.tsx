@@ -1,10 +1,9 @@
-// app/providers/theme-provider.tsx
 'use client'
 
 import * as React from "react"
 import { useEffect, useState } from 'react'
 
-interface ThemeProviderProps {
+interface IThemeProviderProps {
   children: React.ReactNode
   defaultTheme?: 'light' | 'dark'
 }
@@ -12,7 +11,7 @@ interface ThemeProviderProps {
 export function ThemeProvider({
   children,
   defaultTheme = 'light',
-}: ThemeProviderProps) {
+}: IThemeProviderProps) {
   const [theme, setTheme] = useState(defaultTheme)
 
   useEffect(() => {

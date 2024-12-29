@@ -1,18 +1,18 @@
 import React, { useEffect, useState } from 'react';
 
-interface ListItem {
+interface IListItem {
   label: string;
   value: number;
 }
 
-interface ListStatsCardProps {
+interface IListStatsCardProps {
   title: string;
-  items?: ListItem[];
+  items?: IListItem[];
   isLoading?: boolean;
   hasError?: boolean;
 }
 
-const ListStatsCard = ({ title, items, isLoading, hasError }: ListStatsCardProps) => {
+const ListStatsCard = ({ title, items, isLoading, hasError }: IListStatsCardProps) => {
   const [visibleItems, setVisibleItems] = useState<number[]>([]);
   
   useEffect(() => {

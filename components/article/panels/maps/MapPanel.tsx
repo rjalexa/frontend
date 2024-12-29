@@ -1,22 +1,26 @@
-import React, { useEffect, useRef, useState } from "react";
-import { Globe } from "lucide-react";
 import type { Map as LeafletMap, TileLayer } from "leaflet";
-import type { BasePanelProps } from "@/types/panel";
-import type { Article } from "@/types/article";
+import { Globe } from "lucide-react";
 import Image from "next/image";
+import React, { useEffect, useRef, useState } from "react";
+
+
+import type { Article } from "@/types/article";
+import type { BasePanelProps } from "@/types/panel";
+import { logger } from "@/utils/logger";
+
 import "leaflet/dist/leaflet.css";
 
-interface LeafletElement extends HTMLDivElement {
+interface ILeafletElement extends HTMLDivElement {
   _leaflet_id?: number;
 }
 
-interface MapPanelProps extends BasePanelProps {
+interface IMapPanelProps extends BasePanelProps {
   article: Article;
   setDesiredMapState?: (state: boolean) => void;
 }
 
-const MapPanel: React.FC<MapPanelProps> = ({ isOpen, onClose, article, setDesiredMapState }) => {
-  const mapRef = useRef<LeafletElement | null>(null);
+const MapPanel: React.FC<IMapPanelProps> = ({ isOpen, onClose, article, setDesiredMapState }) => {
+  const mapRef = useRef<ILeafletElement | null>(null);
   const mapInstanceRef = useRef<LeafletMap | null>(null);
   const streetsLayerRef = useRef<TileLayer | null>(null);
   const satelliteLayerRef = useRef<TileLayer | null>(null);
@@ -42,7 +46,7 @@ const MapPanel: React.FC<MapPanelProps> = ({ isOpen, onClose, article, setDesire
         if (!mapRef.current) return;
 
         if (mapRef.current._leaflet_id) {
-          console.debug('Map instance already exists');
+          logger.debug('Map instance already exists');
           return;
         }
 
@@ -101,7 +105,7 @@ const MapPanel: React.FC<MapPanelProps> = ({ isOpen, onClose, article, setDesire
               }
             }
           } catch (error) {
-            console.debug('Error switching layers:', error);
+            logger.debug('Error switching layers:', error);
           }
         };
 
@@ -203,7 +207,7 @@ const MapPanel: React.FC<MapPanelProps> = ({ isOpen, onClose, article, setDesire
         // Set map ready state after initialization
         setIsMapReady(true);
       } catch (error) {
-        console.error("Error initializing map:", error);
+        logger.error("Error initializing map:", error);
       }
     };
 
@@ -224,14 +228,14 @@ const MapPanel: React.FC<MapPanelProps> = ({ isOpen, onClose, article, setDesire
             try {
               streetsLayerRef.current.remove();
             } catch (e) {
-              console.debug('Error removing streets layer:', e);
+              logger.debug('Error removing streets layer:', e);
             }
           }
           if (satelliteLayerRef.current) {
             try {
               satelliteLayerRef.current.remove();
             } catch (e) {
-              console.debug('Error removing satellite layer:', e);
+              logger.debug('Error removing satellite layer:', e);
             }
           }
           
@@ -239,11 +243,11 @@ const MapPanel: React.FC<MapPanelProps> = ({ isOpen, onClose, article, setDesire
           try {
             mapInstanceRef.current.remove();
           } catch (e) {
-            console.debug('Error removing map instance:', e);
+            logger.debug('Error removing map instance:', e);
           }
         }
       } catch (e) {
-        console.debug('Error in cleanup:', e);
+        logger.debug('Error in cleanup:', e);
       } finally {
         // Reset all refs
         mapInstanceRef.current = null;

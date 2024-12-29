@@ -1,7 +1,8 @@
 "use client";
-import React, { useState, useEffect } from "react";
-import { useRouter } from "next/navigation";
 import { ArrowUpDown, Eye } from "lucide-react";
+import { useRouter } from "next/navigation";
+import React, { useState, useEffect } from "react";
+
 import type { Article } from '@/types/article';
 
 type SortField = "date_created" | "title" | "author";

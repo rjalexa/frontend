@@ -1,40 +1,40 @@
-// app/statistics/page.tsx
 "use client";
 
 import { useEffect, useState, useCallback } from "react";
-import StatsCard from "@/components/statistics/StatsCard";
+
 import ListStatsCard from "@/components/statistics/ListStatsCard";
+import StatsCard from "@/components/statistics/StatsCard";
 import { QueryId } from "@/lib/sparql";
 import { executeSparqlQuery } from "@/lib/sparql";
 
-interface DateRange {
+interface IDateRange {
   oldestDate?: string;
   mostRecentDate?: string;
 }
 
-interface ListItem {
+interface IListItem {
   label: string;
   value: number;
 }
 
-interface QueryResults {
-  dateRange?: DateRange;
+interface IQueryResults {
+  dateRange?: IDateRange;
   totalArticles?: number;
   uniqueAuthors?: number;
   uniqueLocations?: number;
   totalPeople?: number;
-  topAuthors?: ListItem[];
-  topLocations?: ListItem[];
-  topPeople?: ListItem[];
+  topAuthors?: IListItem[];
+  topLocations?: IListItem[];
+  topPeople?: IListItem[];
 }
 
-interface QueryStatus {
+interface IQueryStatus {
   [key: string]: "loading" | "success" | "error";
 }
 
 export default function StatisticsPage() {
-  const [results, setResults] = useState<QueryResults>({});
-  const [queryStatus, setQueryStatus] = useState<QueryStatus>({});
+  const [results, setResults] = useState<IQueryResults>({});
+  const [queryStatus, setQueryStatus] = useState<IQueryStatus>({});
 
   const executeQuery = useCallback(async (queryId: QueryId) => {
     setQueryStatus((prev) => ({ ...prev, [queryId]: "loading" }));
@@ -90,19 +90,15 @@ export default function StatisticsPage() {
               shortName: string,
               fullName: string
             ): boolean {
-              // Split names into components (all parts start with capital letter)
               const shortParts = shortName.match(/[A-Z][a-z]+/g) || [];
               const fullParts = fullName.match(/[A-Z][a-z]+/g) || [];
 
-              // If short name has more parts than full name, they can't match
               if (shortParts.length > fullParts.length) {
                 return false;
               }
 
-              // Check if all parts from short name exist in full name in the same order
               let fullIndex = 0;
               for (const shortPart of shortParts) {
-                // Find this part in remaining full name parts
                 while (
                   fullIndex < fullParts.length &&
                   fullParts[fullIndex] !== shortPart
@@ -110,14 +106,13 @@ export default function StatisticsPage() {
                   fullIndex++;
                 }
                 if (fullIndex >= fullParts.length) {
-                  return false; // Part not found
+                  return false;
                 }
-                fullIndex++; // Move to next position to maintain order
+                fullIndex++;
               }
               return true;
             }
 
-            // First pass: collect all names and their counts
             const initialCounts = new Map<string, number>();
             data.results.bindings.forEach((binding) => {
               const name = binding.personLabel.value;
@@ -125,11 +120,9 @@ export default function StatisticsPage() {
               initialCounts.set(name, count);
             });
 
-            // Second pass: find variations and aggregate
             const aggregatedCounts = new Map<string, number>();
             const processedNames = new Set<string>();
 
-            // Process longer names first to prefer full names as canonical
             const sortedNames = Array.from(initialCounts.keys()).sort(
               (a, b) => b.length - a.length
             );
@@ -140,7 +133,6 @@ export default function StatisticsPage() {
               let totalCount = initialCounts.get(name) || 0;
               const variations: string[] = [name];
 
-              // Look for shorter variations of this name
               for (const otherName of sortedNames) {
                 if (otherName !== name && !processedNames.has(otherName)) {
                   if (
@@ -154,7 +146,6 @@ export default function StatisticsPage() {
                 }
               }
 
-              // Use the shortest name as canonical unless it's just one word and we have a full version
               const canonicalName = variations.sort((a, b) => {
                 const aParts = a.match(/[A-Z][a-z]+/g) || [];
                 const bParts = b.match(/[A-Z][a-z]+/g) || [];
@@ -167,19 +158,10 @@ export default function StatisticsPage() {
               processedNames.add(name);
             }
 
-            // Convert to array, sort by count, and take top 20
             newResults.topPeople = Array.from(aggregatedCounts)
               .map(([label, value]) => ({ label, value }))
               .sort((a, b) => b.value - a.value)
               .slice(0, 20);
-
-            console.log(
-              "People count aggregation:",
-              Array.from(aggregatedCounts)
-                .sort((a, b) => b[1] - a[1])
-                .map(([name, count]) => `${name}: ${count}`)
-                .join("\n")
-            );
 
             break;
           }

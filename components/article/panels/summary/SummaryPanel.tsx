@@ -1,14 +1,15 @@
 // components/article/panels/summary/SummaryPanel.tsx
-import React from 'react';
 import { FileText } from "lucide-react";
 import Image from 'next/image';
+import React from 'react';
+
 import type { BasePanelProps } from '@/types/panel';
 
-interface SummaryPanelProps extends BasePanelProps {
+interface ISummaryPanelProps extends BasePanelProps {
   summary: string | null;
 }
 
-export default function SummaryPanel({ isOpen, onClose, summary }: SummaryPanelProps) {
+export default function SummaryPanel({ isOpen, onClose, summary }: ISummaryPanelProps) {
   if (!isOpen) return null;
 
   return (

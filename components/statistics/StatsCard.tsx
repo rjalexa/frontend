@@ -1,15 +1,16 @@
 // components/statistcs/StatsCard.tsx
 import React from 'react';
+
 import AnimatedCounter from './AnimatedCounter';
 
-interface StatsCardProps {
+interface IStatsCardProps {
   title: string;
   value?: number;
   isLoading?: boolean;
   hasError?: boolean;
 }
 
-const StatsCard = ({ title, value, isLoading, hasError }: StatsCardProps) => {
+const StatsCard = ({ title, value, isLoading, hasError }: IStatsCardProps) => {
   return (
     <div className="bg-white rounded-lg shadow-md p-4 hover:shadow-lg transition-shadow duration-200">
       <h3 className="text-lg font-semibold text-gray-700 mb-2">{title}</h3>

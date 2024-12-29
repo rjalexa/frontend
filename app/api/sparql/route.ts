@@ -1,6 +1,6 @@
-// app/api/sparql/route.ts
-import { ENDPOINTS } from '@/src/config/constants';
 import { NextRequest, NextResponse } from 'next/server';
+
+import { ENDPOINTS } from '@/src/config/constants';
 
 export type QueryId = 
   | 'dateRange'
@@ -12,14 +12,14 @@ export type QueryId =
   | 'totalPeople'
   | 'topPeople';
 
-export interface SparqlValue {
+export interface ISparqlValue {
   value: string;
   type: string;
 }
 
-export interface SparqlResponse {
+export interface ISparqlResponse {
   results: {
-    bindings: Array<Record<string, SparqlValue>>;
+    bindings: Array<Record<string, ISparqlValue>>;
   };
 }
 

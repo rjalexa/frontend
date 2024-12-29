@@ -1,11 +1,12 @@
 // app/api/files/route.ts
 import { NextResponse } from 'next/server'
-import { articleService, ProcessedArticle } from '@/lib/articles'
+
+import { articleService, IProcessedArticle } from '@/lib/articles'
 
 export const runtime = 'nodejs'
 export const dynamic = 'force-dynamic'
 
-export async function GET(): Promise<NextResponse<ProcessedArticle[] | { error: string, details?: string }>> {
+export async function GET(): Promise<NextResponse<IProcessedArticle[] | { error: string, details?: string }>> {
   try {
     const articles = await articleService.getArticles()
     

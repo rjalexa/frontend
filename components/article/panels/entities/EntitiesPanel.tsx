@@ -1,18 +1,20 @@
 // components/entities/EntitiesPanel.tsx
-import React, { useState, useEffect } from "react";
 import { Microscope, MapPin, User, Building } from "lucide-react";
 import Image from "next/image";
+import React, { useState, useEffect } from "react";
+
 import type { Article, Entity, EntityKind } from '@/types';
+
 import type { BasePanelProps } from '../types';
 import EntityCard from './EntityCard';
 
-interface EntitiesPanelProps extends BasePanelProps {
+interface IEntitiesPanelProps extends BasePanelProps {
   article: Article;
 }
 
 type EntityTypeFilter = "all" | EntityKind;
 
-export default function EntitiesPanel({ isOpen, onClose, article }: EntitiesPanelProps) {
+export default function EntitiesPanel({ isOpen, onClose, article }: IEntitiesPanelProps) {
   const [selectedType, setSelectedType] = useState<EntityTypeFilter>("all");
 
   // Handle escape key press

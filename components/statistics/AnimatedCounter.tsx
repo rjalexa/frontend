@@ -1,11 +1,11 @@
 // components/statistics/AnimatedCounter.tsx
 import React, { useEffect, useState, useRef } from 'react';
 
-interface AnimatedCounterProps {
+interface IAnimatedCounterProps {
   value: number;
 }
 
-const AnimatedCounter = ({ value }: AnimatedCounterProps) => {
+const AnimatedCounter = ({ value }: IAnimatedCounterProps) => {
   const [isMounted, setIsMounted] = useState(false);
   const [displayValue, setDisplayValue] = useState(0);
   const animationRef = useRef<number>();

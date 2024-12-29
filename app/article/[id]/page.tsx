@@ -1,8 +1,5 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
-import { useRouter } from "next/navigation";
-import Image from "next/image";
 import {
   ArrowLeft,
   ArrowUp,
@@ -13,13 +10,12 @@ import {
   Hash,
   Globe,
 } from "lucide-react";
-import type { Article, SortField, SortDirection } from "@/types/article";
-import ArticleContent from "@/components/article/content/ArticleContent";
+import Image from "next/image";
+import { useRouter } from "next/navigation";
+import React, { useState, useEffect } from "react";
 
-const getInitialState = (key: string): boolean => {
-  if (typeof window === 'undefined') return false;
-  return localStorage.getItem(key) === "true";
-};
+import ArticleContent from "@/components/article/content/ArticleContent";
+import type { Article, SortField, SortDirection } from "@/types/article";
 
 export default function ArticlePage({
   params,
@@ -34,16 +30,22 @@ export default function ArticlePage({
   const [sortField, setSortField] = useState<SortField>("date_created");
   const [sortDirection, setSortDirection] = useState<SortDirection>("desc");
 
-  // Panel states with SSR-safe initialization
-  const [highlightsOpen, setHighlightsOpen] = useState(() => getInitialState("highlightsOpen"));
-  const [summaryOpen, setSummaryOpen] = useState(() => getInitialState("summaryOpen"));
-  const [topicsOpen, setTopicsOpen] = useState(() => getInitialState("topicsOpen"));
-  const [entitiesOpen, setEntitiesOpen] = useState(() => getInitialState("entitiesOpen"));
-  const [desiredMapState, setDesiredMapState] = useState(() => getInitialState("desiredMapState"));
+  // Panel states initialized to false by default
+  const [highlightsOpen, setHighlightsOpen] = useState(false);
+  const [summaryOpen, setSummaryOpen] = useState(false);
+  const [topicsOpen, setTopicsOpen] = useState(false);
+  const [entitiesOpen, setEntitiesOpen] = useState(false);
+  const [desiredMapState, setDesiredMapState] = useState(false);
   const [mapOpen, setMapOpen] = useState(false);
 
-  // Access localStorage after component mounts
+  // Initialize states from localStorage after mount
   useEffect(() => {
+    setHighlightsOpen(localStorage.getItem("highlightsOpen") === "true");
+    setSummaryOpen(localStorage.getItem("summaryOpen") === "true");
+    setTopicsOpen(localStorage.getItem("topicsOpen") === "true");
+    setEntitiesOpen(localStorage.getItem("entitiesOpen") === "true");
+    setDesiredMapState(localStorage.getItem("desiredMapState") === "true");
+    
     const savedSortField = localStorage.getItem("sortField") as SortField;
     const savedSortDirection = localStorage.getItem("sortDirection") as SortDirection;
 
@@ -170,10 +172,10 @@ export default function ArticlePage({
 
   return (
     <div className="bg-white min-h-screen">
-      <main className="px-8">
+      <main className="px-4 sm:px-8">
         <div className="mx-auto">
           {/* Navigation buttons */}
-          <div className="flex items-center gap-4 mb-6">
+          <div className="flex flex-wrap items-center gap-2 sm:gap-4 mb-6">
             <button
               onClick={() =>
                 router.push(
@@ -208,7 +210,7 @@ export default function ArticlePage({
           </div>
 
           {/* MeMa logo and button controls */}
-          <div className="flex items-center gap-4 mb-8">
+          <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4 mb-8">
             <Image
               src="/mema.svg"
               alt="MeMa Logo"
@@ -216,10 +218,10 @@ export default function ArticlePage({
               height={24}
               className="w-16 h-6"
             />
-            <div className="flex items-center gap-4">
+            <div className="flex flex-wrap items-center gap-2 sm:gap-3">
               <button
                 onClick={handleTopicsToggle}
-                className={`px-6 py-2 rounded-full transition-colors flex items-center gap-2 ${
+                className={`px-3 sm:px-6 py-2 rounded-full transition-colors flex items-center gap-2 text-sm sm:text-base whitespace-nowrap ${
                   topicsOpen
                     ? "bg-blue-600 text-white"
                     : "bg-gray-100 text-gray-800 hover:bg-gray-200"
@@ -231,7 +233,7 @@ export default function ArticlePage({
 
               <button
                 onClick={handleSummaryToggle}
-                className={`px-6 py-2 rounded-full transition-colors flex items-center gap-2 ${
+                className={`px-3 sm:px-6 py-2 rounded-full transition-colors flex items-center gap-2 text-sm sm:text-base whitespace-nowrap ${
                   summaryOpen
                     ? "bg-blue-600 text-white"
                     : "bg-gray-100 text-gray-800 hover:bg-gray-200"
@@ -243,7 +245,7 @@ export default function ArticlePage({
 
               <button
                 onClick={handleHighlightsToggle}
-                className={`px-6 py-2 rounded-full transition-colors flex items-center gap-2 ${
+                className={`px-3 sm:px-6 py-2 rounded-full transition-colors flex items-center gap-2 text-sm sm:text-base whitespace-nowrap ${
                   highlightsOpen
                     ? "bg-blue-600 text-white"
                     : "bg-gray-100 text-gray-800 hover:bg-gray-200"
@@ -256,7 +258,7 @@ export default function ArticlePage({
               {article.meta_data?.some((entity) => entity.kind === "location") && (
                 <button
                   onClick={handleMapToggle}
-                  className={`px-6 py-2 rounded-full transition-colors flex items-center gap-2 ${
+                  className={`px-3 sm:px-6 py-2 rounded-full transition-colors flex items-center gap-2 text-sm sm:text-base whitespace-nowrap ${
                     mapOpen
                       ? "bg-blue-600 text-white"
                       : "bg-gray-100 text-gray-800 hover:bg-gray-200"
@@ -269,7 +271,7 @@ export default function ArticlePage({
 
               <button
                 onClick={handleEntitiesToggle}
-                className={`px-6 py-2 rounded-full transition-colors flex items-center gap-2 ${
+                className={`px-3 sm:px-6 py-2 rounded-full transition-colors flex items-center gap-2 text-sm sm:text-base whitespace-nowrap ${
                   entitiesOpen
                     ? "bg-blue-600 text-white"
                     : "bg-gray-100 text-gray-800 hover:bg-gray-200"

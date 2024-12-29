@@ -1,8 +1,6 @@
 // app/article/loading.tsx
 "use client";
 
-import React from "react";
-import Image from "next/image";
 import {
   ArrowLeft,
   ArrowUp,
@@ -13,6 +11,8 @@ import {
   Hash,
   Globe,
 } from "lucide-react";
+import Image from "next/image";
+import React from "react";
 
 export default function ArticleLoading() {
   return (

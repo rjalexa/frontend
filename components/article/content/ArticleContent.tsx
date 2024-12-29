@@ -1,5 +1,7 @@
-// components/article/content/ArticleContent.tsx
 import React from "react";
+
+import type { Article } from "@/types/article";
+
 import {
   HighlightsPanel,
   TopicsPanel,
@@ -7,9 +9,8 @@ import {
   MapPanel,
   EntitiesPanel
 } from "../panels";
-import type { Article } from "@/types/article";
 
-interface ArticleContentProps {
+interface IArticleContentProps {
   article: Article;
   summaryOpen: boolean;
   setSummaryOpen: (open: boolean) => void;
@@ -37,7 +38,7 @@ export default function ArticleContent({
   entitiesOpen,
   setEntitiesOpen,
   setDesiredMapState,
-}: ArticleContentProps) {
+}: IArticleContentProps) {
   // Safe map close handler that checks if setDesiredMapState exists
   const handleMapClose = () => {
     setMapOpen(false);

@@ -1,11 +1,12 @@
 // components/article/panels/highlights/HighlightsPanel.tsx
-import React from 'react';
 import { Highlighter } from "lucide-react";
 import Image from 'next/image';
+import React from 'react';
+
 import type { BasePanelProps } from '@/types/panel';
 import type { Highlight } from '@/types/panel';
 
-interface HighlightsPanelProps extends BasePanelProps {
+interface IHighlightsPanelProps extends BasePanelProps {
   highlights: Highlight[];
   articleTitle?: string;
 }
@@ -15,7 +16,7 @@ export default function HighlightsPanel({
   onClose,
   highlights,
   articleTitle
-}: HighlightsPanelProps) {
+}: IHighlightsPanelProps) {
   if (!isOpen) return null;
 
   return (
