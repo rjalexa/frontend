@@ -1,8 +1,8 @@
 // types/entity.ts
-export type EntityKind = 'location' | 'person' | 'organization';
+export type EntityKind = "location" | "person" | "organization";
 
 export interface GeonamesLinkingInfo {
-  source: 'geonames';
+  source: "geonames";
   url?: string;
   geoid?: number;
   name?: string;
@@ -20,7 +20,7 @@ export interface GeonamesLinkingInfo {
 }
 
 export interface WikipediaLinkingInfo {
-  source: 'wikipedia';
+  source: "wikipedia";
   url: string;
   title: string;
   summary: string;
@@ -28,11 +28,14 @@ export interface WikipediaLinkingInfo {
 }
 
 export interface AILinkingInfo {
-  source: 'ai';
+  source: "ai";
   summary: string;
 }
 
-export type LinkingInfo = GeonamesLinkingInfo | WikipediaLinkingInfo | AILinkingInfo;
+export type LinkingInfo =
+  | GeonamesLinkingInfo
+  | WikipediaLinkingInfo
+  | AILinkingInfo;
 
 export interface MetaDataItem {
   id: string;

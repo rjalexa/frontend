@@ -2,7 +2,7 @@
 const SPARQL_URL = process.env.NEXT_PUBLIC_SPARQL_URL;
 
 if (!SPARQL_URL) {
-  throw new Error('NEXT_PUBLIC_SPARQL_URL environment variable is not set');
+  throw new Error("NEXT_PUBLIC_SPARQL_URL environment variable is not set");
 }
 
 export const ENDPOINTS = {

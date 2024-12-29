@@ -1,10 +1,10 @@
 // components/article/panels/highlights/HighlightsPanel.tsx
 import { Highlighter } from "lucide-react";
-import Image from 'next/image';
-import React from 'react';
+import Image from "next/image";
+import React from "react";
 
-import type { BasePanelProps } from '@/types/panel';
-import type { Highlight } from '@/types/panel';
+import type { BasePanelProps } from "@/types/panel";
+import type { Highlight } from "@/types/panel";
 
 interface IHighlightsPanelProps extends BasePanelProps {
   highlights: Highlight[];
@@ -15,7 +15,7 @@ export default function HighlightsPanel({
   isOpen,
   onClose,
   highlights,
-  articleTitle
+  articleTitle,
 }: IHighlightsPanelProps) {
   if (!isOpen) return null;
 
@@ -24,7 +24,7 @@ export default function HighlightsPanel({
       <div className="flex items-center justify-between w-full p-4 border-b">
         <div className="flex items-center gap-2 text-blue-700 bg-blue-100 px-4 py-2 rounded-md">
           <Highlighter className="w-4 h-4" />
-          <span>Punti salienti{articleTitle ? `: ${articleTitle}` : ''}</span>
+          <span>Punti salienti{articleTitle ? `: ${articleTitle}` : ""}</span>
         </div>
         <div className="flex items-center gap-4">
           <button
@@ -34,21 +34,24 @@ export default function HighlightsPanel({
           >
             ✕
           </button>
-          <Image 
-            src="/mema.svg" 
-            alt="MeMa Logo" 
+          <Image
+            src="/mema.svg"
+            alt="MeMa Logo"
             width={64}
             height={24}
-            className="ml-6" 
+            className="ml-6"
           />
         </div>
       </div>
-      
+
       <div className="p-4">
         {highlights.length > 0 ? (
           <div className="space-y-4">
             {highlights
-              .sort((a, b) => a.highlight_sequence_number - b.highlight_sequence_number)
+              .sort(
+                (a, b) =>
+                  a.highlight_sequence_number - b.highlight_sequence_number,
+              )
               .map((highlight, index) => (
                 <div
                   key={`${highlight.highlight_sequence_number}-${index}`}

@@ -1,6 +1,6 @@
 // types/article.ts
-import { Entity } from './entity';
-import { Highlight } from './panel';
+import { Entity } from "./entity";
+import { Highlight } from "./panel";
 
 export interface Article {
   id: string;
@@ -22,5 +22,5 @@ export interface Article {
   tags?: string;
 }
 
-export type SortField = 'date_created' | 'title' | 'author';
-export type SortDirection = 'asc' | 'desc';
+export type SortField = "date_created" | "title" | "author";
+export type SortDirection = "asc" | "desc";

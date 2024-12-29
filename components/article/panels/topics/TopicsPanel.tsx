@@ -1,16 +1,20 @@
 // components/article/panels/topics/TopicsPanel.tsx
 import { Hash } from "lucide-react";
-import Image from 'next/image';
-import React from 'react';
+import Image from "next/image";
+import React from "react";
 
-import type { Article } from '@/types/article';
-import type { BasePanelProps } from '@/types/panel';
+import type { Article } from "@/types/article";
+import type { BasePanelProps } from "@/types/panel";
 
 interface ITopicsPanelProps extends BasePanelProps {
   article: Article;
 }
 
-export default function TopicsPanel({ isOpen, onClose, article }: ITopicsPanelProps) {
+export default function TopicsPanel({
+  isOpen,
+  onClose,
+  article,
+}: ITopicsPanelProps) {
   if (!isOpen) return null;
 
   const manifestoTopics = [article.articleTag, article.topics, article.tags]
@@ -45,7 +49,7 @@ export default function TopicsPanel({ isOpen, onClose, article }: ITopicsPanelPr
           />
         </div>
       </div>
-      
+
       <div className="p-4 pb-2">
         {!manifestoTopics && !memaTopics ? (
           <div className="text-gray-500 text-center py-4">

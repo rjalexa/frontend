@@ -1,16 +1,16 @@
-import { NextRequest, NextResponse } from 'next/server';
+import { NextRequest, NextResponse } from "next/server";
 
-import { ENDPOINTS } from '@/src/config/constants';
+import { ENDPOINTS } from "@/src/config/constants";
 
-export type QueryId = 
-  | 'dateRange'
-  | 'totalArticles'
-  | 'uniqueAuthors'
-  | 'topAuthors'
-  | 'uniqueLocations'
-  | 'topLocations'
-  | 'totalPeople'
-  | 'topPeople';
+export type QueryId =
+  | "dateRange"
+  | "totalArticles"
+  | "uniqueAuthors"
+  | "topAuthors"
+  | "uniqueLocations"
+  | "topLocations"
+  | "totalPeople"
+  | "topPeople";
 
 export interface ISparqlValue {
   value: string;
@@ -105,28 +105,31 @@ const SPARQL_QUERIES: Record<QueryId, string> = {
     GROUP BY ?personLabel
     ORDER BY DESC(?mentions_count)
     LIMIT 101
-  `
+  `,
 };
 
 export async function GET(request: NextRequest) {
   const searchParams = request.nextUrl.searchParams;
-  const queryId = searchParams.get('queryId') as QueryId;
+  const queryId = searchParams.get("queryId") as QueryId;
 
   if (!queryId || !SPARQL_QUERIES[queryId]) {
-    return NextResponse.json({ error: 'Invalid query ID' }, { status: 400 });
+    return NextResponse.json({ error: "Invalid query ID" }, { status: 400 });
   }
 
   const endpoint = ENDPOINTS.memav6;
   if (!endpoint) {
-    return NextResponse.json({ error: 'SPARQL endpoint not configured' }, { status: 500 });
+    return NextResponse.json(
+      { error: "SPARQL endpoint not configured" },
+      { status: 500 },
+    );
   }
 
   try {
     const response = await fetch(endpoint, {
-      method: 'POST',
+      method: "POST",
       headers: {
-        'Accept': 'application/sparql-results+json',
-        'Content-Type': 'application/sparql-query',
+        Accept: "application/sparql-results+json",
+        "Content-Type": "application/sparql-query",
       },
       body: SPARQL_QUERIES[queryId],
     });
@@ -138,10 +141,10 @@ export async function GET(request: NextRequest) {
     const data = await response.json();
     return NextResponse.json(data);
   } catch (error) {
-    console.error('SPARQL query failed:', error);
+    console.error("SPARQL query failed:", error);
     return NextResponse.json(
-      { error: 'Failed to execute SPARQL query' },
-      { status: 500 }
+      { error: "Failed to execute SPARQL query" },
+      { status: 500 },
     );
   }
 }

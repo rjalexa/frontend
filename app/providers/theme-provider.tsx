@@ -1,36 +1,36 @@
-'use client'
+"use client";
 
-import * as React from "react"
-import { useEffect, useState } from 'react'
+import * as React from "react";
+import { useEffect, useState } from "react";
 
 interface IThemeProviderProps {
-  children: React.ReactNode
-  defaultTheme?: 'light' | 'dark'
+  children: React.ReactNode;
+  defaultTheme?: "light" | "dark";
 }
 
 export function ThemeProvider({
   children,
-  defaultTheme = 'light',
+  defaultTheme = "light",
 }: IThemeProviderProps) {
-  const [theme, setTheme] = useState(defaultTheme)
+  const [theme, setTheme] = useState(defaultTheme);
 
   useEffect(() => {
-    const isDark = window.matchMedia('(prefers-color-scheme: dark)').matches
-    setTheme(isDark ? 'dark' : 'light')
+    const isDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+    setTheme(isDark ? "dark" : "light");
 
     // Listen for changes in system theme
-    const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)')
+    const mediaQuery = window.matchMedia("(prefers-color-scheme: dark)");
     const handleChange = (e: MediaQueryListEvent) => {
-      setTheme(e.matches ? 'dark' : 'light')
-    }
+      setTheme(e.matches ? "dark" : "light");
+    };
 
-    mediaQuery.addEventListener('change', handleChange)
-    return () => mediaQuery.removeEventListener('change', handleChange)
-  }, [])
+    mediaQuery.addEventListener("change", handleChange);
+    return () => mediaQuery.removeEventListener("change", handleChange);
+  }, []);
 
   return (
     <div data-theme={theme} className={theme}>
       {children}
     </div>
-  )
+  );
 }

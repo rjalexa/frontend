@@ -1,5 +1,6 @@
 // utils/logger.ts
-const isProduction = process.env.NODE_ENV === 'production';
+/* eslint-disable no-console */
+const isProduction = process.env.NODE_ENV === "production";
 
 export const logger = {
   debug: (...args: unknown[]) => {
@@ -11,5 +12,5 @@ export const logger = {
     if (!isProduction) {
       console.error(...args);
     }
-  }
+  },
 };

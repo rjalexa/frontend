@@ -28,20 +28,22 @@ export default function RootLayout({
   return (
     <html lang="en" className={fontSans.variable}>
       <head>
-        <link
-          rel="preload"
-          href="/mema.svg"
-          as="image"
-        />
+        <link rel="preload" href="/mema.svg" as="image" />
       </head>
       <body className="antialiased">
         <ThemeProvider defaultTheme="light">
           <NavigationProvider>
             <Header />
             <main>
-              <Suspense fallback={<div className="min-h-[calc(100vh-176px)] flex flex-col items-center justify-center">
-                <div className="animate-pulse text-blue-700 text-lg">Loading MeMa...</div>
-              </div>}>
+              <Suspense
+                fallback={
+                  <div className="min-h-[calc(100vh-176px)] flex flex-col items-center justify-center">
+                    <div className="animate-pulse text-blue-700 text-lg">
+                      Loading MeMa...
+                    </div>
+                  </div>
+                }
+              >
                 {children}
               </Suspense>
             </main>

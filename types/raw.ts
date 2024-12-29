@@ -1,5 +1,5 @@
 // types/raw.ts
-import type { MetaDataItem } from './entity';
+import type { MetaDataItem } from "./entity";
 
 export interface RawArticle {
   headline: string;

@@ -5,15 +5,14 @@ import { usePathname } from "next/navigation";
 import React, { useState, useRef, useEffect } from "react";
 
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
-import { 
-  Entity, 
-  EntityKind, 
+import {
+  Entity,
+  EntityKind,
   LinkingInfo,
   GeonamesLinkingInfo,
   WikipediaLinkingInfo,
-  AILinkingInfo 
-} from '@/types/entity';
-
+  AILinkingInfo,
+} from "@/types/entity";
 
 interface IEntityCardProps {
   entity: Entity;
@@ -59,22 +58,22 @@ export default function EntityCard({ entity }: IEntityCardProps) {
 
   useEffect(() => {
     const handleEsc = (event: KeyboardEvent) => {
-      if (event.key === 'Escape') {
+      if (event.key === "Escape") {
         setIsExpanded(false);
         event.stopPropagation(); // Prevent the event from bubbling up
       }
     };
 
     if (isExpanded) {
-      window.addEventListener('keydown', handleEsc);
-      return () => window.removeEventListener('keydown', handleEsc);
+      window.addEventListener("keydown", handleEsc);
+      return () => window.removeEventListener("keydown", handleEsc);
     }
   }, [isExpanded]);
 
   const renderContent = () => {
     const wikipediaInfo = entity.linking_info?.find(isWikipediaInfo);
     const aiInfo = entity.linking_info?.find(
-      (info): info is AILinkingInfo => info.source === "ai"
+      (info): info is AILinkingInfo => info.source === "ai",
     );
 
     return (
@@ -85,19 +84,17 @@ export default function EntityCard({ entity }: IEntityCardProps) {
         {(entity.kind === "person" || entity.kind === "organization") && (
           <div className="space-y-2">
             {wikipediaInfo?.summary && (
-              <p className="text-gray-600 text-sm">
-                {wikipediaInfo.summary}
-              </p>
+              <p className="text-gray-600 text-sm">{wikipediaInfo.summary}</p>
             )}
             {aiInfo?.summary && (
               <div className="text-gray-600 text-sm">
                 <p className="flex items-center gap-1">
-                  <Image 
-                    src="/mema.svg" 
-                    alt="MeMa" 
-                    width={32} 
+                  <Image
+                    src="/mema.svg"
+                    alt="MeMa"
+                    width={32}
                     height={12}
-                    className="w-8 h-3" 
+                    className="w-8 h-3"
                   />
                   <span className="italic">{aiInfo.summary}</span>
                 </p>

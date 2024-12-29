@@ -3,15 +3,15 @@ import { ArrowUpDown, Eye } from "lucide-react";
 import { useRouter } from "next/navigation";
 import React, { useState, useEffect } from "react";
 
-import type { Article } from '@/types/article';
+import type { Article } from "@/types/article";
 
 type SortField = "date_created" | "title" | "author";
 type SortDirection = "asc" | "desc";
 
 const columnMappings = {
-  "Titolo": "headline",
-  "Data": "date_created",
-  "Autore": "author"
+  Titolo: "headline",
+  Data: "date_created",
+  Autore: "author",
 } as const;
 
 type DisplayName = keyof typeof columnMappings;
@@ -27,8 +27,10 @@ export default function Home() {
   useEffect(() => {
     // Initialize sort state from URL or localStorage
     const params = new URLSearchParams(window.location.search);
-    const savedField = params.get('sortField') || localStorage.getItem('sortField');
-    const savedDirection = params.get('sortDirection') || localStorage.getItem('sortDirection');
+    const savedField =
+      params.get("sortField") || localStorage.getItem("sortField");
+    const savedDirection =
+      params.get("sortDirection") || localStorage.getItem("sortDirection");
 
     if (savedField) setSortField(savedField as SortField);
     if (savedDirection) setSortDirection(savedDirection as SortDirection);
@@ -37,7 +39,8 @@ export default function Home() {
     const fetchArticles = async () => {
       try {
         const response = await fetch("/api/files");
-        if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+        if (!response.ok)
+          throw new Error(`HTTP error! status: ${response.status}`);
         const data = await response.json();
         setArticles(data || []);
       } catch (err) {
@@ -52,26 +55,31 @@ export default function Home() {
 
   const handleSort = (displayName: DisplayName) => {
     const field = columnMappings[displayName] as SortField;
-    const newDirection: SortDirection = field === sortField && sortDirection === "asc" ? "desc" : "asc";
-    
+    const newDirection: SortDirection =
+      field === sortField && sortDirection === "asc" ? "desc" : "asc";
+
     if (field === sortField) {
       setSortDirection(newDirection);
-      localStorage.setItem('sortDirection', newDirection);
+      localStorage.setItem("sortDirection", newDirection);
     } else {
       setSortField(field);
       setSortDirection("desc");
-      localStorage.setItem('sortField', field);
-      localStorage.setItem('sortDirection', "desc");
+      localStorage.setItem("sortField", field);
+      localStorage.setItem("sortDirection", "desc");
     }
   };
 
   const sortedArticles = [...articles].sort((a, b) => {
     const direction = sortDirection === "asc" ? 1 : -1;
     if (sortField === "date_created") {
-      return direction * (new Date(a.date_created).getTime() - new Date(b.date_created).getTime());
+      return (
+        direction *
+        (new Date(a.date_created).getTime() -
+          new Date(b.date_created).getTime())
+      );
     }
-    const aValue = (a[sortField] || '').toLowerCase();
-    const bValue = (b[sortField] || '').toLowerCase();
+    const aValue = (a[sortField] || "").toLowerCase();
+    const bValue = (b[sortField] || "").toLowerCase();
     return direction * aValue.localeCompare(bValue);
   });
 
@@ -82,8 +90,10 @@ export default function Home() {
     <div className="bg-white min-h-screen">
       <div className="p-4">
         <div className="max-w-6xl mx-auto">
-          <h1 className="text-2xl font-bold mb-4 text-gray-800">Articoli selezionati</h1>
-  
+          <h1 className="text-2xl font-bold mb-4 text-gray-800">
+            Articoli selezionati
+          </h1>
+
           <div className="overflow-x-auto">
             <table className="w-full border-collapse">
               <thead>
@@ -115,9 +125,7 @@ export default function Home() {
                       <ArrowUpDown className="h-4 w-4" />
                     </button>
                   </th>
-                  <th className="py-2 px-4 text-center w-20">
-                    Dettagli
-                  </th>
+                  <th className="py-2 px-4 text-center w-20">Dettagli</th>
                 </tr>
               </thead>
               <tbody>
@@ -143,15 +151,18 @@ export default function Home() {
                         {article.author}
                       </td>
                       <td className="py-2 px-4 text-center">
-                        {article.highlights && article.highlights.length > 0 && (
-                          <button
-                            onClick={() => router.push(`/article/${article.id}`)}
-                            className="text-blue-600 hover:text-blue-800"
-                            title="View Highlights"
-                          >
-                            <Eye className="h-4 w-4 mx-auto" />
-                          </button>
-                        )}
+                        {article.highlights &&
+                          article.highlights.length > 0 && (
+                            <button
+                              onClick={() =>
+                                router.push(`/article/${article.id}`)
+                              }
+                              className="text-blue-600 hover:text-blue-800"
+                              title="View Highlights"
+                            >
+                              <Eye className="h-4 w-4 mx-auto" />
+                            </button>
+                          )}
                       </td>
                     </tr>
                   ))

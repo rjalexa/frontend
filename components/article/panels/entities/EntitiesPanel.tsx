@@ -3,18 +3,22 @@ import { Microscope, MapPin, User, Building } from "lucide-react";
 import Image from "next/image";
 import React, { useState, useEffect } from "react";
 
-import type { Article, Entity, EntityKind } from '@/types';
+import type { Article, Entity, EntityKind } from "@/types";
 
-import type { BasePanelProps } from '../types';
-import EntityCard from './EntityCard';
+import type { IBasePanelProps } from "../types";
+import EntityCard from "./EntityCard";
 
-interface IEntitiesPanelProps extends BasePanelProps {
+interface IEntitiesPanelProps extends IBasePanelProps {
   article: Article;
 }
 
 type EntityTypeFilter = "all" | EntityKind;
 
-export default function EntitiesPanel({ isOpen, onClose, article }: IEntitiesPanelProps) {
+export default function EntitiesPanel({
+  isOpen,
+  onClose,
+  article,
+}: IEntitiesPanelProps) {
   const [selectedType, setSelectedType] = useState<EntityTypeFilter>("all");
 
   // Handle escape key press
@@ -26,8 +30,8 @@ export default function EntitiesPanel({ isOpen, onClose, article }: IEntitiesPan
     };
 
     if (isOpen) {
-      window.addEventListener('keydown', handleEscKey);
-      return () => window.removeEventListener('keydown', handleEscKey);
+      window.addEventListener("keydown", handleEscKey);
+      return () => window.removeEventListener("keydown", handleEscKey);
     }
   }, [isOpen, onClose]);
 
@@ -71,16 +75,16 @@ export default function EntitiesPanel({ isOpen, onClose, article }: IEntitiesPan
           >
             ✕
           </button>
-          <Image 
-            src="/mema.svg" 
-            alt="MeMa Logo" 
+          <Image
+            src="/mema.svg"
+            alt="MeMa Logo"
             width={64}
             height={24}
             className="ml-6"
           />
         </div>
       </div>
-      
+
       <div className="p-4">
         <div className="flex flex-wrap gap-2 mb-4">
           <button

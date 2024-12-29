@@ -1,26 +1,26 @@
 // components/header/Header.tsx
-'use client'
-import { Menu, X } from 'lucide-react'
-import Image from 'next/image'
-import Link from 'next/link'
-import { useRouter } from 'next/navigation'
+"use client";
+import { Menu, X } from "lucide-react";
+import Image from "next/image";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
 
-import { useNavigation } from '@/app/providers/navigation-provider'
+import { useNavigation } from "@/app/providers/navigation-provider";
 
 export default function Header() {
-  const { isMenuOpen, setMenuOpen } = useNavigation()
-  const router = useRouter()
-  
+  const { isMenuOpen, setMenuOpen } = useNavigation();
+  const router = useRouter();
+
   const handleArticlesClick = (e: React.MouseEvent) => {
-    e.preventDefault()
-    const lastArticle = localStorage.getItem('lastViewedArticle')
-    setMenuOpen(false)
-    if (lastArticle && window.location.pathname === '/statistics') {
-      router.push(`/article/${lastArticle}`)
+    e.preventDefault();
+    const lastArticle = localStorage.getItem("lastViewedArticle");
+    setMenuOpen(false);
+    if (lastArticle && window.location.pathname === "/statistics") {
+      router.push(`/article/${lastArticle}`);
     } else {
-      router.push('/')
+      router.push("/");
     }
-  }
+  };
 
   return (
     <div className="w-full">
@@ -99,5 +99,5 @@ export default function Header() {
         <div className="h-2 bg-red-600" />
       </div>
     </div>
-  )
+  );
 }

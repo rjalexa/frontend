@@ -1,22 +1,22 @@
 // tailwind.config.ts
-import type { Config } from 'tailwindcss'
+import type { Config } from "tailwindcss";
 
 const config: Config = {
   content: [
-    './pages/**/*.{js,ts,jsx,tsx,mdx}',
-    './components/**/*.{js,ts,jsx,tsx,mdx}',
-    './app/**/*.{js,ts,jsx,tsx,mdx}',
+    "./pages/**/*.{js,ts,jsx,tsx,mdx}",
+    "./components/**/*.{js,ts,jsx,tsx,mdx}",
+    "./app/**/*.{js,ts,jsx,tsx,mdx}",
   ],
   theme: {
     extend: {
       borderColor: {
-        border: 'hsl(var(--border))',
+        border: "hsl(var(--border))",
       },
       backgroundColor: {
-        background: 'var(--background)',
+        background: "var(--background)",
       },
       textColor: {
-        foreground: 'var(--foreground)',
+        foreground: "var(--foreground)",
       },
       colors: {
         border: "hsl(var(--border))",
@@ -56,6 +56,6 @@ const config: Config = {
     },
   },
   plugins: [require("tailwindcss-animate")],
-}
+};
 
-export default config
+export default config;

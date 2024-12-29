@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState } from "react";
 
 interface IListItem {
   label: string;
@@ -12,18 +12,23 @@ interface IListStatsCardProps {
   hasError?: boolean;
 }
 
-const ListStatsCard = ({ title, items, isLoading, hasError }: IListStatsCardProps) => {
+const ListStatsCard = ({
+  title,
+  items,
+  isLoading,
+  hasError,
+}: IListStatsCardProps) => {
   const [visibleItems, setVisibleItems] = useState<number[]>([]);
-  
+
   useEffect(() => {
     if (items && items.length > 0) {
       // Reset visible items when items change
       setVisibleItems([]);
-      
+
       // Show items one by one with a delay
       items.forEach((_, index) => {
         setTimeout(() => {
-          setVisibleItems(prev => [...prev, index]);
+          setVisibleItems((prev) => [...prev, index]);
         }, index * 100); // 100ms delay between each item
       });
     }
@@ -32,7 +37,7 @@ const ListStatsCard = ({ title, items, isLoading, hasError }: IListStatsCardProp
   return (
     <div className="bg-white rounded-lg shadow-md p-4 hover:shadow-lg transition-shadow duration-200">
       <h3 className="text-lg font-semibold text-gray-700 mb-4">{title}</h3>
-      
+
       <div className="space-y-2">
         {isLoading ? (
           <div className="flex items-center space-x-2">
@@ -47,11 +52,13 @@ const ListStatsCard = ({ title, items, isLoading, hasError }: IListStatsCardProp
               key={item.label}
               className={`flex justify-between items-center py-1 transition-all duration-300 ${
                 visibleItems.includes(index)
-                  ? 'opacity-100 translate-y-0'
-                  : 'opacity-0 translate-y-4'
+                  ? "opacity-100 translate-y-0"
+                  : "opacity-0 translate-y-4"
               }`}
             >
-              <span className="text-gray-600 truncate flex-1 pr-4">{item.label}</span>
+              <span className="text-gray-600 truncate flex-1 pr-4">
+                {item.label}
+              </span>
               <span className="text-gray-900 font-medium">
                 {item.value.toLocaleString()}
               </span>

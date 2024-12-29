@@ -45,9 +45,11 @@ export default function ArticlePage({
     setTopicsOpen(localStorage.getItem("topicsOpen") === "true");
     setEntitiesOpen(localStorage.getItem("entitiesOpen") === "true");
     setDesiredMapState(localStorage.getItem("desiredMapState") === "true");
-    
+
     const savedSortField = localStorage.getItem("sortField") as SortField;
-    const savedSortDirection = localStorage.getItem("sortDirection") as SortDirection;
+    const savedSortDirection = localStorage.getItem(
+      "sortDirection",
+    ) as SortDirection;
 
     if (savedSortField) {
       setSortField(savedSortField);
@@ -83,7 +85,7 @@ export default function ArticlePage({
 
   // Save current article ID for navigation
   useEffect(() => {
-    localStorage.setItem('lastViewedArticle', articleId);
+    localStorage.setItem("lastViewedArticle", articleId);
   }, [articleId]);
 
   // Fetch articles
@@ -125,7 +127,7 @@ export default function ArticlePage({
   useEffect(() => {
     if (article) {
       const hasLocations = article.meta_data?.some(
-        (entity) => entity.kind === "location"
+        (entity) => entity.kind === "location",
       );
       setMapOpen(hasLocations ? desiredMapState : false);
     }
@@ -179,7 +181,7 @@ export default function ArticlePage({
             <button
               onClick={() =>
                 router.push(
-                  `/?sortField=${sortField}&sortDirection=${sortDirection}`
+                  `/?sortField=${sortField}&sortDirection=${sortDirection}`,
                 )
               }
               className="flex items-center gap-2 text-blue-600 hover:text-blue-800"
@@ -255,7 +257,9 @@ export default function ArticlePage({
                 Punti salienti
               </button>
 
-              {article.meta_data?.some((entity) => entity.kind === "location") && (
+              {article.meta_data?.some(
+                (entity) => entity.kind === "location",
+              ) && (
                 <button
                   onClick={handleMapToggle}
                   className={`px-3 sm:px-6 py-2 rounded-full transition-colors flex items-center gap-2 text-sm sm:text-base whitespace-nowrap ${

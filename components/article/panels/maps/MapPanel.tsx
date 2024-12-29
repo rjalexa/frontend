@@ -3,7 +3,6 @@ import { Globe } from "lucide-react";
 import Image from "next/image";
 import React, { useEffect, useRef, useState } from "react";
 
-
 import type { Article } from "@/types/article";
 import type { BasePanelProps } from "@/types/panel";
 import { logger } from "@/utils/logger";
@@ -19,7 +18,12 @@ interface IMapPanelProps extends BasePanelProps {
   setDesiredMapState?: (state: boolean) => void;
 }
 
-const MapPanel: React.FC<IMapPanelProps> = ({ isOpen, onClose, article, setDesiredMapState }) => {
+const MapPanel: React.FC<IMapPanelProps> = ({
+  isOpen,
+  onClose,
+  article,
+  setDesiredMapState,
+}) => {
   const mapRef = useRef<ILeafletElement | null>(null);
   const mapInstanceRef = useRef<LeafletMap | null>(null);
   const streetsLayerRef = useRef<TileLayer | null>(null);
@@ -46,7 +50,7 @@ const MapPanel: React.FC<IMapPanelProps> = ({ isOpen, onClose, article, setDesir
         if (!mapRef.current) return;
 
         if (mapRef.current._leaflet_id) {
-          logger.debug('Map instance already exists');
+          logger.debug("Map instance already exists");
           return;
         }
 
@@ -64,9 +68,12 @@ const MapPanel: React.FC<IMapPanelProps> = ({ isOpen, onClose, article, setDesir
         };
         delete IconDefault.prototype._getIconUrl;
         L.Icon.Default.mergeOptions({
-          iconRetinaUrl: "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon-2x.png",
-          iconUrl: "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon.png",
-          shadowUrl: "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-shadow.png",
+          iconRetinaUrl:
+            "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon-2x.png",
+          iconUrl:
+            "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon.png",
+          shadowUrl:
+            "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-shadow.png",
         });
 
         // Create tile layers
@@ -74,14 +81,14 @@ const MapPanel: React.FC<IMapPanelProps> = ({ isOpen, onClose, article, setDesir
           "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
           {
             attribution: "© OpenStreetMap contributors",
-          }
+          },
         );
 
         satelliteLayerRef.current = L.tileLayer(
           "https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}",
           {
             attribution: "© ESRI",
-          }
+          },
         );
 
         // Add initial layer
@@ -90,7 +97,7 @@ const MapPanel: React.FC<IMapPanelProps> = ({ isOpen, onClose, article, setDesir
         // Function to switch layers safely
         const switchLayer = (targetLayer: TileLayer, otherLayer: TileLayer) => {
           if (!mapInstanceRef.current) return;
-          
+
           try {
             // Only proceed if map instance exists and is valid
             if (mapInstanceRef.current.getContainer()) {
@@ -98,24 +105,34 @@ const MapPanel: React.FC<IMapPanelProps> = ({ isOpen, onClose, article, setDesir
               if (!mapInstanceRef.current.hasLayer(targetLayer)) {
                 targetLayer.addTo(mapInstanceRef.current);
               }
-              
+
               // Then remove the old layer if it exists and is different from target
-              if (mapInstanceRef.current.hasLayer(otherLayer) && targetLayer !== otherLayer) {
+              if (
+                mapInstanceRef.current.hasLayer(otherLayer) &&
+                targetLayer !== otherLayer
+              ) {
                 otherLayer.remove();
               }
             }
           } catch (error) {
-            logger.debug('Error switching layers:', error);
+            logger.debug("Error switching layers:", error);
           }
         };
 
         // Function to update layer based on map bounds
         const updateLayerBasedOnBounds = () => {
-          if (!mapInstanceRef.current || !streetsLayerRef.current || !satelliteLayerRef.current) return;
+          if (
+            !mapInstanceRef.current ||
+            !streetsLayerRef.current ||
+            !satelliteLayerRef.current
+          )
+            return;
 
           const bounds = mapInstanceRef.current.getBounds();
-          const distance = bounds.getNorthWest().distanceTo(bounds.getSouthEast());
-          
+          const distance = bounds
+            .getNorthWest()
+            .distanceTo(bounds.getSouthEast());
+
           if (distance > 500000) {
             switchLayer(satelliteLayerRef.current, streetsLayerRef.current);
           } else {
@@ -124,30 +141,39 @@ const MapPanel: React.FC<IMapPanelProps> = ({ isOpen, onClose, article, setDesir
         };
 
         // Bind events
-        map.on('moveend', updateLayerBasedOnBounds);
-        map.on('zoomend', updateLayerBasedOnBounds);
+        map.on("moveend", updateLayerBasedOnBounds);
+        map.on("zoomend", updateLayerBasedOnBounds);
 
         // Add manual layer toggle control
         const LayerControl = L.Control.extend({
           options: { position: "topright" },
           onAdd: function () {
-            const container = L.DomUtil.create("div", "leaflet-bar leaflet-control");
+            const container = L.DomUtil.create(
+              "div",
+              "leaflet-bar leaflet-control",
+            );
             const button = L.DomUtil.create("a", "", container);
-            
+
             const updateButton = () => {
               const isStreets = map.hasLayer(streetsLayerRef.current!);
               button.innerHTML = isStreets ? "🗺️" : "🛰️";
             };
 
             button.title = "Toggle Map Type";
-            button.style.cssText = "width:30px;height:30px;line-height:30px;text-align:center;font-size:20px;cursor:pointer;background:white;";
+            button.style.cssText =
+              "width:30px;height:30px;line-height:30px;text-align:center;font-size:20px;cursor:pointer;background:white;";
             button.href = "#";
             updateButton();
 
             L.DomEvent.on(button, "click", function (e) {
               L.DomEvent.preventDefault(e);
-              if (!mapInstanceRef.current || !streetsLayerRef.current || !satelliteLayerRef.current) return;
-              
+              if (
+                !mapInstanceRef.current ||
+                !streetsLayerRef.current ||
+                !satelliteLayerRef.current
+              )
+                return;
+
               if (mapInstanceRef.current.hasLayer(streetsLayerRef.current)) {
                 switchLayer(satelliteLayerRef.current, streetsLayerRef.current);
               } else {
@@ -165,12 +191,22 @@ const MapPanel: React.FC<IMapPanelProps> = ({ isOpen, onClose, article, setDesir
         // Handle locations
         const locations = (article.meta_data || [])
           .filter((entity) => {
-            const geoInfo = entity.linking_info?.find((info) => info.source === "geonames");
-            return entity.kind === "location" && geoInfo?.lat !== undefined && geoInfo?.lng !== undefined;
+            const geoInfo = entity.linking_info?.find(
+              (info) => info.source === "geonames",
+            );
+            return (
+              entity.kind === "location" &&
+              geoInfo?.lat !== undefined &&
+              geoInfo?.lng !== undefined
+            );
           })
           .map((entity) => {
-            const geoInfo = entity.linking_info?.find((info) => info.source === "geonames");
-            const wikiInfo = entity.linking_info?.find((info) => info.source === "wikipedia");
+            const geoInfo = entity.linking_info?.find(
+              (info) => info.source === "geonames",
+            );
+            const wikiInfo = entity.linking_info?.find(
+              (info) => info.source === "wikipedia",
+            );
             if (!geoInfo?.lat || !geoInfo?.lng) return null;
             return {
               label: entity.label,
@@ -183,10 +219,14 @@ const MapPanel: React.FC<IMapPanelProps> = ({ isOpen, onClose, article, setDesir
 
         // Set initial view and markers
         if (locations.length > 0) {
-          const bounds = L.latLngBounds(locations.map((loc) => [loc.lat, loc.lng]));
+          const bounds = L.latLngBounds(
+            locations.map((loc) => [loc.lat, loc.lng]),
+          );
           locations.forEach((location) => {
             L.marker([location.lat, location.lng])
-              .bindPopup(`<strong>${location.label}</strong>${location.summary ? `<br/><br/>${location.summary.split(".")[0]}.` : ""}`)
+              .bindPopup(
+                `<strong>${location.label}</strong>${location.summary ? `<br/><br/>${location.summary.split(".")[0]}.` : ""}`,
+              )
               .addTo(map);
           });
           map.fitBounds(bounds, { padding: [50, 50] });
@@ -196,8 +236,10 @@ const MapPanel: React.FC<IMapPanelProps> = ({ isOpen, onClose, article, setDesir
 
         // Calculate initial view distance and set appropriate layer
         const initialBounds = map.getBounds();
-        const initialDistance = initialBounds.getNorthWest().distanceTo(initialBounds.getSouthEast());
-        
+        const initialDistance = initialBounds
+          .getNorthWest()
+          .distanceTo(initialBounds.getSouthEast());
+
         if (initialDistance > 500000) {
           switchLayer(satelliteLayerRef.current, streetsLayerRef.current);
         } else {
@@ -222,32 +264,32 @@ const MapPanel: React.FC<IMapPanelProps> = ({ isOpen, onClose, article, setDesir
         if (mapInstanceRef.current) {
           // Remove event listeners first
           mapInstanceRef.current.off();
-          
+
           // Remove layers carefully
           if (streetsLayerRef.current) {
             try {
               streetsLayerRef.current.remove();
             } catch (e) {
-              logger.debug('Error removing streets layer:', e);
+              logger.debug("Error removing streets layer:", e);
             }
           }
           if (satelliteLayerRef.current) {
             try {
               satelliteLayerRef.current.remove();
             } catch (e) {
-              logger.debug('Error removing satellite layer:', e);
+              logger.debug("Error removing satellite layer:", e);
             }
           }
-          
+
           // Finally remove the map instance
           try {
             mapInstanceRef.current.remove();
           } catch (e) {
-            logger.debug('Error removing map instance:', e);
+            logger.debug("Error removing map instance:", e);
           }
         }
       } catch (e) {
-        logger.debug('Error in cleanup:', e);
+        logger.debug("Error in cleanup:", e);
       } finally {
         // Reset all refs
         mapInstanceRef.current = null;
@@ -287,7 +329,13 @@ const MapPanel: React.FC<IMapPanelProps> = ({ isOpen, onClose, article, setDesir
           >
             ✕
           </button>
-          <Image src="/mema.svg" alt="MeMa Logo" width={64} height={24} className="ml-6" />
+          <Image
+            src="/mema.svg"
+            alt="MeMa Logo"
+            width={64}
+            height={24}
+            className="ml-6"
+          />
         </div>
       </div>
       <div className="p-4">

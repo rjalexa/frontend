@@ -1,15 +1,19 @@
 // components/article/panels/summary/SummaryPanel.tsx
 import { FileText } from "lucide-react";
-import Image from 'next/image';
-import React from 'react';
+import Image from "next/image";
+import React from "react";
 
-import type { BasePanelProps } from '@/types/panel';
+import type { BasePanelProps } from "@/types/panel";
 
 interface ISummaryPanelProps extends BasePanelProps {
   summary: string | null;
 }
 
-export default function SummaryPanel({ isOpen, onClose, summary }: ISummaryPanelProps) {
+export default function SummaryPanel({
+  isOpen,
+  onClose,
+  summary,
+}: ISummaryPanelProps) {
   if (!isOpen) return null;
 
   return (
@@ -27,21 +31,19 @@ export default function SummaryPanel({ isOpen, onClose, summary }: ISummaryPanel
           >
             ✕
           </button>
-          <Image 
-            src="/mema.svg" 
-            alt="MeMa Logo" 
+          <Image
+            src="/mema.svg"
+            alt="MeMa Logo"
             width={64}
             height={24}
-            className="ml-6" 
+            className="ml-6"
           />
         </div>
       </div>
-      
+
       <div className="p-4">
         {summary ? (
-          <div className="text-gray-700 whitespace-pre-wrap">
-            {summary}
-          </div>
+          <div className="text-gray-700 whitespace-pre-wrap">{summary}</div>
         ) : (
           <div className="text-gray-500 text-center py-4">
             Nessun sommario disponibile

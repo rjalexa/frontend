@@ -1,23 +1,25 @@
-import fs from 'fs';
-import { NextResponse } from 'next/server';
-import path from 'path';
+import fs from "fs";
+import { NextResponse } from "next/server";
+import path from "path";
 
 // For the debug logger
 interface IDebugData {
   articleId?: string | null;
   count?: number;
-  error?: {
-    message: string;
-    stack?: string;
-    name: string;
-  } | unknown;
+  error?:
+    | {
+        message: string;
+        stack?: string;
+        name: string;
+      }
+    | unknown;
 }
 
 // Create a proper logger utility to handle console warnings
 const logger = {
   debug: (message: string, data?: IDebugData) => {
     // You might want to disable this in production
-    if (process.env.NODE_ENV === 'development') {
+    if (process.env.NODE_ENV === "development") {
       // eslint-disable-next-line no-console
       console.log(`[Highlights Debug] ${message}`);
       if (data) {
@@ -25,7 +27,7 @@ const logger = {
         console.log(JSON.stringify(data, null, 2));
       }
     }
-  }
+  },
 };
 
 // For the raw data from merged-ai.json
@@ -73,43 +75,48 @@ interface IErrorResponse {
 }
 
 export async function GET(request: Request) {
-  logger.debug('Starting highlights request');
-  
+  logger.debug("Starting highlights request");
+
   try {
     const { searchParams } = new URL(request.url);
-    const articleId = searchParams.get('articleId');
-    logger.debug('Request parameters:', { articleId });
+    const articleId = searchParams.get("articleId");
+    logger.debug("Request parameters:", { articleId });
 
     if (!articleId) {
-      logger.debug('No articleId provided');
+      logger.debug("No articleId provided");
       return NextResponse.json(
-        { error: 'Article ID is required' },
-        { status: 400 }
+        { error: "Article ID is required" },
+        { status: 400 },
       );
     }
 
-    const dataPath = path.join(process.cwd(), 'data', 'merged-ai.json');
-    const jsonData = JSON.parse(fs.readFileSync(dataPath, 'utf8')) as IRawHighlight[];
+    const dataPath = path.join(process.cwd(), "data", "merged-ai.json");
+    const jsonData = JSON.parse(
+      fs.readFileSync(dataPath, "utf8"),
+    ) as IRawHighlight[];
 
-    const articleHighlights = jsonData.filter((item: IRawHighlight) =>
-      item.highlight_article_mema_id === articleId &&
-      item.highlight_type === 'LLM'
+    const articleHighlights = jsonData.filter(
+      (item: IRawHighlight) =>
+        item.highlight_article_mema_id === articleId &&
+        item.highlight_type === "LLM",
     );
 
     const sortedHighlights = articleHighlights.sort(
-      (a: IRawHighlight, b: IRawHighlight) => 
-        a.highlight_sequence_number - b.highlight_sequence_number
+      (a: IRawHighlight, b: IRawHighlight) =>
+        a.highlight_sequence_number - b.highlight_sequence_number,
     );
 
-    const highlights: IProcessedHighlight[] = sortedHighlights.map((highlight) => ({
-      highlight_text: highlight.highlight_text,
-      highlight_sequence_number: highlight.highlight_sequence_number,
-      highlight_type: highlight.highlight_type,
-      highlight_article_author: highlight.highlight_article_author,
-      highlight_article_date: highlight.highlight_article_date
-    }));
+    const highlights: IProcessedHighlight[] = sortedHighlights.map(
+      (highlight) => ({
+        highlight_text: highlight.highlight_text,
+        highlight_sequence_number: highlight.highlight_sequence_number,
+        highlight_type: highlight.highlight_type,
+        highlight_article_author: highlight.highlight_article_author,
+        highlight_article_date: highlight.highlight_article_date,
+      }),
+    );
 
-    logger.debug('Processed highlights:', { count: highlights.length });
+    logger.debug("Processed highlights:", { count: highlights.length });
 
     const response: IHighlightsResponse = {
       highlights,
@@ -117,32 +124,34 @@ export async function GET(request: Request) {
       debug: {
         timestamp: new Date().toISOString(),
         articleId,
-        query: 'Success'
-      }
+        query: "Success",
+      },
     };
 
     return NextResponse.json(response);
-
   } catch (error) {
-    logger.debug('Error in highlights API:', {
-      error: error instanceof Error ? {
-        message: error.message,
-        stack: error.stack,
-        name: error.name
-      } : error
+    logger.debug("Error in highlights API:", {
+      error:
+        error instanceof Error
+          ? {
+              message: error.message,
+              stack: error.stack,
+              name: error.name,
+            }
+          : error,
     });
 
     const errorResponse: IErrorResponse = {
-      error: 'An unexpected error occurred',
+      error: "An unexpected error occurred",
       fallback: true,
       highlights: [],
       count: 0,
       debug: {
-        error: error instanceof Error ? error.message : 'Unknown error',
+        error: error instanceof Error ? error.message : "Unknown error",
         timestamp: new Date().toISOString(),
-        type: 'unexpected_error',
-        details: error instanceof Error ? error.stack : undefined
-      }
+        type: "unexpected_error",
+        details: error instanceof Error ? error.stack : undefined,
+      },
     };
 
     return NextResponse.json(errorResponse, { status: 500 });

@@ -1,7 +1,7 @@
 // components/statistcs/StatsCard.tsx
-import React from 'react';
+import React from "react";
 
-import AnimatedCounter from './AnimatedCounter';
+import AnimatedCounter from "./AnimatedCounter";
 
 interface IStatsCardProps {
   title: string;
@@ -24,11 +24,7 @@ const StatsCard = ({ title, value, isLoading, hasError }: IStatsCardProps) => {
           <span className="text-gray-500">Query fallita...</span>
         ) : (
           <div className="text-xl font-bold text-gray-900">
-            {typeof value === 'number' && (
-              <AnimatedCounter 
-                value={value} 
-              />
-            )}
+            {typeof value === "number" && <AnimatedCounter value={value} />}
           </div>
         )}
       </div>

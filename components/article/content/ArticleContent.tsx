@@ -7,7 +7,7 @@ import {
   TopicsPanel,
   SummaryPanel,
   MapPanel,
-  EntitiesPanel
+  EntitiesPanel,
 } from "../panels";
 
 interface IArticleContentProps {
@@ -25,7 +25,7 @@ interface IArticleContentProps {
   setEntitiesOpen: (open: boolean) => void;
 }
 
-export default function ArticleContent({
+const ArticleContent: React.FC<IArticleContentProps> = ({
   article,
   summaryOpen,
   setSummaryOpen,
@@ -38,7 +38,7 @@ export default function ArticleContent({
   entitiesOpen,
   setEntitiesOpen,
   setDesiredMapState,
-}: IArticleContentProps) {
+}) => {
   // Safe map close handler that checks if setDesiredMapState exists
   const handleMapClose = () => {
     setMapOpen(false);
@@ -100,7 +100,7 @@ export default function ArticleContent({
               .replace(
                 /^(\d+)\s([a-z]+)\s(\d+)$/i,
                 (_, d, m, y) =>
-                  `${d} ${m.charAt(0).toUpperCase() + m.slice(1)} ${y}`
+                  `${d} ${m.charAt(0).toUpperCase() + m.slice(1)} ${y}`,
               )}
           </div>
         </div>
@@ -119,4 +119,6 @@ export default function ArticleContent({
       </div>
     </div>
   );
-}
+};
+
+export default ArticleContent;

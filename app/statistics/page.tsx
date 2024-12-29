@@ -32,6 +32,28 @@ interface IQueryStatus {
   [key: string]: "loading" | "success" | "error";
 }
 
+// Helper function moved to module scope
+function isNameVariation(shortName: string, fullName: string): boolean {
+  const shortParts = shortName.match(/[A-Z][a-z]+/g) || [];
+  const fullParts = fullName.match(/[A-Z][a-z]+/g) || [];
+
+  if (shortParts.length > fullParts.length) {
+    return false;
+  }
+
+  let fullIndex = 0;
+  for (const shortPart of shortParts) {
+    while (fullIndex < fullParts.length && fullParts[fullIndex] !== shortPart) {
+      fullIndex++;
+    }
+    if (fullIndex >= fullParts.length) {
+      return false;
+    }
+    fullIndex++;
+  }
+  return true;
+}
+
 export default function StatisticsPage() {
   const [results, setResults] = useState<IQueryResults>({});
   const [queryStatus, setQueryStatus] = useState<IQueryStatus>({});
@@ -62,7 +84,7 @@ export default function StatisticsPage() {
           case "totalPeople": {
             if (data.results.bindings[0]?.count?.value) {
               newResults[queryId] = parseInt(
-                data.results.bindings[0].count.value
+                data.results.bindings[0].count.value,
               );
             }
             break;
@@ -85,34 +107,6 @@ export default function StatisticsPage() {
           }
 
           case "topPeople": {
-            // Helper function to check if a name is a part of another name
-            function isNameVariation(
-              shortName: string,
-              fullName: string
-            ): boolean {
-              const shortParts = shortName.match(/[A-Z][a-z]+/g) || [];
-              const fullParts = fullName.match(/[A-Z][a-z]+/g) || [];
-
-              if (shortParts.length > fullParts.length) {
-                return false;
-              }
-
-              let fullIndex = 0;
-              for (const shortPart of shortParts) {
-                while (
-                  fullIndex < fullParts.length &&
-                  fullParts[fullIndex] !== shortPart
-                ) {
-                  fullIndex++;
-                }
-                if (fullIndex >= fullParts.length) {
-                  return false;
-                }
-                fullIndex++;
-              }
-              return true;
-            }
-
             const initialCounts = new Map<string, number>();
             data.results.bindings.forEach((binding) => {
               const name = binding.personLabel.value;
@@ -124,7 +118,7 @@ export default function StatisticsPage() {
             const processedNames = new Set<string>();
 
             const sortedNames = Array.from(initialCounts.keys()).sort(
-              (a, b) => b.length - a.length
+              (a, b) => b.length - a.length,
             );
 
             for (const name of sortedNames) {
@@ -214,12 +208,12 @@ export default function StatisticsPage() {
         {queryStatus.dateRange === "loading"
           ? "Esecuzione query..."
           : queryStatus.dateRange === "error"
-          ? "Query fallita..."
-          : results.dateRange
-          ? `Articoli dal ${formatDate(
-              results.dateRange.oldestDate
-            )} al ${formatDate(results.dateRange.mostRecentDate)}`
-          : "Statistiche"}
+            ? "Query fallita..."
+            : results.dateRange
+              ? `Articoli dal ${formatDate(
+                  results.dateRange.oldestDate,
+                )} al ${formatDate(results.dateRange.mostRecentDate)}`
+              : "Statistiche"}
       </h1>
 
       <div className="space-y-8">
