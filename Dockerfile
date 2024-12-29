@@ -16,14 +16,14 @@ COPY data/ /app/data/
 
 # Define build-time arguments
 ARG NEXT_PUBLIC_MEMASTATS_URL=http://memastats:8118
-ARG NEXT_PUBLIC_SPARQL_URL=http://mema_fuseki:3030
+ARG NEXT_PUBLIC_SPARQL_ENDPOINT=http://mema_fuseki:3030/memav6_demo/query
 
 # Set environment variables for build phase
 ENV NEXT_PUBLIC_MEMASTATS_URL=${NEXT_PUBLIC_MEMASTATS_URL}
-ENV NEXT_PUBLIC_SPARQL_URL=${NEXT_PUBLIC_SPARQL_URL}
+ENV NEXT_PUBLIC_SPARQL_ENDPOINT=${NEXT_PUBLIC_SPARQL_ENDPOINT}
 
 # Debug: Verify variables are passed
-RUN echo "Build ENV - MEMASTATS: $NEXT_PUBLIC_MEMASTATS_URL, SPARQL: $NEXT_PUBLIC_SPARQL_URL"
+RUN echo "Build ENV - MEMASTATS: $NEXT_PUBLIC_MEMASTATS_URL, SPARQL: $NEXT_PUBLIC_SPARQL_ENDPOINT"
 
 # Build the application
 RUN pnpm build
@@ -46,6 +46,6 @@ EXPOSE 3000
 ENV PORT 3000
 ENV HOSTNAME "0.0.0.0"
 ENV NEXT_PUBLIC_MEMASTATS_URL=http://memastats:8118
-ENV NEXT_PUBLIC_SPARQL_URL=http://mema_fuseki:3030
+ENV NEXT_PUBLIC_SPARQL_ENDPOINT=http://mema_fuseki:3030/memav6_demo/query
 
 CMD ["node", "server.js"]

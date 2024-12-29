@@ -1,10 +1,10 @@
 // src/config/constants.ts
-const SPARQL_URL = process.env.NEXT_PUBLIC_SPARQL_URL;
+const SPARQL_ENDPOINT = process.env.NEXT_PUBLIC_SPARQL_ENDPOINT;
 
-if (!SPARQL_URL) {
-  throw new Error("NEXT_PUBLIC_SPARQL_URL environment variable is not set");
+if (!SPARQL_ENDPOINT) {
+  throw new Error("NEXT_PUBLIC_SPARQL_ENDPOINT environment variable is not set in a .env file");
 }
 
 export const ENDPOINTS = {
-  memav6: `${SPARQL_URL}/mema_v6/query`,
+  memav6: `${SPARQL_ENDPOINT}`,
 } as const;
