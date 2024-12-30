@@ -196,7 +196,7 @@ export async function GET(request: NextRequest) {
 
   try {
     const controller = new AbortController();
-    const timeoutId = setTimeout(() => controller.abort(), 30000); // 30 second timeout
+    const timeoutId = setTimeout(() => controller.abort(), ENDPOINTS.SPARQL_QUERY_TIMEOUT_MS);
 
     const response = await fetch(endpoint, {
       method: "POST",

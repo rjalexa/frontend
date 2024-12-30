@@ -9,4 +9,5 @@ if (!SPARQL_ENDPOINT) {
 
 export const ENDPOINTS = {
   memav6: `${SPARQL_ENDPOINT}`,
+  SPARQL_QUERY_TIMEOUT_MS: 30000, // 30 seconds timeout for SPARQL queries
 } as const;
