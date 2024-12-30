@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
+
 import { ENDPOINTS } from "@/src/config/constants";
 
 // Define allowed message types
@@ -12,7 +13,7 @@ interface ILogger {
 
 const logger: ILogger = {
   info(message: LogMessage, ...metadata: unknown[]): void {
-    if (process.env.NODE_ENV !== 'production') {
+    if (process.env.NODE_ENV !== "production") {
       // eslint-disable-next-line no-console
       console.log(`[INFO] ${message}`, ...metadata);
     }
@@ -20,7 +21,7 @@ const logger: ILogger = {
   error(message: LogMessage, ...metadata: unknown[]): void {
     // eslint-disable-next-line no-console
     console.error(`[ERROR] ${message}`, ...metadata);
-  }
+  },
 };
 
 export type QueryId =
@@ -134,7 +135,9 @@ interface SparqlErrorResponse {
   details: string;
 }
 
-const handleSparqlError = async (response: Response): Promise<NextResponse<SparqlErrorResponse>> => {
+const handleSparqlError = async (
+  response: Response,
+): Promise<NextResponse<SparqlErrorResponse>> => {
   let errorDetail: string;
   try {
     const errorBody = await response.text();
@@ -149,10 +152,11 @@ const handleSparqlError = async (response: Response): Promise<NextResponse<Sparq
   if (response.status === 404) {
     return NextResponse.json(
       {
-        error: "SPARQL endpoint not found. Please verify the endpoint URL and dataset name.",
+        error:
+          "SPARQL endpoint not found. Please verify the endpoint URL and dataset name.",
         details: errorDetail,
       },
-      { status: 404 }
+      { status: 404 },
     );
   }
 
@@ -162,7 +166,7 @@ const handleSparqlError = async (response: Response): Promise<NextResponse<Sparq
         error: "Authentication failed for SPARQL endpoint.",
         details: errorDetail,
       },
-      { status: response.status }
+      { status: response.status },
     );
   }
 
@@ -171,7 +175,7 @@ const handleSparqlError = async (response: Response): Promise<NextResponse<Sparq
       error: "SPARQL query failed",
       details: errorDetail,
     },
-    { status: response.status }
+    { status: response.status },
   );
 };
 
@@ -188,7 +192,7 @@ export async function GET(request: NextRequest) {
     logger.error("SPARQL endpoint configuration missing");
     return NextResponse.json(
       { error: "SPARQL endpoint not configured" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 
@@ -196,7 +200,10 @@ export async function GET(request: NextRequest) {
 
   try {
     const controller = new AbortController();
-    const timeoutId = setTimeout(() => controller.abort(), ENDPOINTS.SPARQL_QUERY_TIMEOUT_MS);
+    const timeoutId = setTimeout(
+      () => controller.abort(),
+      ENDPOINTS.SPARQL_QUERY_TIMEOUT_MS,
+    );
 
     const response = await fetch(endpoint, {
       method: "POST",
