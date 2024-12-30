@@ -1,38 +1,16 @@
+// app/statitcs/page.tsx
 "use client";
 
 import { useEffect, useState, useCallback } from "react";
+
 import ListStatsCard from "@/components/statistics/ListStatsCard";
 import StatsCard from "@/components/statistics/StatsCard";
-import { QueryId } from "@/app/api/sparql/route";
-import { executeSparqlQuery } from "@/lib/sparql";
-import { IListItem } from "@/components/statistics/types";
-
-// Interfaces
-interface IDateRange {
-  oldestDate?: string;
-  mostRecentDate?: string;
-}
-
-interface IErrorResponse {
-  error: string;
-}
-
-interface IQueryResults {
-  dateRange?: IDateRange;
-  totalArticles?: number;
-  uniqueAuthors?: number;
-  uniqueLocations?: number;
-  totalPeople?: number;
-  topAuthors?: IListItem[];
-  topLocations?: IListItem[];
-  topPeople?: IListItem[];
-}
-
-interface IQueryStatus {
-  status: Record<string, "loading" | "success" | "error">;
-  errorMessage?: string;
-}
-
+import { QueryId, executeSparqlQuery } from "@/lib/sparql";
+import {
+  IQueryResults,
+  IQueryStatus,
+  IErrorResponse,
+} from "@components/statistics/types";
 
 // Helper function
 function isNameVariation(shortName: string, fullName: string): boolean {
@@ -61,21 +39,21 @@ export default function StatisticsPage() {
   const [queryStatus, setQueryStatus] = useState<IQueryStatus>({ status: {} });
 
   const executeQuery = useCallback(async (queryId: QueryId) => {
-    setQueryStatus((prev) => ({ 
-      ...prev, 
-      status: { ...prev.status, [queryId]: "loading" }
+    setQueryStatus((prev) => ({
+      ...prev,
+      status: { ...prev.status, [queryId]: "loading" },
     }));
 
     try {
       const data = await executeSparqlQuery(queryId);
-      
-      // Check if the response contains an error
-      if ('error' in data && typeof data.error === 'string') {
-        console.error(`Query ${queryId} failed:`, data.error);
-        setQueryStatus((prev) => ({ 
+
+      if ("error" in data && typeof data.error === "string") {
+        const errorResponse = data as IErrorResponse;
+        console.error(`Query ${queryId} failed:`, errorResponse.error);
+        setQueryStatus((prev) => ({
           ...prev,
           status: { ...prev.status, [queryId]: "error" },
-          errorMessage: data.error
+          errorMessage: errorResponse.error,
         }));
         return;
       }
@@ -180,17 +158,20 @@ export default function StatisticsPage() {
         return newResults;
       });
 
-      setQueryStatus((prev) => ({ 
+      setQueryStatus((prev) => ({
         ...prev,
-        status: { ...prev.status, [queryId]: "success" }
+        status: { ...prev.status, [queryId]: "success" },
       }));
     } catch (error) {
-      const errorMsg = error instanceof Error ? error.message : 'Unknown error executing query';
-      console.error(`Query ${queryId} failed:`, errorMsg);
-      setQueryStatus((prev) => ({ 
+      const errorMessage =
+        error instanceof Error
+          ? error.message
+          : "Unknown error executing query";
+      console.error(`Query ${queryId} failed:`, errorMessage);
+      setQueryStatus((prev) => ({
         ...prev,
         status: { ...prev.status, [queryId]: "error" },
-        errorMessage: errorMsg as string
+        errorMessage: errorMessage,
       }));
     }
   }, []);

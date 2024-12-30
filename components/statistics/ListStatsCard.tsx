@@ -1,22 +1,13 @@
 import React, { useEffect, useState } from "react";
 
-interface IListItem {
-  label: string;
-  value: number;
-}
-
-interface IListStatsCardProps {
-  title: string;
-  items?: IListItem[];
-  isLoading?: boolean;
-  hasError?: boolean;
-}
+import { IListStatsCardProps } from "./types";
 
 const ListStatsCard = ({
   title,
   items,
   isLoading,
   hasError,
+  errorMessage,
 }: IListStatsCardProps) => {
   const [visibleItems, setVisibleItems] = useState<number[]>([]);
 
@@ -45,7 +36,9 @@ const ListStatsCard = ({
             <span className="text-gray-500">Esecuzione query...</span>
           </div>
         ) : hasError ? (
-          <span className="text-gray-500">Query fallita...</span>
+          <span className="text-gray-500">
+            {errorMessage || "Query fallita..."}
+          </span>
         ) : items && items.length > 0 ? (
           items.map((item, index) => (
             <div
