@@ -1,15 +1,19 @@
 "use client";
 
 import { useEffect, useState, useCallback } from "react";
-
 import ListStatsCard from "@/components/statistics/ListStatsCard";
 import StatsCard from "@/components/statistics/StatsCard";
 import { QueryId } from "@/lib/sparql";
 import { executeSparqlQuery } from "@/lib/sparql";
 
+// Interfaces
 interface IDateRange {
   oldestDate?: string;
   mostRecentDate?: string;
+}
+
+interface IErrorResponse {
+  error: string;
 }
 
 interface IListItem {
@@ -29,10 +33,27 @@ interface IQueryResults {
 }
 
 interface IQueryStatus {
-  [key: string]: "loading" | "success" | "error";
+  status: Record<string, "loading" | "success" | "error">;
+  errorMessage?: string;
 }
 
-// Helper function moved to module scope
+interface IStatsCardProps {
+  title: string;
+  value?: number;
+  isLoading: boolean;
+  hasError: boolean;
+  errorMessage?: string;
+}
+
+interface IListStatsCardProps {
+  title: string;
+  items?: IListItem[];
+  isLoading: boolean;
+  hasError: boolean;
+  errorMessage?: string;
+}
+
+// Helper function
 function isNameVariation(shortName: string, fullName: string): boolean {
   const shortParts = shortName.match(/[A-Z][a-z]+/g) || [];
   const fullParts = fullName.match(/[A-Z][a-z]+/g) || [];
@@ -56,13 +77,27 @@ function isNameVariation(shortName: string, fullName: string): boolean {
 
 export default function StatisticsPage() {
   const [results, setResults] = useState<IQueryResults>({});
-  const [queryStatus, setQueryStatus] = useState<IQueryStatus>({});
+  const [queryStatus, setQueryStatus] = useState<IQueryStatus>({ status: {} });
 
   const executeQuery = useCallback(async (queryId: QueryId) => {
-    setQueryStatus((prev) => ({ ...prev, [queryId]: "loading" }));
+    setQueryStatus((prev) => ({ 
+      ...prev, 
+      status: { ...prev.status, [queryId]: "loading" }
+    }));
 
     try {
       const data = await executeSparqlQuery(queryId);
+      
+      // Check if the response contains an error
+      if ('error' in data && typeof data.error === 'string') {
+        console.error(`Query ${queryId} failed:`, data.error);
+        setQueryStatus((prev) => ({ 
+          ...prev,
+          status: { ...prev.status, [queryId]: "error" },
+          errorMessage: data.error
+        }));
+        return;
+      }
 
       setResults((prev) => {
         const newResults = { ...prev };
@@ -164,10 +199,18 @@ export default function StatisticsPage() {
         return newResults;
       });
 
-      setQueryStatus((prev) => ({ ...prev, [queryId]: "success" }));
+      setQueryStatus((prev) => ({ 
+        ...prev,
+        status: { ...prev.status, [queryId]: "success" }
+      }));
     } catch (error) {
-      console.error(`Query ${queryId} failed:`, error);
-      setQueryStatus((prev) => ({ ...prev, [queryId]: "error" }));
+      const errorMessage = error instanceof Error ? error.message : 'Unknown error executing query';
+      console.error(`Query ${queryId} failed:`, errorMessage);
+      setQueryStatus((prev) => ({ 
+        ...prev,
+        status: { ...prev.status, [queryId]: "error" },
+        errorMessage: errorMessage
+      }));
     }
   }, []);
 
@@ -204,11 +247,18 @@ export default function StatisticsPage() {
 
   return (
     <div className="container mx-auto py-8 px-4">
+      {queryStatus.status.dateRange === "error" && queryStatus.errorMessage && (
+        <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-4">
+          <strong className="font-bold">Errore di Connessione: </strong>
+          <span className="block sm:inline">{queryStatus.errorMessage}</span>
+        </div>
+      )}
+
       <h1 className="text-3xl font-bold mb-8 text-gray-800">
-        {queryStatus.dateRange === "loading"
+        {queryStatus.status.dateRange === "loading"
           ? "Esecuzione query..."
-          : queryStatus.dateRange === "error"
-            ? "Query fallita..."
+          : queryStatus.status.dateRange === "error"
+            ? "Errore di connessione al database"
             : results.dateRange
               ? `Articoli dal ${formatDate(
                   results.dateRange.oldestDate,
@@ -221,26 +271,30 @@ export default function StatisticsPage() {
           <StatsCard
             title="Articoli Totali"
             value={results.totalArticles}
-            isLoading={queryStatus.totalArticles === "loading"}
-            hasError={queryStatus.totalArticles === "error"}
+            isLoading={queryStatus.status.totalArticles === "loading"}
+            hasError={queryStatus.status.totalArticles === "error"}
+            errorMessage={queryStatus.errorMessage}
           />
           <StatsCard
             title="Autori Unici"
             value={results.uniqueAuthors}
-            isLoading={queryStatus.uniqueAuthors === "loading"}
-            hasError={queryStatus.uniqueAuthors === "error"}
+            isLoading={queryStatus.status.uniqueAuthors === "loading"}
+            hasError={queryStatus.status.uniqueAuthors === "error"}
+            errorMessage={queryStatus.errorMessage}
           />
           <StatsCard
             title="Località Uniche"
             value={results.uniqueLocations}
-            isLoading={queryStatus.uniqueLocations === "loading"}
-            hasError={queryStatus.uniqueLocations === "error"}
+            isLoading={queryStatus.status.uniqueLocations === "loading"}
+            hasError={queryStatus.status.uniqueLocations === "error"}
+            errorMessage={queryStatus.errorMessage}
           />
           <StatsCard
             title="Persone Totali"
             value={results.totalPeople}
-            isLoading={queryStatus.totalPeople === "loading"}
-            hasError={queryStatus.totalPeople === "error"}
+            isLoading={queryStatus.status.totalPeople === "loading"}
+            hasError={queryStatus.status.totalPeople === "error"}
+            errorMessage={queryStatus.errorMessage}
           />
         </div>
 
@@ -248,20 +302,23 @@ export default function StatisticsPage() {
           <ListStatsCard
             title="Autori più citati"
             items={results.topAuthors}
-            isLoading={queryStatus.topAuthors === "loading"}
-            hasError={queryStatus.topAuthors === "error"}
+            isLoading={queryStatus.status.topAuthors === "loading"}
+            hasError={queryStatus.status.topAuthors === "error"}
+            errorMessage={queryStatus.errorMessage}
           />
           <ListStatsCard
             title="Località più citate"
             items={results.topLocations}
-            isLoading={queryStatus.topLocations === "loading"}
-            hasError={queryStatus.topLocations === "error"}
+            isLoading={queryStatus.status.topLocations === "loading"}
+            hasError={queryStatus.status.topLocations === "error"}
+            errorMessage={queryStatus.errorMessage}
           />
           <ListStatsCard
             title="Persone più citate"
             items={results.topPeople}
-            isLoading={queryStatus.topPeople === "loading"}
-            hasError={queryStatus.topPeople === "error"}
+            isLoading={queryStatus.status.topPeople === "loading"}
+            hasError={queryStatus.status.topPeople === "error"}
+            errorMessage={queryStatus.errorMessage}
           />
         </div>
 
