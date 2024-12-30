@@ -5,6 +5,7 @@ import ListStatsCard from "@/components/statistics/ListStatsCard";
 import StatsCard from "@/components/statistics/StatsCard";
 import { QueryId } from "@/app/api/sparql/route";
 import { executeSparqlQuery } from "@/lib/sparql";
+import { IListItem } from "@/components/statistics/types";
 
 // Interfaces
 interface IDateRange {
@@ -14,11 +15,6 @@ interface IDateRange {
 
 interface IErrorResponse {
   error: string;
-}
-
-interface IListItem {
-  label: string;
-  value: number;
 }
 
 interface IQueryResults {
