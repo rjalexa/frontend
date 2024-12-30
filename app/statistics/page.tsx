@@ -3,7 +3,7 @@
 import { useEffect, useState, useCallback } from "react";
 import ListStatsCard from "@/components/statistics/ListStatsCard";
 import StatsCard from "@/components/statistics/StatsCard";
-import { QueryId } from "@/lib/sparql";
+import { QueryId } from "@/app/api/sparql/route";
 import { executeSparqlQuery } from "@/lib/sparql";
 
 // Interfaces
@@ -37,21 +37,6 @@ interface IQueryStatus {
   errorMessage?: string;
 }
 
-interface IStatsCardProps {
-  title: string;
-  value?: number;
-  isLoading: boolean;
-  hasError: boolean;
-  errorMessage?: string;
-}
-
-interface IListStatsCardProps {
-  title: string;
-  items?: IListItem[];
-  isLoading: boolean;
-  hasError: boolean;
-  errorMessage?: string;
-}
 
 // Helper function
 function isNameVariation(shortName: string, fullName: string): boolean {
