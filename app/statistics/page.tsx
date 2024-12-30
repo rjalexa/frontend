@@ -189,12 +189,12 @@ export default function StatisticsPage() {
         status: { ...prev.status, [queryId]: "success" }
       }));
     } catch (error) {
-      const errorMessage = error instanceof Error ? error.message : 'Unknown error executing query';
-      console.error(`Query ${queryId} failed:`, errorMessage);
+      const errorMsg = error instanceof Error ? error.message : 'Unknown error executing query';
+      console.error(`Query ${queryId} failed:`, errorMsg);
       setQueryStatus((prev) => ({ 
         ...prev,
         status: { ...prev.status, [queryId]: "error" },
-        errorMessage: errorMessage
+        errorMessage: errorMsg as string
       }));
     }
   }, []);
