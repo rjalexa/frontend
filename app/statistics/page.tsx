@@ -3,7 +3,8 @@
 
 import { useEffect, useState, useCallback } from "react";
 
-import AnimatedCounter from "@/components/statistics/AnimatedCounter";
+import ListCard from "@/components/statistics/ListCard";
+import MetricCard from "@/components/statistics/MetricCard";
 import { QueryId, executeSparqlQuery } from "@/lib/sparql";
 import {
   IQueryResults,
@@ -11,7 +12,6 @@ import {
   IErrorResponse,
 } from "@components/statistics/types";
 
-// Helper function
 function isNameVariation(shortName: string, fullName: string): boolean {
   const shortParts = shortName.match(/[A-Z][a-z]+/g) || [];
   const fullParts = fullName.match(/[A-Z][a-z]+/g) || [];
@@ -32,35 +32,6 @@ function isNameVariation(shortName: string, fullName: string): boolean {
   }
   return true;
 }
-
-const MetricCard = ({
-  title,
-  value,
-  status,
-}: {
-  title: string;
-  value: number | undefined;
-  status: "loading" | "error" | "success" | undefined;
-}) => (
-  <div className="bg-white overflow-hidden shadow-lg rounded-2xl">
-    <div className="px-6 py-8">
-      <div className="font-medium text-gray-500 uppercase tracking-wide text-sm">
-        {title}
-      </div>
-      <div className="mt-3 flex items-center">
-        {status === "loading" || value === undefined ? (
-          <div className="animate-pulse h-10 w-32 bg-gray-200 rounded" />
-        ) : status === "error" ? (
-          <span className="text-gray-500">Dati non disponibili</span>
-        ) : (
-          <div className="text-3xl font-bold text-gray-900">
-            <AnimatedCounter value={value} />
-          </div>
-        )}
-      </div>
-    </div>
-  </div>
-);
 
 export default function StatisticsPage() {
   const [results, setResults] = useState<IQueryResults>(() => ({}));
@@ -219,25 +190,29 @@ export default function StatisticsPage() {
     ];
 
     // Set all queries to loading state immediately
-    setQueryStatus(prev => ({
+    setQueryStatus((prev) => ({
       ...prev,
-      status: queries.reduce((acc, queryId) => ({
-        ...acc,
-        [queryId]: "loading"
-      }), {})
+      status: queries.reduce(
+        (acc, queryId) => ({
+          ...acc,
+          [queryId]: "loading",
+        }),
+        {},
+      ),
     }));
 
     // Execute all queries in parallel but with a small delay between starts
-    const promises = queries.map((queryId, index) => 
-      new Promise<void>((resolve) => {
-        setTimeout(async () => {
-          try {
-            await executeQuery(queryId);
-          } finally {
-            resolve();
-          }
-        }, index * 100); // 100ms delay between each query start
-      })
+    const promises = queries.map(
+      (queryId, index) =>
+        new Promise<void>((resolve) => {
+          setTimeout(async () => {
+            try {
+              await executeQuery(queryId);
+            } finally {
+              resolve();
+            }
+          }, index * 100); // 100ms delay between each query start
+        }),
     );
 
     await Promise.all(promises);
@@ -254,7 +229,6 @@ export default function StatisticsPage() {
       const date = new Date(dateString);
       if (isNaN(date.getTime())) return "";
 
-      // Always use UTC to ensure consistent rendering
       const year = date.getUTCFullYear();
       const month = date.getUTCMonth();
       const day = date.getUTCDate();
@@ -320,137 +294,21 @@ export default function StatisticsPage() {
 
         {/* Lists Grid */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-          {/* Most Cited Authors */}
-          <div className="bg-white overflow-hidden shadow-lg rounded-2xl">
-            <div className="p-6">
-              <h3 className="text-lg font-semibold text-gray-900 mb-6">
-                Firme di articoli
-              </h3>
-              <div className="space-y-4">
-                {queryStatus.status.topAuthors === "loading" ? (
-                  <div className="space-y-3">
-                    {[...Array(5)].map((_, i) => (
-                      <div key={i} className="animate-pulse flex items-center">
-                        <div className="h-4 bg-gray-200 rounded w-2/3" />
-                        <div className="ml-auto h-4 bg-gray-200 rounded w-16" />
-                      </div>
-                    ))}
-                  </div>
-                ) : queryStatus.status.topAuthors === "error" ? (
-                  <span className="text-gray-500">Dati non disponibili</span>
-                ) : (
-                  <div className="space-y-3">
-                    {results.topAuthors?.map((item, index) => (
-                      <div
-                        key={item.label}
-                        className={`flex items-center justify-between group hover:bg-gray-50 p-2 rounded-lg transition-colors animate-fadeIn delay-${index * 150}`}
-                      >
-                        <div className="flex items-center space-x-3">
-                          <span className="text-sm font-medium text-gray-900">
-                            {index + 1}.
-                          </span>
-                          <span className="text-gray-700 font-medium truncate">
-                            {item.label}
-                          </span>
-                        </div>
-                        <span className="text-gray-500 tabular-nums">
-                          {item.value.toLocaleString()}
-                        </span>
-                      </div>
-                    ))}
-                  </div>
-                )}
-              </div>
-            </div>
-          </div>
-
-          {/* Most Cited Locations */}
-          <div className="bg-white overflow-hidden shadow-lg rounded-2xl">
-            <div className="p-6">
-              <h3 className="text-lg font-semibold text-gray-900 mb-6">
-                Località più citate
-              </h3>
-              <div className="space-y-4">
-                {queryStatus.status.topLocations === "loading" ? (
-                  <div className="space-y-3">
-                    {[...Array(5)].map((_, i) => (
-                      <div key={i} className="animate-pulse flex items-center">
-                        <div className="h-4 bg-gray-200 rounded w-2/3" />
-                        <div className="ml-auto h-4 bg-gray-200 rounded w-16" />
-                      </div>
-                    ))}
-                  </div>
-                ) : queryStatus.status.topLocations === "error" ? (
-                  <span className="text-gray-500">Dati non disponibili</span>
-                ) : (
-                  <div className="space-y-3">
-                    {results.topLocations?.map((item, index) => (
-                      <div
-                        key={item.label}
-                        className={`flex items-center justify-between group hover:bg-gray-50 p-2 rounded-lg transition-colors animate-fadeIn delay-${index * 150}`}
-                      >
-                        <div className="flex items-center space-x-3">
-                          <span className="text-sm font-medium text-gray-900">
-                            {index + 1}.
-                          </span>
-                          <span className="text-gray-700 font-medium truncate">
-                            {item.label}
-                          </span>
-                        </div>
-                        <span className="text-gray-500 tabular-nums">
-                          {item.value.toLocaleString()}
-                        </span>
-                      </div>
-                    ))}
-                  </div>
-                )}
-              </div>
-            </div>
-          </div>
-
-          {/* Most Cited People */}
-          <div className="bg-white overflow-hidden shadow-lg rounded-2xl">
-            <div className="p-6">
-              <h3 className="text-lg font-semibold text-gray-900 mb-6">
-                Persone più citate
-              </h3>
-              <div className="space-y-4">
-                {queryStatus.status.topPeople === "loading" ? (
-                  <div className="space-y-3">
-                    {[...Array(5)].map((_, i) => (
-                      <div key={i} className="animate-pulse flex items-center">
-                        <div className="h-4 bg-gray-200 rounded w-2/3" />
-                        <div className="ml-auto h-4 bg-gray-200 rounded w-16" />
-                      </div>
-                    ))}
-                  </div>
-                ) : queryStatus.status.topPeople === "error" ? (
-                  <span className="text-gray-500">Dati non disponibili</span>
-                ) : (
-                  <div className="space-y-3">
-                    {results.topPeople?.map((item, index) => (
-                      <div
-                        key={item.label}
-                        className={`flex items-center justify-between group hover:bg-gray-50 p-2 rounded-lg transition-colors animate-fadeIn delay-${index * 150}`}
-                      >
-                        <div className="flex items-center space-x-3">
-                          <span className="text-sm font-medium text-gray-900">
-                            {index + 1}.
-                          </span>
-                          <span className="text-gray-700 font-medium truncate">
-                            {item.label}
-                          </span>
-                        </div>
-                        <span className="text-gray-500 tabular-nums">
-                          {item.value.toLocaleString()}
-                        </span>
-                      </div>
-                    ))}
-                  </div>
-                )}
-              </div>
-            </div>
-          </div>
+          <ListCard
+            title="Firme di articoli"
+            items={results.topAuthors}
+            status={queryStatus.status.topAuthors}
+          />
+          <ListCard
+            title="Località più citate"
+            items={results.topLocations}
+            status={queryStatus.status.topLocations}
+          />
+          <ListCard
+            title="Persone più citate"
+            items={results.topPeople}
+            status={queryStatus.status.topPeople}
+          />
         </div>
       </div>
     </div>
