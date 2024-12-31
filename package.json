@@ -2,6 +2,7 @@
   "name": "frontend",
   "version": "0.1.0",
   "private": true,
+  "packageManager": "pnpm@9.15.1",
   "scripts": {
     "dev": "next dev -p 3334",
     "build": "next build",
