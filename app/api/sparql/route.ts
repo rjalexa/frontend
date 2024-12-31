@@ -143,6 +143,17 @@ interface SparqlErrorResponse {
   details: string;
 }
 
+const addCacheHeaders = (response: NextResponse, timestamp: number) => {
+  const age = Math.floor((Date.now() - timestamp) / 1000);
+  const maxAge = Math.floor(SPARQL_CACHE_DURATION_MS / 1000);
+  
+  response.headers.set('Cache-Control', `public, max-age=${maxAge}`);
+  response.headers.set('Age', age.toString());
+  response.headers.set('X-Cache-Status', 'HIT');
+  
+  return response;
+};
+
 const handleSparqlError = async (
   response: Response,
 ): Promise<NextResponse<SparqlErrorResponse>> => {
@@ -156,40 +167,39 @@ const handleSparqlError = async (
   const errorMessage = `SPARQL endpoint connection failed (${response.status}): ${errorDetail}`;
   logger.error(errorMessage);
 
-  if (response.status === 404) {
-    return NextResponse.json(
-      {
-        error:
-          "SPARQL endpoint not found. Please verify the endpoint URL and dataset name.",
+  const errorResponse = response.status === 404
+    ? {
+        error: "SPARQL endpoint not found. Please verify the endpoint URL and dataset name.",
         details: errorDetail,
-      },
-      { status: 404 },
-    );
-  }
-
-  if (response.status === 403 || response.status === 401) {
-    return NextResponse.json(
-      {
+      }
+    : response.status === 403 || response.status === 401
+    ? {
         error: "Authentication failed for SPARQL endpoint.",
         details: errorDetail,
-      },
-      { status: response.status },
-    );
-  }
+      }
+    : {
+        error: "SPARQL query failed",
+        details: errorDetail,
+      };
 
-  return NextResponse.json(
-    {
-      error: "SPARQL query failed",
-      details: errorDetail,
-    },
-    { status: response.status },
-  );
+  const nextResponse = NextResponse.json(errorResponse, { status: response.status });
+  nextResponse.headers.set('Cache-Control', 'no-store');
+  return nextResponse;
 };
 
 const isCacheValid = (cacheEntry: CacheEntry | undefined): boolean => {
-  if (!cacheEntry) return false;
+  if (!cacheEntry) {
+    logger.info("Cache miss: No cache entry found");
+    return false;
+  }
+  
   const now = Date.now();
-  return now - cacheEntry.timestamp < SPARQL_CACHE_DURATION_MS;
+  const age = now - cacheEntry.timestamp;
+  const isValid = age < SPARQL_CACHE_DURATION_MS;
+  
+  logger.info(`Cache ${isValid ? 'hit' : 'miss'}: Age ${Math.round(age / 1000)}s / ${Math.round(SPARQL_CACHE_DURATION_MS / 1000)}s`);
+  
+  return isValid;
 };
 
 export async function GET(request: NextRequest) {
@@ -198,19 +208,28 @@ export async function GET(request: NextRequest) {
   const forceRefresh = searchParams.get("refresh") === "true";
 
   if (!queryId || !SPARQL_QUERIES[queryId]) {
-    return NextResponse.json({ error: "Invalid query ID" }, { status: 400 });
+    return NextResponse.json(
+      { error: "Invalid query ID" },
+      { 
+        status: 400,
+        headers: {
+          'Cache-Control': 'no-store'
+        }
+      }
+    );
   }
 
-  logger.info(`Available endpoints:`, ENDPOINTS);
   const endpoint = ENDPOINTS.memav6;
-  if (!endpoint) {
-    logger.error("memav6 endpoint is undefined in ENDPOINTS");
-  }
   if (!endpoint) {
     logger.error("SPARQL endpoint configuration missing");
     return NextResponse.json(
       { error: "SPARQL endpoint not configured" },
-      { status: 500 },
+      { 
+        status: 500,
+        headers: {
+          'Cache-Control': 'no-store'
+        }
+      }
     );
   }
 
@@ -218,12 +237,11 @@ export async function GET(request: NextRequest) {
   const cachedEntry = queryCache.get(queryId);
   if (!forceRefresh && cachedEntry && isCacheValid(cachedEntry)) {
     logger.info(`Serving cached data for query: ${queryId}`);
-    return NextResponse.json(cachedEntry.data);
+    const response = NextResponse.json(cachedEntry.data);
+    return addCacheHeaders(response, cachedEntry.timestamp);
   }
 
-  logger.info(
-    `Fetching fresh data for query: ${queryId} from endpoint: ${endpoint}`,
-  );
+  logger.info(`Fetching fresh data for query: ${queryId} from endpoint: ${endpoint}`);
 
   try {
     const controller = new AbortController();
@@ -249,14 +267,16 @@ export async function GET(request: NextRequest) {
     }
 
     const data: ISparqlResponse = await response.json();
+    const timestamp = Date.now();
 
     // Cache the successful response
     queryCache.set(queryId, {
       data,
-      timestamp: Date.now(),
+      timestamp,
     });
 
-    return NextResponse.json(data);
+    const nextResponse = NextResponse.json(data);
+    return addCacheHeaders(nextResponse, timestamp);
   } catch (error) {
     let errorMessage: string;
 
@@ -273,6 +293,14 @@ export async function GET(request: NextRequest) {
     }
 
     logger.error("SPARQL query failed:", errorMessage);
-    return NextResponse.json({ error: errorMessage }, { status: 500 });
+    return NextResponse.json(
+      { error: errorMessage },
+      { 
+        status: 500,
+        headers: {
+          'Cache-Control': 'no-store'
+        }
+      }
+    );
   }
 }

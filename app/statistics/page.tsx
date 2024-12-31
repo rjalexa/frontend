@@ -77,7 +77,7 @@ export default function StatisticsPage() {
           case "totalPeople": {
             if (data.results.bindings[0]?.count?.value) {
               newResults[queryId] = parseInt(
-                data.results.bindings[0].count.value,
+                data.results.bindings[0].count.value
               );
             }
             break;
@@ -111,7 +111,7 @@ export default function StatisticsPage() {
             const processedNames = new Set<string>();
 
             const sortedNames = Array.from(initialCounts.keys()).sort(
-              (a, b) => b.length - a.length,
+              (a, b) => b.length - a.length
             );
 
             for (const name of sortedNames) {
@@ -175,7 +175,7 @@ export default function StatisticsPage() {
     }
   }, []);
 
-  const executeAllQueries = useCallback(() => {
+  const executeAllQueries = useCallback(async () => {
     const queries: QueryId[] = [
       "dateRange",
       "totalArticles",
@@ -186,26 +186,29 @@ export default function StatisticsPage() {
       "topLocations",
       "topPeople",
     ];
-
-    queries.forEach((queryId) => {
-      executeQuery(queryId);
-    });
+  
+    // Execute queries sequentially to avoid overwhelming the server
+    for (const queryId of queries) {
+      await executeQuery(queryId);
+    }
   }, [executeQuery]);
 
   useEffect(() => {
     executeAllQueries();
   }, [executeAllQueries]);
 
-  // Fixed date formatter to avoid hydration mismatch
   const formatDate = (dateString?: string) => {
     if (!dateString) return "";
 
     try {
       const date = new Date(dateString);
-      // Use ISO string to ensure consistent formatting
-      const [year, month, day] = date.toISOString().split("T")[0].split("-");
+      if (isNaN(date.getTime())) return "";
 
-      // Manual mapping for Italian months to avoid locale issues
+      // Always use UTC to ensure consistent rendering
+      const year = date.getUTCFullYear();
+      const month = date.getUTCMonth();
+      const day = date.getUTCDate();
+
       const italianMonths = [
         "gennaio",
         "febbraio",
@@ -221,8 +224,7 @@ export default function StatisticsPage() {
         "dicembre",
       ];
 
-      // Construct the date string manually
-      return `${parseInt(day)} ${italianMonths[parseInt(month) - 1]} ${year}`;
+      return `${day} ${italianMonths[month]} ${year}`;
     } catch {
       return "";
     }
@@ -239,7 +241,7 @@ export default function StatisticsPage() {
               ? "Database temporaneamente non disponibile"
               : results.dateRange
                 ? `Articoli dal ${formatDate(
-                    results.dateRange.oldestDate,
+                    results.dateRange.oldestDate
                   )} al ${formatDate(results.dateRange.mostRecentDate)}`
                 : "Statistiche"}
         </h1>
