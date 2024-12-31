@@ -1,6 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-
-import { ENDPOINTS } from "@/src/config/constants";
+import { ENDPOINTS, SPARQL_CACHE_DURATION_MS } from "@/src/config/constants";
 
 // Define allowed message types
 type LogMessage = string | number | boolean | null | undefined;
@@ -52,7 +51,6 @@ interface CacheEntry {
   timestamp: number;
 }
 
-const CACHE_DURATION_MS = 24 * 60 * 60 * 1000; // 24 hours
 const queryCache = new Map<QueryId, CacheEntry>();
 
 const SPARQL_QUERIES: Record<QueryId, string> = {
@@ -191,7 +189,7 @@ const handleSparqlError = async (
 const isCacheValid = (cacheEntry: CacheEntry | undefined): boolean => {
   if (!cacheEntry) return false;
   const now = Date.now();
-  return now - cacheEntry.timestamp < CACHE_DURATION_MS;
+  return now - cacheEntry.timestamp < SPARQL_CACHE_DURATION_MS;
 };
 
 export async function GET(request: NextRequest) {
