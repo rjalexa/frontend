@@ -108,7 +108,7 @@ export default function StatisticsPage() {
           case "totalPeople": {
             if (data.results.bindings[0]?.count?.value) {
               newResults[queryId] = parseInt(
-                data.results.bindings[0].count.value
+                data.results.bindings[0].count.value,
               );
             }
             break;
@@ -142,7 +142,7 @@ export default function StatisticsPage() {
             const processedNames = new Set<string>();
 
             const sortedNames = Array.from(initialCounts.keys()).sort(
-              (a, b) => b.length - a.length
+              (a, b) => b.length - a.length,
             );
 
             for (const name of sortedNames) {
