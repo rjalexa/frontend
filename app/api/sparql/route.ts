@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 
-import { ENDPOINTS, SPARQL_CACHE_DURATION_MS } from "@/src/config/constants";
+import { ENDPOINTS, SPARQL_CACHE_DURATION_MS } from "@/config/constants";
 
 // Define allowed message types
 type LogMessage = string | number | boolean | null | undefined;
