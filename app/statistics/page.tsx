@@ -33,9 +33,40 @@ function isNameVariation(shortName: string, fullName: string): boolean {
   return true;
 }
 
+const MetricCard = ({
+  title,
+  value,
+  status,
+}: {
+  title: string;
+  value: number | undefined;
+  status: "loading" | "error" | "success" | undefined;
+}) => (
+  <div className="bg-white overflow-hidden shadow-lg rounded-2xl">
+    <div className="px-6 py-8">
+      <div className="font-medium text-gray-500 uppercase tracking-wide text-sm">
+        {title}
+      </div>
+      <div className="mt-3 flex items-center">
+        {status === "loading" || value === undefined ? (
+          <div className="animate-pulse h-10 w-32 bg-gray-200 rounded" />
+        ) : status === "error" ? (
+          <span className="text-gray-500">Dati non disponibili</span>
+        ) : (
+          <div className="text-3xl font-bold text-gray-900">
+            <AnimatedCounter value={value} />
+          </div>
+        )}
+      </div>
+    </div>
+  </div>
+);
+
 export default function StatisticsPage() {
-  const [results, setResults] = useState<IQueryResults>({});
-  const [queryStatus, setQueryStatus] = useState<IQueryStatus>({ status: {} });
+  const [results, setResults] = useState<IQueryResults>(() => ({}));
+  const [queryStatus, setQueryStatus] = useState<IQueryStatus>(() => ({
+    status: {},
+  }));
 
   const executeQuery = useCallback(async (queryId: QueryId) => {
     setQueryStatus((prev) => ({
@@ -77,7 +108,7 @@ export default function StatisticsPage() {
           case "totalPeople": {
             if (data.results.bindings[0]?.count?.value) {
               newResults[queryId] = parseInt(
-                data.results.bindings[0].count.value,
+                data.results.bindings[0].count.value
               );
             }
             break;
@@ -111,7 +142,7 @@ export default function StatisticsPage() {
             const processedNames = new Set<string>();
 
             const sortedNames = Array.from(initialCounts.keys()).sort(
-              (a, b) => b.length - a.length,
+              (a, b) => b.length - a.length
             );
 
             for (const name of sortedNames) {
@@ -240,93 +271,32 @@ export default function StatisticsPage() {
             : queryStatus.status.dateRange === "error"
               ? "Database temporaneamente non disponibile"
               : results.dateRange
-                ? `Articoli dal ${formatDate(
-                    results.dateRange.oldestDate,
-                  )} al ${formatDate(results.dateRange.mostRecentDate)}`
+                ? `Articoli dal ${formatDate(results.dateRange.oldestDate)} al ${formatDate(results.dateRange.mostRecentDate)}`
                 : "Statistiche"}
         </h1>
 
         {/* Key Metrics Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-12">
-          {/* Articoli Totali */}
-          <div className="bg-white overflow-hidden shadow-lg rounded-2xl">
-            <div className="px-6 py-8">
-              <div className="font-medium text-gray-500 uppercase tracking-wide text-sm">
-                Articoli Totali
-              </div>
-              <div className="mt-3 flex items-center">
-                {queryStatus.status.totalArticles === "loading" ? (
-                  <div className="animate-pulse h-10 w-32 bg-gray-200 rounded" />
-                ) : queryStatus.status.totalArticles === "error" ? (
-                  <span className="text-gray-500">Dati non disponibili</span>
-                ) : (
-                  <div className="text-3xl font-bold text-gray-900">
-                    <AnimatedCounter value={results.totalArticles || 0} />
-                  </div>
-                )}
-              </div>
-            </div>
-          </div>
-
-          {/* Autori Unici */}
-          <div className="bg-white overflow-hidden shadow-lg rounded-2xl">
-            <div className="px-6 py-8">
-              <div className="font-medium text-gray-500 uppercase tracking-wide text-sm">
-                Autori Unici
-              </div>
-              <div className="mt-3 flex items-center">
-                {queryStatus.status.uniqueAuthors === "loading" ? (
-                  <div className="animate-pulse h-10 w-32 bg-gray-200 rounded" />
-                ) : queryStatus.status.uniqueAuthors === "error" ? (
-                  <span className="text-gray-500">Dati non disponibili</span>
-                ) : (
-                  <div className="text-3xl font-bold text-gray-900">
-                    <AnimatedCounter value={results.uniqueAuthors || 0} />
-                  </div>
-                )}
-              </div>
-            </div>
-          </div>
-
-          {/* Località Uniche */}
-          <div className="bg-white overflow-hidden shadow-lg rounded-2xl">
-            <div className="px-6 py-8">
-              <div className="font-medium text-gray-500 uppercase tracking-wide text-sm">
-                Località Uniche
-              </div>
-              <div className="mt-3 flex items-center">
-                {queryStatus.status.uniqueLocations === "loading" ? (
-                  <div className="animate-pulse h-10 w-32 bg-gray-200 rounded" />
-                ) : queryStatus.status.uniqueLocations === "error" ? (
-                  <span className="text-gray-500">Dati non disponibili</span>
-                ) : (
-                  <div className="text-3xl font-bold text-gray-900">
-                    <AnimatedCounter value={results.uniqueLocations || 0} />
-                  </div>
-                )}
-              </div>
-            </div>
-          </div>
-
-          {/* Persone Totali */}
-          <div className="bg-white overflow-hidden shadow-lg rounded-2xl">
-            <div className="px-6 py-8">
-              <div className="font-medium text-gray-500 uppercase tracking-wide text-sm">
-                Persone Totali
-              </div>
-              <div className="mt-3 flex items-center">
-                {queryStatus.status.totalPeople === "loading" ? (
-                  <div className="animate-pulse h-10 w-32 bg-gray-200 rounded" />
-                ) : queryStatus.status.totalPeople === "error" ? (
-                  <span className="text-gray-500">Dati non disponibili</span>
-                ) : (
-                  <div className="text-3xl font-bold text-gray-900">
-                    <AnimatedCounter value={results.totalPeople || 0} />
-                  </div>
-                )}
-              </div>
-            </div>
-          </div>
+          <MetricCard
+            title="Articoli Totali"
+            value={results.totalArticles}
+            status={queryStatus.status.totalArticles}
+          />
+          <MetricCard
+            title="Autori Unici"
+            value={results.uniqueAuthors}
+            status={queryStatus.status.uniqueAuthors}
+          />
+          <MetricCard
+            title="Località Uniche"
+            value={results.uniqueLocations}
+            status={queryStatus.status.uniqueLocations}
+          />
+          <MetricCard
+            title="Persone Totali"
+            value={results.totalPeople}
+            status={queryStatus.status.totalPeople}
+          />
         </div>
 
         {/* Lists Grid */}

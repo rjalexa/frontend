@@ -7,7 +7,9 @@ interface IAnimatedCounterProps {
 
 const AnimatedCounter = ({ value }: IAnimatedCounterProps) => {
   const [isMounted, setIsMounted] = useState(false);
-  const [displayValue, setDisplayValue] = useState(0);
+  const [displayValue, setDisplayValue] = useState<number | undefined>(
+    undefined,
+  );
   const animationRef = useRef<number>();
   const startTimeRef = useRef<number>();
 
@@ -63,9 +65,8 @@ const AnimatedCounter = ({ value }: IAnimatedCounterProps) => {
     };
   }, [value, isMounted]);
 
-  // Safe render for SSR and non-number values
-  if (!isMounted || typeof value !== "number") {
-    return <>{value?.toLocaleString?.() || ""}</>;
+  if (!isMounted || typeof value !== "number" || displayValue === undefined) {
+    return null;
   }
 
   return <>{displayValue.toLocaleString()}</>;
