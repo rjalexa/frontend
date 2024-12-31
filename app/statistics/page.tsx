@@ -218,10 +218,29 @@ export default function StatisticsPage() {
       "topPeople",
     ];
 
-    // Execute queries sequentially to avoid overwhelming the server
-    for (const queryId of queries) {
-      await executeQuery(queryId);
-    }
+    // Set all queries to loading state immediately
+    setQueryStatus(prev => ({
+      ...prev,
+      status: queries.reduce((acc, queryId) => ({
+        ...acc,
+        [queryId]: "loading"
+      }), {})
+    }));
+
+    // Execute all queries in parallel but with a small delay between starts
+    const promises = queries.map((queryId, index) => 
+      new Promise<void>((resolve) => {
+        setTimeout(async () => {
+          try {
+            await executeQuery(queryId);
+          } finally {
+            resolve();
+          }
+        }, index * 100); // 100ms delay between each query start
+      })
+    );
+
+    await Promise.all(promises);
   }, [executeQuery]);
 
   useEffect(() => {
