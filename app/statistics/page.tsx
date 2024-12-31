@@ -223,7 +223,7 @@ export default function StatisticsPage() {
 
       // Construct the date string manually
       return `${parseInt(day)} ${italianMonths[parseInt(month) - 1]} ${year}`;
-    } catch (e) {
+    } catch {
       return "";
     }
   };
@@ -243,7 +243,7 @@ export default function StatisticsPage() {
                   )} al ${formatDate(results.dateRange.mostRecentDate)}`
                 : "Statistiche"}
         </h1>
-
+  
         {/* Key Metrics Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-12">
           {/* Articoli Totali */}
@@ -254,7 +254,7 @@ export default function StatisticsPage() {
               </div>
               <div className="mt-3 flex items-center">
                 {queryStatus.status.totalArticles === "loading" ? (
-                  <div className="animate-pulse h-10 w-32 bg-gray-200 rounded"></div>
+                  <div className="animate-pulse h-10 w-32 bg-gray-200 rounded" />
                 ) : queryStatus.status.totalArticles === "error" ? (
                   <span className="text-gray-500">Dati non disponibili</span>
                 ) : (
@@ -265,7 +265,7 @@ export default function StatisticsPage() {
               </div>
             </div>
           </div>
-
+  
           {/* Autori Unici */}
           <div className="bg-white overflow-hidden shadow-lg rounded-2xl">
             <div className="px-6 py-8">
@@ -274,7 +274,7 @@ export default function StatisticsPage() {
               </div>
               <div className="mt-3 flex items-center">
                 {queryStatus.status.uniqueAuthors === "loading" ? (
-                  <div className="animate-pulse h-10 w-32 bg-gray-200 rounded"></div>
+                  <div className="animate-pulse h-10 w-32 bg-gray-200 rounded" />
                 ) : queryStatus.status.uniqueAuthors === "error" ? (
                   <span className="text-gray-500">Dati non disponibili</span>
                 ) : (
@@ -285,7 +285,7 @@ export default function StatisticsPage() {
               </div>
             </div>
           </div>
-
+  
           {/* Località Uniche */}
           <div className="bg-white overflow-hidden shadow-lg rounded-2xl">
             <div className="px-6 py-8">
@@ -294,7 +294,7 @@ export default function StatisticsPage() {
               </div>
               <div className="mt-3 flex items-center">
                 {queryStatus.status.uniqueLocations === "loading" ? (
-                  <div className="animate-pulse h-10 w-32 bg-gray-200 rounded"></div>
+                  <div className="animate-pulse h-10 w-32 bg-gray-200 rounded" />
                 ) : queryStatus.status.uniqueLocations === "error" ? (
                   <span className="text-gray-500">Dati non disponibili</span>
                 ) : (
@@ -305,7 +305,7 @@ export default function StatisticsPage() {
               </div>
             </div>
           </div>
-
+  
           {/* Persone Totali */}
           <div className="bg-white overflow-hidden shadow-lg rounded-2xl">
             <div className="px-6 py-8">
@@ -314,7 +314,7 @@ export default function StatisticsPage() {
               </div>
               <div className="mt-3 flex items-center">
                 {queryStatus.status.totalPeople === "loading" ? (
-                  <div className="animate-pulse h-10 w-32 bg-gray-200 rounded"></div>
+                  <div className="animate-pulse h-10 w-32 bg-gray-200 rounded" />
                 ) : queryStatus.status.totalPeople === "error" ? (
                   <span className="text-gray-500">Dati non disponibili</span>
                 ) : (
@@ -326,7 +326,7 @@ export default function StatisticsPage() {
             </div>
           </div>
         </div>
-
+  
         {/* Lists Grid */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           {/* Most Cited Authors */}
@@ -340,8 +340,8 @@ export default function StatisticsPage() {
                   <div className="space-y-3">
                     {[...Array(5)].map((_, i) => (
                       <div key={i} className="animate-pulse flex items-center">
-                        <div className="h-4 bg-gray-200 rounded w-2/3"></div>
-                        <div className="ml-auto h-4 bg-gray-200 rounded w-16"></div>
+                        <div className="h-4 bg-gray-200 rounded w-2/3" />
+                        <div className="ml-auto h-4 bg-gray-200 rounded w-16" />
                       </div>
                     ))}
                   </div>
@@ -372,7 +372,7 @@ export default function StatisticsPage() {
               </div>
             </div>
           </div>
-
+  
           {/* Most Cited Locations */}
           <div className="bg-white overflow-hidden shadow-lg rounded-2xl">
             <div className="p-6">
@@ -384,8 +384,8 @@ export default function StatisticsPage() {
                   <div className="space-y-3">
                     {[...Array(5)].map((_, i) => (
                       <div key={i} className="animate-pulse flex items-center">
-                        <div className="h-4 bg-gray-200 rounded w-2/3"></div>
-                        <div className="ml-auto h-4 bg-gray-200 rounded w-16"></div>
+                        <div className="h-4 bg-gray-200 rounded w-2/3" />
+                        <div className="ml-auto h-4 bg-gray-200 rounded w-16" />
                       </div>
                     ))}
                   </div>
@@ -416,7 +416,7 @@ export default function StatisticsPage() {
               </div>
             </div>
           </div>
-
+  
           {/* Most Cited People */}
           <div className="bg-white overflow-hidden shadow-lg rounded-2xl">
             <div className="p-6">
@@ -428,8 +428,8 @@ export default function StatisticsPage() {
                   <div className="space-y-3">
                     {[...Array(5)].map((_, i) => (
                       <div key={i} className="animate-pulse flex items-center">
-                        <div className="h-4 bg-gray-200 rounded w-2/3"></div>
-                        <div className="ml-auto h-4 bg-gray-200 rounded w-16"></div>
+                        <div className="h-4 bg-gray-200 rounded w-2/3" />
+                        <div className="ml-auto h-4 bg-gray-200 rounded w-16" />
                       </div>
                     ))}
                   </div>
