@@ -335,7 +335,7 @@ export default function StatisticsPage() {
           <div className="bg-white overflow-hidden shadow-lg rounded-2xl">
             <div className="p-6">
               <h3 className="text-lg font-semibold text-gray-900 mb-6">
-                Autori più citati
+                Firme di articoli
               </h3>
               <div className="space-y-4">
                 {queryStatus.status.topAuthors === "loading" ? (
