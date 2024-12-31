@@ -1,3 +1,4 @@
+// components/statistics/StatsCard.tsx
 import React from "react";
 
 import AnimatedCounter from "./AnimatedCounter";
@@ -20,9 +21,7 @@ const StatsCard = ({
             <span className="text-gray-500">Esecuzione query...</span>
           </div>
         ) : hasError ? (
-          <span className="text-gray-500">
-            {errorMessage || "Query fallita..."}
-          </span>
+          <span className="text-gray-500">Dati non disponibili</span>
         ) : (
           <div className="text-xl font-bold text-gray-900">
             {typeof value === "number" && <AnimatedCounter value={value} />}

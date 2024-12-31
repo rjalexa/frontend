@@ -1,4 +1,4 @@
-// app/statitcs/page.tsx
+// app/statistics/page.tsx
 "use client";
 
 import { useEffect, useState, useCallback } from "react";
@@ -197,30 +197,35 @@ export default function StatisticsPage() {
     executeAllQueries();
   }, [executeAllQueries]);
 
+  // Fixed date formatter to avoid hydration mismatch
   const formatDate = (dateString?: string) => {
     if (!dateString) return "";
-    const date = new Date(dateString);
-    return new Intl.DateTimeFormat("it-IT", {
-      day: "numeric",
-      month: "long",
-      year: "numeric",
-    }).format(date);
+    
+    try {
+      const date = new Date(dateString);
+      // Use ISO string to ensure consistent formatting
+      const [year, month, day] = date.toISOString().split('T')[0].split('-');
+      
+      // Manual mapping for Italian months to avoid locale issues
+      const italianMonths = [
+        'gennaio', 'febbraio', 'marzo', 'aprile', 'maggio', 'giugno',
+        'luglio', 'agosto', 'settembre', 'ottobre', 'novembre', 'dicembre'
+      ];
+      
+      // Construct the date string manually
+      return `${parseInt(day)} ${italianMonths[parseInt(month) - 1]} ${year}`;
+    } catch (e) {
+      return "";
+    }
   };
 
   return (
     <div className="container mx-auto py-8 px-4">
-      {queryStatus.status.dateRange === "error" && queryStatus.errorMessage && (
-        <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-4">
-          <strong className="font-bold">Errore di Connessione: </strong>
-          <span className="block sm:inline">{queryStatus.errorMessage}</span>
-        </div>
-      )}
-
       <h1 className="text-3xl font-bold mb-8 text-gray-800">
         {queryStatus.status.dateRange === "loading"
           ? "Esecuzione query..."
           : queryStatus.status.dateRange === "error"
-            ? "Errore di connessione al database"
+            ? "Database temporaneamente non disponibile"
             : results.dateRange
               ? `Articoli dal ${formatDate(
                   results.dateRange.oldestDate,
@@ -282,15 +287,6 @@ export default function StatisticsPage() {
             hasError={queryStatus.status.topPeople === "error"}
             errorMessage={queryStatus.errorMessage}
           />
-        </div>
-
-        <div className="flex justify-center mt-8">
-          <button
-            onClick={() => window.location.reload()}
-            className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition-colors"
-          >
-            Ricalcola statistiche
-          </button>
         </div>
       </div>
     </div>

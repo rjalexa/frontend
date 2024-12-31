@@ -1,11 +1,9 @@
 import { NextRequest, NextResponse } from "next/server";
-
 import { ENDPOINTS } from "@/src/config/constants";
 
 // Define allowed message types
 type LogMessage = string | number | boolean | null | undefined;
 
-// Custom logger interface
 interface ILogger {
   info(message: LogMessage, ...metadata: unknown[]): void;
   error(message: LogMessage, ...metadata: unknown[]): void;
@@ -14,12 +12,10 @@ interface ILogger {
 const logger: ILogger = {
   info(message: LogMessage, ...metadata: unknown[]): void {
     if (process.env.NODE_ENV !== "production") {
-      // eslint-disable-next-line no-console
       console.log(`[INFO] ${message}`, ...metadata);
     }
   },
   error(message: LogMessage, ...metadata: unknown[]): void {
-    // eslint-disable-next-line no-console
     console.error(`[ERROR] ${message}`, ...metadata);
   },
 };
@@ -44,6 +40,15 @@ export interface ISparqlResponse {
     bindings: Array<Record<string, ISparqlValue>>;
   };
 }
+
+// Simple cache implementation
+interface CacheEntry {
+  data: ISparqlResponse;
+  timestamp: number;
+}
+
+const CACHE_DURATION_MS = 24 * 60 * 60 * 1000; // 24 hours
+const queryCache = new Map<QueryId, CacheEntry>();
 
 const SPARQL_QUERIES: Record<QueryId, string> = {
   dateRange: `
@@ -140,8 +145,7 @@ const handleSparqlError = async (
 ): Promise<NextResponse<SparqlErrorResponse>> => {
   let errorDetail: string;
   try {
-    const errorBody = await response.text();
-    errorDetail = errorBody;
+    errorDetail = await response.text();
   } catch {
     errorDetail = response.statusText;
   }
@@ -152,8 +156,7 @@ const handleSparqlError = async (
   if (response.status === 404) {
     return NextResponse.json(
       {
-        error:
-          "SPARQL endpoint not found. Please verify the endpoint URL and dataset name.",
+        error: "SPARQL endpoint not found. Please verify the endpoint URL and dataset name.",
         details: errorDetail,
       },
       { status: 404 },
@@ -179,15 +182,26 @@ const handleSparqlError = async (
   );
 };
 
+const isCacheValid = (cacheEntry: CacheEntry | undefined): boolean => {
+  if (!cacheEntry) return false;
+  const now = Date.now();
+  return now - cacheEntry.timestamp < CACHE_DURATION_MS;
+};
+
 export async function GET(request: NextRequest) {
   const searchParams = request.nextUrl.searchParams;
   const queryId = searchParams.get("queryId") as QueryId;
+  const forceRefresh = searchParams.get("refresh") === "true";
 
   if (!queryId || !SPARQL_QUERIES[queryId]) {
     return NextResponse.json({ error: "Invalid query ID" }, { status: 400 });
   }
 
+  logger.info(`Available endpoints:`, ENDPOINTS);
   const endpoint = ENDPOINTS.memav6;
+  if (!endpoint) {
+    logger.error("memav6 endpoint is undefined in ENDPOINTS");
+  }
   if (!endpoint) {
     logger.error("SPARQL endpoint configuration missing");
     return NextResponse.json(
@@ -196,7 +210,14 @@ export async function GET(request: NextRequest) {
     );
   }
 
-  logger.info(`Attempting to connect to SPARQL endpoint: ${endpoint}`);
+  // Check cache first if not forcing refresh
+  const cachedEntry = queryCache.get(queryId);
+  if (!forceRefresh && cachedEntry && isCacheValid(cachedEntry)) {
+    logger.info(`Serving cached data for query: ${queryId}`);
+    return NextResponse.json(cachedEntry.data);
+  }
+
+  logger.info(`Fetching fresh data for query: ${queryId} from endpoint: ${endpoint}`);
 
   try {
     const controller = new AbortController();
@@ -221,19 +242,25 @@ export async function GET(request: NextRequest) {
       return handleSparqlError(response);
     }
 
-    const data = await response.json();
+    const data: ISparqlResponse = await response.json();
+    
+    // Cache the successful response
+    queryCache.set(queryId, {
+      data,
+      timestamp: Date.now(),
+    });
+
     return NextResponse.json(data);
   } catch (error) {
     let errorMessage: string;
 
     if (error instanceof Error) {
       if (error.name === "AbortError") {
-        errorMessage = "SPARQL endpoint connection timed out";
+        errorMessage = "Timeout della connessione al grafo SPARQL";
       } else if (error.message.includes("fetch")) {
-        errorMessage =
-          "Failed to connect to SPARQL endpoint. Please verify the endpoint URL and network connectivity.";
+        errorMessage = "Grafo SPARQL irraggiungibile";
       } else {
-        errorMessage = error.message;
+        errorMessage = "Errore di connessione al grafo SPARQL";
       }
     } else {
       errorMessage = "Unknown error executing SPARQL query";

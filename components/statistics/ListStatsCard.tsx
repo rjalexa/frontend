@@ -1,3 +1,4 @@
+// components/statistics/ListStatsCard.tsx
 import React, { useEffect, useState } from "react";
 
 import { IListStatsCardProps } from "./types";
@@ -13,14 +14,11 @@ const ListStatsCard = ({
 
   useEffect(() => {
     if (items && items.length > 0) {
-      // Reset visible items when items change
       setVisibleItems([]);
-
-      // Show items one by one with a delay
       items.forEach((_, index) => {
         setTimeout(() => {
           setVisibleItems((prev) => [...prev, index]);
-        }, index * 100); // 100ms delay between each item
+        }, index * 100);
       });
     }
   }, [items]);
@@ -36,9 +34,7 @@ const ListStatsCard = ({
             <span className="text-gray-500">Esecuzione query...</span>
           </div>
         ) : hasError ? (
-          <span className="text-gray-500">
-            {errorMessage || "Query fallita..."}
-          </span>
+          <span className="text-gray-500">Dati non disponibili</span>
         ) : items && items.length > 0 ? (
           items.map((item, index) => (
             <div
