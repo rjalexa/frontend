@@ -2,6 +2,7 @@
 "use client";
 
 import { useEffect, useState, useCallback } from "react";
+
 import AnimatedCounter from "@/components/statistics/AnimatedCounter";
 import { QueryId, executeSparqlQuery } from "@/lib/sparql";
 import {
@@ -198,18 +199,28 @@ export default function StatisticsPage() {
   // Fixed date formatter to avoid hydration mismatch
   const formatDate = (dateString?: string) => {
     if (!dateString) return "";
-    
+
     try {
       const date = new Date(dateString);
       // Use ISO string to ensure consistent formatting
-      const [year, month, day] = date.toISOString().split('T')[0].split('-');
-      
+      const [year, month, day] = date.toISOString().split("T")[0].split("-");
+
       // Manual mapping for Italian months to avoid locale issues
       const italianMonths = [
-        'gennaio', 'febbraio', 'marzo', 'aprile', 'maggio', 'giugno',
-        'luglio', 'agosto', 'settembre', 'ottobre', 'novembre', 'dicembre'
+        "gennaio",
+        "febbraio",
+        "marzo",
+        "aprile",
+        "maggio",
+        "giugno",
+        "luglio",
+        "agosto",
+        "settembre",
+        "ottobre",
+        "novembre",
+        "dicembre",
       ];
-      
+
       // Construct the date string manually
       return `${parseInt(day)} ${italianMonths[parseInt(month) - 1]} ${year}`;
     } catch (e) {
@@ -243,7 +254,7 @@ export default function StatisticsPage() {
               </div>
               <div className="mt-3 flex items-center">
                 {queryStatus.status.totalArticles === "loading" ? (
-                  <div className="animate-pulse h-10 w-32 bg-gray-200 rounded"></div>
+                  <div className="animate-pulse h-10 w-32 bg-gray-200 rounded" />
                 ) : queryStatus.status.totalArticles === "error" ? (
                   <span className="text-gray-500">Dati non disponibili</span>
                 ) : (
@@ -263,7 +274,7 @@ export default function StatisticsPage() {
               </div>
               <div className="mt-3 flex items-center">
                 {queryStatus.status.uniqueAuthors === "loading" ? (
-                  <div className="animate-pulse h-10 w-32 bg-gray-200 rounded"></div>
+                  <div className="animate-pulse h-10 w-32 bg-gray-200 rounded" />
                 ) : queryStatus.status.uniqueAuthors === "error" ? (
                   <span className="text-gray-500">Dati non disponibili</span>
                 ) : (
@@ -283,7 +294,7 @@ export default function StatisticsPage() {
               </div>
               <div className="mt-3 flex items-center">
                 {queryStatus.status.uniqueLocations === "loading" ? (
-                  <div className="animate-pulse h-10 w-32 bg-gray-200 rounded"></div>
+                  <div className="animate-pulse h-10 w-32 bg-gray-200 rounded" />
                 ) : queryStatus.status.uniqueLocations === "error" ? (
                   <span className="text-gray-500">Dati non disponibili</span>
                 ) : (
@@ -303,7 +314,7 @@ export default function StatisticsPage() {
               </div>
               <div className="mt-3 flex items-center">
                 {queryStatus.status.totalPeople === "loading" ? (
-                  <div className="animate-pulse h-10 w-32 bg-gray-200 rounded"></div>
+                  <div className="animate-pulse h-10 w-32 bg-gray-200 rounded" />
                 ) : queryStatus.status.totalPeople === "error" ? (
                   <span className="text-gray-500">Dati non disponibili</span>
                 ) : (
@@ -329,8 +340,8 @@ export default function StatisticsPage() {
                   <div className="space-y-3">
                     {[...Array(5)].map((_, i) => (
                       <div key={i} className="animate-pulse flex items-center">
-                        <div className="h-4 bg-gray-200 rounded w-2/3"></div>
-                        <div className="ml-auto h-4 bg-gray-200 rounded w-16"></div>
+                        <div className="h-4 bg-gray-200 rounded w-2/3" />
+                        <div className="ml-auto h-4 bg-gray-200 rounded w-16" />
                       </div>
                     ))}
                   </div>
@@ -373,8 +384,8 @@ export default function StatisticsPage() {
                   <div className="space-y-3">
                     {[...Array(5)].map((_, i) => (
                       <div key={i} className="animate-pulse flex items-center">
-                        <div className="h-4 bg-gray-200 rounded w-2/3"></div>
-                        <div className="ml-auto h-4 bg-gray-200 rounded w-16"></div>
+                        <div className="h-4 bg-gray-200 rounded w-2/3" />
+                        <div className="ml-auto h-4 bg-gray-200 rounded w-16" />
                       </div>
                     ))}
                   </div>
@@ -417,8 +428,8 @@ export default function StatisticsPage() {
                   <div className="space-y-3">
                     {[...Array(5)].map((_, i) => (
                       <div key={i} className="animate-pulse flex items-center">
-                        <div className="h-4 bg-gray-200 rounded w-2/3"></div>
-                        <div className="ml-auto h-4 bg-gray-200 rounded w-16"></div>
+                        <div className="h-4 bg-gray-200 rounded w-2/3" />
+                        <div className="ml-auto h-4 bg-gray-200 rounded w-16" />
                       </div>
                     ))}
                   </div>

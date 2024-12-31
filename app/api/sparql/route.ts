@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
+
 import { ENDPOINTS } from "@/src/config/constants";
 
 // Define allowed message types
@@ -11,11 +12,15 @@ interface ILogger {
 
 const logger: ILogger = {
   info(message: LogMessage, ...metadata: unknown[]): void {
+    // Only log in non-production environments and allow console statements
     if (process.env.NODE_ENV !== "production") {
+      // eslint-disable-next-line no-console
       console.log(`[INFO] ${message}`, ...metadata);
     }
   },
   error(message: LogMessage, ...metadata: unknown[]): void {
+    // Allow console.error statements for error logging
+    // eslint-disable-next-line no-console
     console.error(`[ERROR] ${message}`, ...metadata);
   },
 };
@@ -156,7 +161,8 @@ const handleSparqlError = async (
   if (response.status === 404) {
     return NextResponse.json(
       {
-        error: "SPARQL endpoint not found. Please verify the endpoint URL and dataset name.",
+        error:
+          "SPARQL endpoint not found. Please verify the endpoint URL and dataset name.",
         details: errorDetail,
       },
       { status: 404 },
@@ -217,7 +223,9 @@ export async function GET(request: NextRequest) {
     return NextResponse.json(cachedEntry.data);
   }
 
-  logger.info(`Fetching fresh data for query: ${queryId} from endpoint: ${endpoint}`);
+  logger.info(
+    `Fetching fresh data for query: ${queryId} from endpoint: ${endpoint}`,
+  );
 
   try {
     const controller = new AbortController();
@@ -243,7 +251,7 @@ export async function GET(request: NextRequest) {
     }
 
     const data: ISparqlResponse = await response.json();
-    
+
     // Cache the successful response
     queryCache.set(queryId, {
       data,
