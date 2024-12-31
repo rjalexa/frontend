@@ -69,3 +69,42 @@ body {
     @apply border-border;
   }
 }
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fadeIn {
+  opacity: 0;
+  animation: fadeIn 0.5s ease-out forwards;
+}
+
+/* Delay classes with millisecond values */
+.delay-0 { animation-delay: 0ms; }
+.delay-150 { animation-delay: 150ms; }
+.delay-300 { animation-delay: 300ms; }
+.delay-450 { animation-delay: 450ms; }
+.delay-600 { animation-delay: 600ms; }
+.delay-750 { animation-delay: 750ms; }
+.delay-900 { animation-delay: 900ms; }
+.delay-1050 { animation-delay: 1050ms; }
+.delay-1200 { animation-delay: 1200ms; }
+.delay-1350 { animation-delay: 1350ms; }
+.delay-1500 { animation-delay: 1500ms; }
+.delay-1650 { animation-delay: 1650ms; }
+.delay-1800 { animation-delay: 1800ms; }
+.delay-1950 { animation-delay: 1950ms; }
+.delay-2100 { animation-delay: 2100ms; }
+.delay-2250 { animation-delay: 2250ms; }
+.delay-2400 { animation-delay: 2400ms; }
+.delay-2550 { animation-delay: 2550ms; }
+.delay-2700 { animation-delay: 2700ms; }
+.delay-2850 { animation-delay: 2850ms; }
+.delay-3000 { animation-delay: 3000ms; }

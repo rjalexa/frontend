@@ -352,7 +352,7 @@ export default function StatisticsPage() {
                     {results.topAuthors?.map((item, index) => (
                       <div
                         key={item.label}
-                        className="flex items-center justify-between group hover:bg-gray-50 p-2 rounded-lg transition-colors"
+                        className={`flex items-center justify-between group hover:bg-gray-50 p-2 rounded-lg transition-colors animate-fadeIn delay-${index * 150}`}
                       >
                         <div className="flex items-center space-x-3">
                           <span className="text-sm font-medium text-gray-900">
@@ -396,7 +396,7 @@ export default function StatisticsPage() {
                     {results.topLocations?.map((item, index) => (
                       <div
                         key={item.label}
-                        className="flex items-center justify-between group hover:bg-gray-50 p-2 rounded-lg transition-colors"
+                        className={`flex items-center justify-between group hover:bg-gray-50 p-2 rounded-lg transition-colors animate-fadeIn delay-${index * 150}`}
                       >
                         <div className="flex items-center space-x-3">
                           <span className="text-sm font-medium text-gray-900">
@@ -440,7 +440,7 @@ export default function StatisticsPage() {
                     {results.topPeople?.map((item, index) => (
                       <div
                         key={item.label}
-                        className="flex items-center justify-between group hover:bg-gray-50 p-2 rounded-lg transition-colors"
+                        className={`flex items-center justify-between group hover:bg-gray-50 p-2 rounded-lg transition-colors animate-fadeIn delay-${index * 150}`}
                       >
                         <div className="flex items-center space-x-3">
                           <span className="text-sm font-medium text-gray-900">
